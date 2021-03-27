@@ -1080,6 +1080,10 @@ manage(Window w, XWindowAttributes *wa)
 	updatesizehints(c);
 	updatewmhints(c);
 	updatemotifhints(c);
+        if ((c->isfloating && !c->isfullscreen) || c->isfixed) {
+                c->x = selmon->wx + ((selmon->ww - c->w - c->bw*2) / 2);
+                c->y = selmon->wy + ((selmon->wh - c->h - c->bw*2) / 2);
+        }
 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 	grabbuttons(c, 0);
 	if (!c->isfloating)
@@ -1778,6 +1782,16 @@ togglebar(const Arg *arg)
 {
 	selmon->showbar = !selmon->showbar;
 	updatebarpos(selmon);
+        if (selmon->clients->isfloating && !selmon->clients->isfullscreen) {
+                selmon->clients->x = selmon->wx 
+                                        + ((selmon->ww 
+                                                - selmon->clients->w 
+                                                - selmon->clients->bw*2) / 2);
+                selmon->clients->y = selmon->wy 
+                                        + ((selmon->wh 
+                                                - selmon->clients->h 
+                                                - selmon->clients->bw*2) / 2);
+        }
 	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
 	arrange(selmon);
 }

@@ -256,6 +256,8 @@ static void setnumdesktops(void);
 static void setup(void);
 static void setviewport(void);
 static void seturgent(Client *c, int urg);
+static void shiftclient(const Arg *arg);
+static void shiftview(const Arg *arg);
 static void showhide(Client *c);
 static void sigchld(int unused);
 static void spawn(const Arg *arg);
@@ -2345,6 +2347,55 @@ seturgent(Client *c, int urg)
 	wmh->flags = urg ? (wmh->flags | XUrgencyHint) : (wmh->flags & ~XUrgencyHint);
 	XSetWMHints(dpy, c->win, wmh);
 	XFree(wmh);
+}
+ 
+void
+shiftclient(const Arg *arg)
+{
+        if (selmon->sel) {
+                Arg shifted;
+
+                if (arg->i > 0) // left circular shift
+                        shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
+                                        | (selmon->tagset[selmon->seltags]
+                                                >> (LENGTH(tags) - arg->i));
+
+                else // right circular shift
+                        shifted.ui = selmon->tagset[selmon->seltags] >> (-arg->i)
+                                        | selmon->tagset[selmon->seltags]
+                                                << (LENGTH(tags) + arg->i);
+
+                selmon->sel->tags = shifted.ui & TAGMASK;
+                view(&shifted);
+        }
+}
+
+void
+shiftview(const Arg *arg)
+{
+        Arg shifted;
+        Client *client;
+        unsigned int tagmask = 0;
+
+        for (client = selmon->clients; client; client = client->next) {
+                tagmask = tagmask | client->tags;
+        }
+
+        shifted.ui = selmon->tagset[selmon->seltags];
+
+        if (arg->i > 0) // left circular shift
+                do {
+                        shifted.ui = (shifted.ui << arg->i)
+                                        | (shifted.ui >> (LENGTH(tags) - arg->i));
+                } while (tagmask && !(shifted.ui & tagmask));
+
+        else // right circular shift
+                do {
+                        shifted.ui = (shifted.ui >> (-arg->i)
+                                        | shifted.ui << (LENGTH(tags) + arg->i));
+                } while (tagmask && !(shifted.ui & tagmask));
+
+        view(&shifted);
 }
 
 void

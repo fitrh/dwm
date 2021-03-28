@@ -114,56 +114,60 @@ static const char *dmenucmd[] = {
 static const char *termcmd[]  = { "alacritty", NULL };
 
 static Key keys[] = {
-	/* modifier           key        function        argument */
-	{ ALT,                XK_space,  spawn,          {.v = dmenucmd } },
-	{ MOD,                XK_space,  spawn,          {.v = termcmd } },
-	{ MOD,                XK_b,      togglebar,      {0} },
-	{ MOD,                XK_j,      focusstack,     {.i = +1 } },
-	{ MOD,                XK_k,      focusstack,     {.i = -1 } },
-	{ MOD,                XK_i,      incnmaster,     {.i = +1 } },
-	{ MOD,                XK_d,      incnmaster,     {.i = -1 } },
-	{ MOD,                XK_h,      setmfact,       {.f = -0.05} },
-	{ MOD,                XK_l,      setmfact,       {.f = +0.05} },
-	{ MOD|SHIFT,          XK_h,      setcfact,       {.f = +0.25} },
-	{ MOD|SHIFT,          XK_l,      setcfact,       {.f = -0.25} },
-	{ MOD|SHIFT,          XK_o,      setcfact,       {.f =  0.00} },
-	{ MOD,                XK_o,      resetcfact,     {0} },
-        { MOD|ALT,            XK_0,      togglegaps,     {0} },
-        { MOD|SHIFT,          XK_equal,  defaultgaps,    {0} },
-	{ MOD,                XK_equal,  incrgaps,       {.i = +1 } },
-	{ MOD,                XK_minus,  incrgaps,       {.i = -1 } },
-	{ MOD|ALT,            XK_i,      incrigaps,      {.i = +1 } },
-	{ MOD|ALT|SHIFT,      XK_i,      incrigaps,      {.i = -1 } },
-	{ MOD|ALT,            XK_o,      incrogaps,      {.i = +1 } },
-	{ MOD|ALT|SHIFT,      XK_o,      incrogaps,      {.i = -1 } },
-	{ MOD|ALT,            XK_x,      incrihgaps,     {.i = +1 } },
-	{ MOD|ALT|SHIFT,      XK_x,      incrihgaps,     {.i = -1 } },
-	{ MOD|ALT,            XK_y,      incrivgaps,     {.i = +1 } },
-	{ MOD|ALT|SHIFT,      XK_y,      incrivgaps,     {.i = -1 } },
-	{ MOD|CTRL,           XK_x,      incrohgaps,     {.i = +1 } },
-	{ MOD|CTRL|SHIFT,     XK_x,      incrohgaps,     {.i = -1 } },
-	{ MOD|CTRL,           XK_y,      incrovgaps,     {.i = +1 } },
-	{ MOD|CTRL|SHIFT,     XK_y,      incrovgaps,     {.i = -1 } },
-	{ MOD,                XK_Return, zoom,           {0} },
-	{ MOD,                XK_Tab,    view,           {0} },
-	{ MOD|SHIFT,          XK_c,      killclient,     {0} },
-        { MOD,                XK_t,      setlayout,      {.v = &layouts[0]} }, /* tile */
-        { MOD,                XK_f,      setlayout,      {.v = &layouts[1]} }, /* float */
-        { MOD,                XK_m,      setlayout,      {.v = &layouts[2]} }, /* monocle */
-        { MOD|ALT,            XK_t,      setlayout,      {.v = &layouts[3]} }, /* dwindle */
-        { MOD,                XK_g,      setlayout,      {.v = &layouts[4]} }, /* gaplessgrid */
-        { MOD|ALT,            XK_g,      setlayout,      {.v = &layouts[5]} }, /* horizgrid */
-        { MOD|ALT,            XK_b,      setlayout,      {.v = &layouts[6]} }, /* bstack */
-	{ MOD|CTRL,           XK_c,      setlayout,      {.v = &layouts[7]} }, /* centeredmaster */
-	{ MOD|ALT,            XK_c,      setlayout,      {.v = &layouts[8]} }, /* centeredfloatingmaster */
-	{ MOD|CTRL,           XK_space,  setlayout,      {0} },
-	{ MOD|SHIFT,          XK_space,  togglefloating, {0} },
-	{ MOD,                XK_0,      view,           {.ui = ~0 } },
-	{ MOD|SHIFT,          XK_0,      tag,            {.ui = ~0 } },
-	{ MOD,                XK_comma,  focusmon,       {.i = -1 } },
-	{ MOD,                XK_period, focusmon,       {.i = +1 } },
-	{ MOD|SHIFT,          XK_comma,  tagmon,         {.i = -1 } },
-	{ MOD|SHIFT,          XK_period, tagmon,         {.i = +1 } },
+	/* modifier           key              function        argument */
+	{ ALT,                XK_space,        spawn,          {.v = dmenucmd } },
+	{ MOD,                XK_space,        spawn,          {.v = termcmd } },
+	{ MOD,                XK_b,            togglebar,      {0} },
+	{ MOD,                XK_j,            focusstack,     {.i = +1 } },
+	{ MOD,                XK_k,            focusstack,     {.i = -1 } },
+	{ MOD,                XK_i,            incnmaster,     {.i = +1 } },
+	{ MOD,                XK_d,            incnmaster,     {.i = -1 } },
+	{ MOD,                XK_h,            setmfact,       {.f = -0.05} },
+	{ MOD,                XK_l,            setmfact,       {.f = +0.05} },
+	{ MOD|SHIFT,          XK_h,            setcfact,       {.f = +0.25} },
+	{ MOD|SHIFT,          XK_l,            setcfact,       {.f = -0.25} },
+	{ MOD|SHIFT,          XK_o,            setcfact,       {.f =  0.00} },
+	{ MOD,                XK_o,            resetcfact,     {0} },
+        { MOD|ALT,            XK_0,            togglegaps,     {0} },
+        { MOD|SHIFT,          XK_equal,        defaultgaps,    {0} },
+	{ MOD,                XK_equal,        incrgaps,       {.i = +1 } },
+	{ MOD,                XK_minus,        incrgaps,       {.i = -1 } },
+	{ MOD|ALT,            XK_i,            incrigaps,      {.i = +1 } },
+	{ MOD|ALT|SHIFT,      XK_i,            incrigaps,      {.i = -1 } },
+	{ MOD|ALT,            XK_o,            incrogaps,      {.i = +1 } },
+	{ MOD|ALT|SHIFT,      XK_o,            incrogaps,      {.i = -1 } },
+	{ MOD|ALT,            XK_x,            incrihgaps,     {.i = +1 } },
+	{ MOD|ALT|SHIFT,      XK_x,            incrihgaps,     {.i = -1 } },
+	{ MOD|ALT,            XK_y,            incrivgaps,     {.i = +1 } },
+	{ MOD|ALT|SHIFT,      XK_y,            incrivgaps,     {.i = -1 } },
+	{ MOD|CTRL,           XK_x,            incrohgaps,     {.i = +1 } },
+	{ MOD|CTRL|SHIFT,     XK_x,            incrohgaps,     {.i = -1 } },
+	{ MOD|CTRL,           XK_y,            incrovgaps,     {.i = +1 } },
+	{ MOD|CTRL|SHIFT,     XK_y,            incrovgaps,     {.i = -1 } },
+	{ MOD,                XK_Return,       zoom,           {0} },
+	{ MOD,                XK_Tab,          view,           {0} },
+	{ MOD|SHIFT,          XK_c,            killclient,     {0} },
+        { MOD,                XK_t,            setlayout,      {.v = &layouts[0]} }, /* tile */
+        { MOD,                XK_f,            setlayout,      {.v = &layouts[1]} }, /* float */
+        { MOD,                XK_m,            setlayout,      {.v = &layouts[2]} }, /* monocle */
+        { MOD|ALT,            XK_t,            setlayout,      {.v = &layouts[3]} }, /* dwindle */
+        { MOD,                XK_g,            setlayout,      {.v = &layouts[4]} }, /* gaplessgrid */
+        { MOD|ALT,            XK_g,            setlayout,      {.v = &layouts[5]} }, /* horizgrid */
+        { MOD|ALT,            XK_b,            setlayout,      {.v = &layouts[6]} }, /* bstack */
+	{ MOD|CTRL,           XK_c,            setlayout,      {.v = &layouts[7]} }, /* centeredmaster */
+	{ MOD|ALT,            XK_c,            setlayout,      {.v = &layouts[8]} }, /* centeredfloatingmaster */
+	{ MOD|CTRL,           XK_space,        setlayout,      {0} },
+	{ MOD|SHIFT,          XK_space,        togglefloating, {0} },
+	{ MOD,                XK_0,            view,           {.ui = ~0 } },
+	{ MOD|SHIFT,          XK_0,            tag,            {.ui = ~0 } },
+	{ ALT|SHIFT,          XK_bracketright, shiftview,      {.i = +1  } },
+	{ ALT|SHIFT,          XK_bracketleft,  shiftview,      {.i = -1  } },
+	{ MOD|SHIFT,          XK_bracketright, shiftclient,    {.i = +1  } },
+	{ MOD|SHIFT,          XK_bracketleft,  shiftclient,    {.i = -1  } },
+	{ MOD,                XK_comma,        focusmon,       {.i = -1 } },
+	{ MOD,                XK_period,       focusmon,       {.i = +1 } },
+	{ MOD|SHIFT,          XK_comma,        tagmon,         {.i = -1 } },
+	{ MOD|SHIFT,          XK_period,       tagmon,         {.i = +1 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -191,5 +195,7 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,           Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MOD,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MOD,         Button3,        toggletag,      {0} },
+        { ClkTagBar,	        0,           Button4,        shiftview,      {.i = -1} },
+	{ ClkTagBar,	        0,	     Button5,        shiftview,      {.i = 1} },
 };
 

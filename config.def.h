@@ -104,6 +104,7 @@ static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 0, 0, 2, 0, 0, 0};
 	{ MOD,            KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MOD|CTRL,       KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MOD|SHIFT,      KEY,      tag,            {.ui = 1 << TAG} }, \
+	{ MOD|ALT,        KEY,      tagview,        {.ui = 1 << TAG} }, \
 	{ MOD|CTRL|SHIFT, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */

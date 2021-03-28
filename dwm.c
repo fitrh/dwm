@@ -234,6 +234,7 @@ static void pop(Client *);
 static void propertynotify(XEvent *e);
 static void quit(const Arg *arg);
 static Monitor *recttomon(int x, int y, int w, int h);
+static void resetfact(const Arg *arg);
 static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
@@ -1908,6 +1909,19 @@ recttomon(int x, int y, int w, int h)
 			r = m;
 		}
 	return r;
+}
+
+void
+resetfact(const Arg *arg)
+{
+        Client *c;
+
+	selmon->pertag->mfacts[selmon->pertag->curtag] = mfact;
+	selmon->mfact = selmon->pertag->mfacts[selmon->pertag->curtag];
+        for (c = nexttiled(selmon->clients); c; c = nexttiled(c->next)) {
+                c->cfact = 1.0;
+        }
+	arrange(selmon);
 }
 
 void

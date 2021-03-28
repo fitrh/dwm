@@ -503,14 +503,15 @@ bstack(Monitor *m)
 
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
 		if (i < m->nmaster) {
-			resize(c, mx, my, 
-                                (mw / mfacts) + (i < mrest ? 1 : 0)
-                                - (2*c->bw), mh - (2*c->bw), 0);
+			resize(c, mx, my,
+                                mw * (c->cfact / mfacts)
+                                + (i < mrest ? 1 : 0) - (2*c->bw),
+                                mh - (2*c->bw), 0);
 			mx += WIDTH(c) + iv;
 		} else {
-			resize(c, sx, sy, 
-                                (sw / sfacts) 
-                                        + ((i - m->nmaster) < srest ? 1 : 0)
+			resize(c, sx, sy,
+                                sw * (c->cfact / sfacts)
+                                + ((i - m->nmaster) < srest ? 1 : 0)
                                 - (2*c->bw), sh - (2*c->bw), 0);
 			sx += WIDTH(c) + iv;
 		}
@@ -608,11 +609,17 @@ centeredfloatingmaster(Monitor *m)
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
 			/* nmaster clients are stacked horizontally, in the center of the screen */
-			resize(c, mx, my, (mw / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), mh - (2*c->bw), 0);
+			resize(c, mx, my,
+                                mw * (c->cfact / mfacts)
+                                + (i < mrest ? 1 : 0)
+                                - (2*c->bw), mh - (2*c->bw), 0);
 			mx += WIDTH(c) + iv*mivf;
 		} else {
 			/* stack clients are stacked horizontally */
-			resize(c, sx, sy, (sw / sfacts) + ((i - m->nmaster) < srest ? 1 : 0) - (2*c->bw), sh - (2*c->bw), 0);
+			resize(c, sx, sy,
+                                sw * (c->cfact / sfacts)
+                                + ((i - m->nmaster) < srest ? 1 : 0)
+                                - (2*c->bw), sh - (2*c->bw), 0);
 			sx += WIDTH(c) + iv;
 		}
 }
@@ -666,20 +673,20 @@ centeredmaster(Monitor *m)
 	/* calculate facts */
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++) {
 		if (!m->nmaster || n < m->nmaster)
-			mfacts += 1;
+			mfacts += c->cfact;
 		else if ((n - m->nmaster) % 2)
-			lfacts += 1; // total factor of left hand stack area
+			lfacts += c->cfact; // total factor of left hand stack area
 		else
-			rfacts += 1; // total factor of right hand stack area
+			rfacts += c->cfact; // total factor of right hand stack area
 	}
 
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++)
 		if (!m->nmaster || n < m->nmaster)
-			mtotal += mh / mfacts;
+			mtotal += mh * (c->cfact / mfacts);
 		else if ((n - m->nmaster) % 2)
-			ltotal += lh / lfacts;
+			ltotal += lh * (c->cfact / lfacts);
 		else
-			rtotal += rh / rfacts;
+			rtotal += rh * (c->cfact / rfacts);
 
 	mrest = mh - mtotal;
 	lrest = lh - ltotal;
@@ -688,15 +695,24 @@ centeredmaster(Monitor *m)
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
 		if (!m->nmaster || i < m->nmaster) {
 			/* nmaster clients are stacked vertically, in the center of the screen */
-			resize(c, mx, my, mw - (2*c->bw), (mh / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
+			resize(c, mx, my, mw - (2*c->bw),
+                                mh * (c->cfact / mfacts)
+                                + (i < mrest ? 1 : 0)
+                                - (2*c->bw), 0);
 			my += HEIGHT(c) + ih;
 		} else {
 			/* stack clients are stacked vertically */
 			if ((i - m->nmaster) % 2 ) {
-				resize(c, lx, ly, lw - (2*c->bw), (lh / lfacts) + ((i - 2*m->nmaster) < 2*lrest ? 1 : 0) - (2*c->bw), 0);
+				resize(c, lx, ly, lw - (2*c->bw),
+                                        lh * (c->cfact / lfacts)
+                                        + ((i - 2*m->nmaster) < 2*lrest ? 1 : 0)
+                                        - (2*c->bw), 0);
 				ly += HEIGHT(c) + ih;
 			} else {
-				resize(c, rx, ry, rw - (2*c->bw), (rh / rfacts) + ((i - 2*m->nmaster) < 2*rrest ? 1 : 0) - (2*c->bw), 0);
+				resize(c, rx, ry, rw - (2*c->bw),
+                                        rh * (c->cfact / rfacts)
+                                        + ((i - 2*m->nmaster) < 2*rrest ? 1 : 0)
+                                        - (2*c->bw), 0);
 				ry += HEIGHT(c) + ih;
 			}
 		}
@@ -1294,9 +1310,9 @@ getfacts(Monitor *m, int msize, int ssize, float *mf, float *sf, int *mr, int *s
 
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++)
 		if (n < m->nmaster)
-			mtotal += msize / mfacts;
+			mtotal += msize * (c->cfact / mfacts);
 		else
-			stotal += ssize / sfacts;
+			stotal += ssize * (c->cfact / sfacts);
 
 	*mf = mfacts; // total factor of master area
 	*sf = sfacts; // total factor of stack area

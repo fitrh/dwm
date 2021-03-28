@@ -233,6 +233,7 @@ static void pop(Client *);
 static void propertynotify(XEvent *e);
 static void quit(const Arg *arg);
 static Monitor *recttomon(int x, int y, int w, int h);
+static void resetcfact(const Arg *arg);
 static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
@@ -1898,6 +1899,16 @@ recttomon(int x, int y, int w, int h)
 			r = m;
 		}
 	return r;
+}
+
+void
+resetcfact(const Arg *arg)
+{
+        Client *c;
+	for (c = nexttiled(selmon->clients); c; c = nexttiled(c->next)) {
+                c->cfact = 1.0;
+        }
+        arrange(selmon);
 }
 
 void

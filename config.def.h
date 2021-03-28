@@ -89,6 +89,12 @@ static const Layout layouts[] = {
         { NULL,       NULL }
 };
 
+/* default layout per tags */
+/* The first element is for all-tag view, following i-th element corresponds to */
+/* tags[i]. Layout is referred using the layouts array index.*/
+static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 0, 0, 2, 0, 0, 0};
+
+
 /* key definitions */
 #define MOD Mod4Mask
 #define ALT Mod1Mask

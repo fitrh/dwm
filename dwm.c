@@ -906,7 +906,7 @@ Monitor *
 createmon(void)
 {
 	Monitor *m;
-	unsigned int i;
+	unsigned int i, taglayout;
 
 	m = ecalloc(1, sizeof(Monitor));
 	m->tagset[0] = m->tagset[1] = 1;
@@ -918,7 +918,7 @@ createmon(void)
 	m->gappov = gappov;
 	m->showbar = showbar;
 	m->topbar = topbar;
-	m->lt[0] = &layouts[0];
+	m->lt[0] = &layouts[taglayouts[1] % LENGTH(layouts)];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
 	m->pertag = ecalloc(1, sizeof(Pertag));
 	m->pertag->curtag = m->pertag->prevtag = 1;
@@ -927,7 +927,9 @@ createmon(void)
 		m->pertag->nmasters[i] = m->nmaster;
 		m->pertag->mfacts[i] = m->mfact;
 
-		m->pertag->ltidxs[i][0] = m->lt[0];
+                taglayout = taglayouts[i % LENGTH(taglayouts)];
+                taglayout %= LENGTH(layouts);
+        	m->pertag->ltidxs[i][0] = &layouts[taglayout];
 		m->pertag->ltidxs[i][1] = m->lt[1];
 		m->pertag->sellts[i] = m->sellt;
 

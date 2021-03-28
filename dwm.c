@@ -148,11 +148,11 @@ struct Pertag {
 	unsigned int curtag, prevtag; /* current and previous tag */
 	int nmasters[NUMTAGS + 1]; /* number of windows in master area */
 	float mfacts[NUMTAGS + 1]; /* mfacts per tag */
-	unsigned int sellts[NUMTAGS + 1]; /* selected layouts */
-	const Layout *ltidxs[NUMTAGS + 1][2]; /* matrix of tags and layouts indexes  */
 	int showbars[NUMTAGS + 1]; /* display bar for the current tag */
 	Client *prevzooms[NUMTAGS + 1]; /* store zoom information */
 	int enablegaps[NUMTAGS + 1]; /* toggle gap for the current tag */
+	unsigned int sellts[NUMTAGS + 1]; /* selected layouts */
+	const Layout *ltidxs[NUMTAGS + 1][2]; /* matrix of tags and layouts indexes  */
 };
 
 typedef struct {

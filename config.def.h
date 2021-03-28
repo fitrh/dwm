@@ -131,6 +131,7 @@ static Key keys[] = {
 	{ MOD,                XK_d,            incnmaster,     {.i = -1 } },
 	{ MOD,                XK_h,            setmfact,       {.f = -0.05} },
 	{ MOD,                XK_l,            setmfact,       {.f = +0.05} },
+	{ MOD|CTRL,           XK_o,            setmfact,       {.f =  mfact} },
 	{ MOD|SHIFT,          XK_h,            setcfact,       {.f = +0.25} },
 	{ MOD|SHIFT,          XK_l,            setcfact,       {.f = -0.25} },
 	{ MOD|SHIFT,          XK_o,            setcfact,       {.f =  0.00} },

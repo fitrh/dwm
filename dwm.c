@@ -234,7 +234,6 @@ static void pop(Client *);
 static void propertynotify(XEvent *e);
 static void quit(const Arg *arg);
 static Monitor *recttomon(int x, int y, int w, int h);
-static void resetcfact(const Arg *arg);
 static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
@@ -1912,16 +1911,6 @@ recttomon(int x, int y, int w, int h)
 }
 
 void
-resetcfact(const Arg *arg)
-{
-        Client *c;
-	for (c = nexttiled(selmon->clients); c; c = nexttiled(c->next)) {
-                c->cfact = 1.0;
-        }
-        arrange(selmon);
-}
-
-void
 resize(Client *c, int x, int y, int w, int h, int interact)
 {
 	if (applysizehints(c, &x, &y, &w, &h, interact))
@@ -2088,12 +2077,19 @@ setcfact(const Arg *arg)
 	c = selmon->sel;
 
 	if(!arg || !c || !selmon->lt[selmon->sellt]->arrange)
-		return;
+                return;
 	f = arg->f + c->cfact;
-	if(arg->f == 0.0)
-		f = 1.0;
-	else if(f < 0.25 || f > 4.0)
+	if(arg->f == 1.0) {
+                for (c = nexttiled(selmon->clients); c; c = nexttiled(c->next)) {
+                        c->cfact = 1.0;
+                }
+                arrange(selmon);
 		return;
+        } else if(arg->f == 0.0) {
+		f = 1.0;
+        } else if(f < 0.25 || f > 4.0) {
+		return;
+        }
 	c->cfact = f;
 	arrange(selmon);
 }

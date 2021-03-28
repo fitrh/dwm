@@ -135,7 +135,7 @@ static Key keys[] = {
 	{ MOD|SHIFT,          XK_h,            setcfact,       {.f = +0.25} },
 	{ MOD|SHIFT,          XK_l,            setcfact,       {.f = -0.25} },
 	{ MOD|SHIFT,          XK_o,            setcfact,       {.f =  0.00} },
-	{ MOD,                XK_o,            resetcfact,     {0} },
+	{ MOD,                XK_o,            setcfact,       {.f =  1.00} },
         { MOD|ALT,            XK_0,            togglegaps,     {0} },
         { MOD|SHIFT,          XK_equal,        defaultgaps,    {0} },
 	{ MOD,                XK_equal,        incrgaps,       {.i = +1 } },

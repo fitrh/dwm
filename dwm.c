@@ -1902,6 +1902,11 @@ manage(Window w, XWindowAttributes *wa)
 	XChangeProperty(dpy, root, netatom[NetClientListStacking], 
                         XA_WINDOW, 32, PropModePrepend,
                         (unsigned char *) &(c->win), 1);
+        Atom target = XInternAtom(dpy, "_IS_FLOATING", 0);
+	unsigned int floating[1] = {c->isfloating};
+	XChangeProperty(dpy, c->win, target,
+                        XA_CARDINAL, 32, PropModeReplace,
+                        (unsigned char *)floating, 1);
 	XMoveResizeWindow(dpy, c->win, c->x + 2 * sw, c->y, c->w, c->h); /* some windows require this */
 	setclientstate(c, NormalState);
 	if (c->mon == selmon)
@@ -2852,6 +2857,12 @@ togglefloating(const Arg *arg)
 		selmon->sel->sfw = selmon->sel->w;
 		selmon->sel->sfh = selmon->sel->h;
         }
+        
+	Atom target = XInternAtom(dpy, "_IS_FLOATING", 0);
+	unsigned int floating[1] = {selmon->sel->isfloating};
+        XChangeProperty(dpy, selmon->sel->win, target,
+                        XA_CARDINAL, 32, PropModeReplace,
+                        (unsigned char *)floating, 1);
 	arrange(selmon);
 }
 

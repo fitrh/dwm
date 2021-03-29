@@ -46,30 +46,31 @@ static const char *tags[] = {
                                 "  ", "  ", "  ", "  " 
 };
 
+static const int swallowfloating    = 0; /* 1 means swallow floating windows by default */
+
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class                      instance         title            tags mask  isfloating   monitor */
-	{ "Alacritty",                NULL,            NULL,            0,         0,           -1 },
-	{ "Float Term",               NULL,            NULL,            0,         1,           -1 },
-	{ NULL,                       "File Manager",  NULL,            1 << 3,    1,           -1 },
-	{ "discord",                  NULL,            NULL,            1 << 6,    1,           -1 },
-	{ NULL,                       NULL,            "Event Tester",  0,         1,           -1 },
-        { "firefoxdeveloperedition",  NULL,            NULL,            1 << 2,    0,           -1 },
-	{ "Gimp",                     NULL,            NULL,            0,         1,           -1 },
-	{ "jetbrains-idea",           NULL,            NULL,            0,         1,           -1 },
-	{ "jetbrains-studio",         NULL,            NULL,            0,         1,           -1 },
-	{ "mpv",                      NULL,            NULL,            0,         1,           -1 },
-	{ "qutebrowser",              NULL,            NULL,            1 << 2,    0,           -1 },
-	{ "scrcpy",                   NULL,            NULL,            0,         1,           -1 },
-	{ "Spotify",                  NULL,            NULL,            1 << 5,    0,           -1 },
-	{ "st",                       NULL,            NULL,            0,         0,           -1 },
-	{ "TelegramDesktop",          NULL,            NULL,            1 << 6,    1,           -1 },
-	{ "Tor Browser",              NULL,            NULL,            1 << 2,    1,           -1 }
+	/* class                      instance         title            tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Alacritty",                NULL,            NULL,            0,         0,          1,          1,         -1 },
+	{ "Float Term",               NULL,            NULL,            0,         1,          1,          0,         -1 },
+	{ NULL,                       "File Manager",  NULL,            1 << 3,    1,          1,          0,         -1 },
+	{ "discord",                  NULL,            NULL,            1 << 6,    1,          0,          0,         -1 },
+	{ NULL,                       NULL,            "Event Tester",  0,         1,          0,          1,         -1 },
+        { "firefoxdeveloperedition",  NULL,            NULL,            1 << 2,    0,          0,          1,         -1 },
+	{ "Gimp",                     NULL,            NULL,            0,         1,          0,          0,         -1 },
+	{ "jetbrains-idea",           NULL,            NULL,            0,         1,          0,          1,         -1 },
+	{ "jetbrains-studio",         NULL,            NULL,            0,         1,          0,          1,         -1 },
+	{ "mpv",                      NULL,            NULL,            0,         1,          0,          0,         -1 },
+	{ "qutebrowser",              NULL,            NULL,            1 << 2,    0,          0,          1,         -1 },
+	{ "scrcpy",                   NULL,            NULL,            0,         1,          0,          1,         -1 },
+	{ "Spotify",                  NULL,            NULL,            1 << 5,    0,          0,          1,         -1 },
+	{ "st",                       NULL,            NULL,            0,         0,          1,          1,         -1 },
+	{ "TelegramDesktop",          NULL,            NULL,            1 << 6,    1,          0,          0,         -1 },
+	{ "Tor Browser",              NULL,            NULL,            1 << 2,    1,          0,          1,         -1 },
 };
-
 /* layout(s) */
 static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */

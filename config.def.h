@@ -163,6 +163,8 @@ static Key keys[] = {
 	{ MOD|SHIFT,          XK_Return,       zoom,           {0} },
 	{ MOD,                XK_Tab,          view,           {0} },
 	{ MOD|SHIFT,          XK_c,            killclient,     {0} },
+	{ MOD|CTRL,           XK_comma,        cyclelayout,    {.i = -1 } },
+	{ MOD|CTRL,           XK_period,       cyclelayout,    {.i = +1 } },
         { MOD,                XK_t,            setlayout,      {.v = &layouts[0]} }, /* tile */
         { MOD,                XK_f,            setlayout,      {.v = &layouts[1]} }, /* float */
         { MOD,                XK_m,            setlayout,      {.v = &layouts[2]} }, /* monocle */

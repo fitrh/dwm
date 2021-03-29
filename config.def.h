@@ -125,6 +125,7 @@ static Key keys[] = {
 	{ ALT,                XK_space,        spawn,          {.v = dmenucmd } },
 	{ MOD,                XK_space,        spawn,          {.v = termcmd } },
 	{ MOD,                XK_b,            togglebar,      {0} },
+	{ MOD,                XK_Return,       focusmaster,    {0} },
 	{ MOD,                XK_j,            focusstack,     {.i = +1 } },
 	{ MOD,                XK_k,            focusstack,     {.i = -1 } },
 	{ MOD,                XK_i,            incnmaster,     {.i = +1 } },
@@ -157,7 +158,7 @@ static Key keys[] = {
 	{ MOD|CTRL|SHIFT,     XK_x,            incrohgaps,     {.i = -1 } },
 	{ MOD|CTRL,           XK_y,            incrovgaps,     {.i = +1 } },
 	{ MOD|CTRL|SHIFT,     XK_y,            incrovgaps,     {.i = -1 } },
-	{ MOD,                XK_Return,       zoom,           {0} },
+	{ MOD|SHIFT,          XK_Return,       zoom,           {0} },
 	{ MOD,                XK_Tab,          view,           {0} },
 	{ MOD|SHIFT,          XK_c,            killclient,     {0} },
         { MOD,                XK_t,            setlayout,      {.v = &layouts[0]} }, /* tile */

@@ -34,9 +34,10 @@ static const char col_br_magenta[]  = "#bb9af7";
 static const char col_br_cyan[]     = "#0db9d7";
 static const char col_br_white[]    = "#acb0d0";
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_fg,    col_bg,    col_black },
-	[SchemeSel]  = { col_blue,  col_dark,  col_br_black  },
+	/*                fg         bg         border   */
+	[SchemeNorm]  = { col_fg,    col_bg,    col_black },
+	[SchemeSel]   = { col_blue,  col_dark,  col_br_black },
+	[SchemeFloat] = { col_fg,    col_bg,    col_blue },
 };
 
 /* tagging */

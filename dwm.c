@@ -68,7 +68,7 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel }; /* color schemes */
+enum { SchemeNorm, SchemeSel, SchemeFloat }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetDesktopNames, 
@@ -1212,7 +1212,16 @@ focus(Client *c)
 		detachstack(c);
 		attachstack(c);
 		grabbuttons(c, 1);
-		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
+		if(c->isfloating)
+			XSetWindowBorder(
+                                dpy, c->win,
+                                scheme[SchemeFloat][ColBorder].pixel
+                        );
+		else
+			XSetWindowBorder(
+                                dpy, c->win,
+                                scheme[SchemeSel][ColBorder].pixel
+                        );
 		setfocus(c);
 	} else {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
@@ -1796,7 +1805,7 @@ manage(Window w, XWindowAttributes *wa)
 
 	wc.border_width = c->bw;
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
-	XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
+        XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
 	configure(c); /* propagates border_width, if size doesn't change */
 	updatewindowtype(c);
 	updatesizehints(c);
@@ -1814,8 +1823,10 @@ manage(Window w, XWindowAttributes *wa)
 	grabbuttons(c, 0);
 	if (!c->isfloating)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
-	if (c->isfloating)
+	if (c->isfloating) {
+                XSetWindowBorder(dpy, w, scheme[SchemeFloat][ColBorder].pixel);
 		XRaiseWindow(dpy, c->win);
+        }
 	attachbelow(c);
 	attachstack(c);
 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
@@ -2689,10 +2700,18 @@ togglefloating(const Arg *arg)
 		return;
 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
 	if (selmon->sel->isfloating) {
+		XSetWindowBorder(
+                        dpy, selmon->sel->win,
+                        scheme[SchemeFloat][ColBorder].pixel
+                );
 		/* restore last known float dimensions */
 		resize(selmon->sel, selmon->sel->sfx, selmon->sel->sfy,
 		       selmon->sel->sfw, selmon->sel->sfh, 0);
         } else {
+		XSetWindowBorder(
+                        dpy, selmon->sel->win,
+                        scheme[SchemeSel][ColBorder].pixel
+                );
 		/* save last known float dimensions */
 		selmon->sel->sfx = selmon->sel->x;
 		selmon->sel->sfy = selmon->sel->y;

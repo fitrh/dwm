@@ -2652,6 +2652,15 @@ toggleview(const Arg *arg)
 	unsigned int newtagset = selmon->tagset[selmon->seltags] ^ (arg->ui & TAGMASK);
 	int i;
 
+        /* the first visible client should be the same after we add a new tag */
+	/* we also want to be sure not to mutate the focus */
+	Client *const c = nexttiled(selmon->clients);
+	if (c) {
+		Client * const selected = selmon->sel;
+		pop(c);
+		focus(selected);
+	}
+
 	if (newtagset) {
 
 		if (newtagset == ~0) {

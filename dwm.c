@@ -3154,14 +3154,8 @@ togglebar(const Arg *arg)
 	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag];
 	updatebarpos(selmon);
         if (selmon->clients->isfloating && !selmon->clients->isfullscreen) {
-                selmon->clients->x = selmon->wx 
-                                        + ((selmon->ww 
-                                                - selmon->clients->w 
-                                                - selmon->clients->bw*2) / 2);
-                selmon->clients->y = selmon->wy 
-                                        + ((selmon->wh 
-                                                - selmon->clients->h 
-                                                - selmon->clients->bw*2) / 2); 
+                int barspace = bh - vp - 3;
+                selmon->clients->y += (selmon->showbar) ? barspace : -barspace;
         }
 	XMoveResizeWindow(
                 dpy, selmon->barwin,

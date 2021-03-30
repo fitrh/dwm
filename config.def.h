@@ -34,10 +34,27 @@ static const char col_br_magenta[]  = "#bb9af7";
 static const char col_br_cyan[]     = "#0db9d7";
 static const char col_br_white[]    = "#acb0d0";
 static const char *colors[][3]      = {
-	/*                fg         bg         border   */
-	[SchemeNorm]  = { col_fg,    col_bg,    col_black },
-	[SchemeSel]   = { col_blue,  col_dark,  col_br_black },
-	[SchemeFloat] = { col_fg,    col_bg,    col_blue },
+	/*                     fg               bg         border   */
+	[SchemeNorm]       = { col_fg,          col_bg,    col_black },   /* \x0b */
+	[SchemeSel]        = { col_blue,        col_dark,  col_br_black },/* \x0c */
+        [SchemeDarker]     = { col_dark,        col_bg,    col_black },   /* \x0d */
+        [SchemeRed]        = { col_red,         col_bg,    col_black },   /* \x0e */
+        [SchemeGreen]      = { col_green,       col_bg,    col_black },   /* \x0f */
+        [SchemeBlue]       = { col_blue,        col_bg,    col_black },   /* \x10 */
+        [SchemeCyan]       = { col_cyan,        col_bg,    col_black },   /* \x11 */
+        [SchemeMagenta]    = { col_magenta,     col_bg,    col_black },   /* \x12 */
+        [SchemeYellow]     = { col_yellow,      col_bg,    col_black },   /* \x13 */
+        [SchemeBlack]      = { col_black,       col_bg,    col_black },   /* \x14 */
+        [SchemeWhite]      = { col_white,       col_bg,    col_black },   /* \x15 */
+        [SchemeBrRed]      = { col_br_red,      col_bg,    col_black },   /* \x16 */
+        [SchemeBrGreen]    = { col_br_green,    col_bg,    col_black },   /* \x17 */
+        [SchemeBrBlue]     = { col_br_blue,     col_bg,    col_black },   /* \x18 */
+        [SchemeBrCyan]     = { col_br_cyan,     col_bg,    col_black },   /* \x19 */
+        [SchemeBrMagenta]  = { col_br_magenta,  col_bg,    col_black },   /* \x1a */
+        [SchemeBrYellow]   = { col_br_yellow,   col_bg,    col_black },   /* \x1b */
+        [SchemeBrBlack]    = { col_br_black,    col_bg,    col_black },   /* \x1c */
+        [SchemeBrWhite]    = { col_br_white,    col_bg,    col_black },   /* \x1d */
+        [SchemeFloat]      = { col_fg,          col_bg,    col_blue },
 };
 
 /* tagging */
@@ -238,7 +255,9 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,           Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,           Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,           Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,           Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,           Button1,        sigdwmblocks,   {.i = 1} },
+	{ ClkStatusText,        0,           Button2,        sigdwmblocks,   {.i = 2} },
+	{ ClkStatusText,        0,           Button3,        sigdwmblocks,   {.i = 3} },
 	{ ClkClientWin,         MOD,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MOD,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MOD,         Button3,        resizemouse,    {0} },

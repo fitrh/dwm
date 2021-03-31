@@ -66,6 +66,10 @@ static const char *tags[] = {
                                 "  ", "  ", "  ", "  " , "  ", 
                                 "  ", "  ", "  ", "  " 
 };
+static const char *tagsalt[] = {
+                                " 1 ", " 2 ", " 3 ", " 4 ", " 5 ",
+                                " 6 ", " 7 ", " 8 ", " 9 "
+};
 
 static const int swallowfloating    = 0; /* 1 means swallow floating windows by default */
 static int floatposgrid_x           = 5; /* float grid columns */
@@ -203,6 +207,7 @@ static Key keys[] = {
 	{ MOD|SHIFT,          XK_space,        togglefloating, {.v = " 50%  50%"} },
 	{ MOD,                XK_0,            view,           {.ui = ~0 } },
 	{ MOD|SHIFT,          XK_0,            tag,            {.ui = ~0 } },
+	{ MOD,                XK_n,            togglealttag,   {0} },
 	{ ALT|SHIFT,          XK_bracketright, shiftview,      {.i = +1  } },
 	{ ALT|SHIFT,          XK_bracketleft,  shiftview,      {.i = -1  } },
 	{ MOD|SHIFT,          XK_bracketright, shiftclient,    {.i = +1  } },

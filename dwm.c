@@ -161,6 +161,7 @@ struct Monitor {
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
+	unsigned int alttag;
 	int showbar;
 	int topbar;
         int statushandcursor;
@@ -310,6 +311,7 @@ static void tagmon(const Arg *arg);
 static void tagview(const Arg *arg);
 static Client *termforwin(const Client *c);
 static void tile(Monitor *);
+static void togglealttag();
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void togglegaps(const Arg *arg);
@@ -1122,7 +1124,7 @@ dirtomon(int dir)
 void
 drawbar(Monitor *m)
 {
-	int x, w;
+	int x, w, wdelta;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
@@ -1166,8 +1168,16 @@ drawbar(Monitor *m)
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
+		wdelta = selmon->alttag
+                                ? (TEXTW(tagsalt[i]) - TEXTW(tags[i])) / 2
+                                : 0;
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
-		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
+		drw_text(
+                        drw, x, 0,
+                        w, bh, wdelta + lrpad / 2,
+                        (selmon->alttag ? tagsalt[i] : tags[i]),
+                        urg & 1 << i
+                );
                 /* draw bar indicator for selected tag */
                 if (occ & 1 << i) {
                         if (m == selmon && m->tagset[m->seltags] & 1 << i) {
@@ -3158,6 +3168,13 @@ tile(Monitor *m)
 			sy += HEIGHT(c) + ih;
 		}
         }
+}
+
+void
+togglealttag()
+{
+	selmon->alttag = !selmon->alttag;
+	drawbar(selmon);
 }
 
 void

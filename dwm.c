@@ -1634,8 +1634,6 @@ getfloatpos(int pos, char pCh, int size, char sCh,
 	case 'W': // normal size, position takes precedence
 		if (pCh == 'S' && cp + size > min_p + max_s)
 			size = min_p + max_s - cp;
-		else if (pCh == 'Z' && size > cp - max_s)
-			size = cp - min_p;
 		else if (size > max_s)
 			size = max_s;
 
@@ -1647,6 +1645,8 @@ getfloatpos(int pos, char pCh, int size, char sCh,
 				cp = min_p;
 			else if (delta)
 				cp = min_p + max_s;
+		} else if (pCh == 'Z') {
+                        cp -= size - cs;
 		}
 
 		cs = size;

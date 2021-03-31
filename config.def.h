@@ -227,13 +227,18 @@ static Key keys[] = {
         { MOD,                XK_c,            floatpos,       {.v = " 50%  50%"} }, // ·
         { MOD|ALT,            XK_l,            floatpos,       {.v = "100%   0y"} }, // →
         { MOD|ALT,            XK_j,            floatpos,       {.v = "  0x 100%"} }, // ↓
-	/* Resize client, increase = left and down, decrease = up and left */
-	{ CTRL|ALT,          XK_k,             floatpos,       {.v = "-1S -1S  0w -8h"} }, // ↑
-	{ CTRL|ALT,          XK_h,             floatpos,       {.v = "-1S -1S -8w  0h"} }, // ←
+	/* Resize, increase client size from every side*/
+	{ CTRL|ALT,          XK_k,             floatpos,       {.v = "-1Z -1Z  0w  8h"} }, // ↑
+	{ CTRL|ALT,          XK_h,             floatpos,       {.v = "-1Z -1Z  8w  0h"} }, // ←
         { CTRL|ALT|SHIFT,    XK_k,             floatpos,       {.v = " 8w  8h"} }, // ·
-        { CTRL|ALT|SHIFT,    XK_j,             floatpos,       {.v = "-8w -8h"} }, // ·
         { CTRL|ALT,          XK_l,             floatpos,       {.v = "-1S -1S  8w  0h"} }, // →
 	{ CTRL|ALT,          XK_j,             floatpos,       {.v = "-1S -1S  0w  8h"} }, // ↓
+	/* Resize, decrease client size from every side*/
+	{ MOD|CTRL|ALT,      XK_j,             floatpos,       {.v = "-1Z -1Z  0w -8h"} }, // ↑
+	{ MOD|CTRL|ALT,      XK_l,             floatpos,       {.v = "-1Z -1Z -8w  0h"} }, // ←
+        { CTRL|ALT|SHIFT,    XK_j,             floatpos,       {.v = "-8w -8h"} }, // ·
+        { MOD|CTRL|ALT,      XK_h,             floatpos,       {.v = "-1S -1S -8w  0h"} }, // →
+	{ MOD|CTRL|ALT,      XK_k,             floatpos,       {.v = "-1S -1S  0w -8h"} }, // ↓
         /* Maximize the client in any given direction */
         { CTRL|SHIFT,        XK_k,             floatpos,       {.v = " 0x  0Z   0%   0%"} }, // ↑
         { CTRL|SHIFT,        XK_h,             floatpos,       {.v = " 0Z  0y   0%   0%"} }, // ←

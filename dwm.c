@@ -675,7 +675,7 @@ buttonpress(XEvent *e)
                 } else if (ev->x < selmon->ww - wstext) {
                         click = ClkWinTitle;
                 } else if (
-                                (x = selmon->ww - RSPAD - ev->x) > 0
+                                (x = selmon->ww - (2 * sp) - RSPAD - ev->x) > 0
                                 && (x -= wstext - LSPAD - RSPAD) <= 0
                         ) {
                         updatedwmblockssig(x);
@@ -2321,7 +2321,7 @@ motionnotify(XEvent *e)
                 }
                 mon = m;
         } else if (ev->window == selmon->barwin
-                        && (x = selmon->ww - RSPAD - ev->x) > 0
+                        && (x = selmon->ww - (2 * sp) - RSPAD - ev->x) > 0
                         && (x -= wstext - LSPAD - RSPAD) <= 0) {
                 updatedwmblockssig(x);
         } else if (selmon->statushandcursor) {

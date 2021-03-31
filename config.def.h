@@ -10,11 +10,12 @@ static const unsigned int gappoh    = 8;       /* horiz outer gap between window
 static const unsigned int gappov    = 8;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 /* bar */
-static const unsigned int barheight = 29;       /* 0 means default height*/
-static const int vertpad            = 8;       /* vertical padding of bar */
-static const int sidepad            = 8;       /* horizontal padding of bar */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
+static const unsigned int barheight      = 29; /* 0 means default height*/
+static const unsigned int showvacanttags = 0;  /* 0 mean hide vacant tags */
+static const int vertpad                 = 8;  /* vertical padding of bar */
+static const int sidepad                 = 8;  /* horizontal padding of bar */
+static const int showbar                 = 1;  /* 0 means no bar */
+static const int topbar                  = 1;  /* 0 means bottom bar */
 
 static const char *fonts[]          = { "SF Mono:style=Medium:size=10" };
 static const char dmenufont[]       = "SF Mono:style=Medium:size=10";
@@ -208,6 +209,7 @@ static Key keys[] = {
 	{ MOD,                XK_0,            view,           {.ui = ~0 } },
 	{ MOD|SHIFT,          XK_0,            tag,            {.ui = ~0 } },
 	{ MOD,                XK_n,            togglealttag,   {0} },
+	{ MOD|ALT|SHIFT,      XK_n,            togglevacanttag,{0} },
 	{ ALT|SHIFT,          XK_bracketright, shiftview,      {.i = +1  } },
 	{ ALT|SHIFT,          XK_bracketleft,  shiftview,      {.i = -1  } },
 	{ MOD|SHIFT,          XK_bracketright, shiftclient,    {.i = +1  } },

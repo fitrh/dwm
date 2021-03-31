@@ -162,6 +162,7 @@ struct Monitor {
 	unsigned int sellt;
 	unsigned int tagset[2];
 	unsigned int alttag;
+        unsigned int showvacanttags;
 	int showbar;
 	int topbar;
         int statushandcursor;
@@ -316,6 +317,7 @@ static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void togglegaps(const Arg *arg);
 static void toggletag(const Arg *arg);
+static void togglevacanttag();
 static void toggleview(const Arg *arg);
 static void unfocus(Client *c, int setfocus);
 static void unmanage(Client *c, int destroyed);
@@ -629,12 +631,23 @@ buttonpress(XEvent *e)
 	}
 	if (ev->window == selmon->barwin) {
                 if (ev->x < ble - blw) {
-                        for (c = m->clients; c; c = c->next)
+                        for (
+                                c = m->clients;
+                                !selmon->showvacanttags && c;
+                                c = c->next
+                        )
                                 occ |= c->tags == 255 ? 0 : c->tags;
                         i = x = 0;
                         do {
                                 /* do not reserve space for vacant tags */
-                                if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+                                if (
+                                        !selmon->showvacanttags
+                                        && !(
+                                                occ & 1 << i
+                                                ||
+                                                m->tagset[m->seltags] & 1 << i
+                                        )
+                                )
                                         continue;
                                 x += TEXTW(tags[i]);
                         } while (ev->x >= x && ++i < LENGTH(tags));
@@ -1028,6 +1041,7 @@ createmon(void)
 	m->gappov = gappov;
 	m->showbar = showbar;
 	m->topbar = topbar;
+        m->showvacanttags = showvacanttags ? showvacanttags : 0;
 	m->lt[0] = &layouts[taglayouts[1] % LENGTH(layouts)];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
 	m->pertag = ecalloc(1, sizeof(Pertag));
@@ -1175,7 +1189,10 @@ drawbar(Monitor *m)
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
 		/* do not draw vacant tags */
-		if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+		if (
+                        !selmon->showvacanttags
+                        && !(occ & 1 << i || m->tagset[m->seltags] & 1 << i)
+                )
                         continue;
 		w = TEXTW(tags[i]);
 		wdelta = selmon->alttag
@@ -1198,11 +1215,14 @@ drawbar(Monitor *m)
                                                 1, urg & 1 << 1
                                         );
                         } else {
-                                drw_rect(
-                                        drw, x + (3 * boxw + 1), bh - (boxw - 2),
-                                        w - (6 * boxw + 1), boxw - 2,
-                                        1, urg & 1 << 1
-                                );
+                                if (selmon->showvacanttags)
+                                        drw_rect(
+                                                drw,
+                                                x + (3 * boxw + 1),
+                                                bh - (boxw - 2),
+                                                w - (6 * boxw + 1), boxw - 2,
+                                                1, urg & 1 << 1
+                                        );
                         }
                 }
 		x += w;
@@ -3266,6 +3286,13 @@ toggletag(const Arg *arg)
 		arrange(selmon);
 	}
 	updatecurrentdesktop();
+}
+
+void
+togglevacanttag()
+{
+	selmon->showvacanttags = !selmon->showvacanttags;
+	drawbar(selmon);
 }
 
 void

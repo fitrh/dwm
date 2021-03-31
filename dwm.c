@@ -3271,12 +3271,15 @@ togglealttag()
 void
 togglebar(const Arg *arg)
 {
+        Client *c;
         selmon->pertag->showbars[selmon->pertag->curtag] = !selmon->showbar;
 	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag];
 	updatebarpos(selmon);
-        if (selmon->clients->isfloating && !selmon->clients->isfullscreen) {
-                int barspace = bh - vp - 3;
-                selmon->clients->y += (selmon->showbar) ? barspace : -barspace;
+        for (c = selmon->clients; c; c = c->next) {
+                if (c->isfloating && !c->isfullscreen) {
+                        int barspace = bh - vp - 3;
+                        c->y += (selmon->showbar) ? barspace : -barspace;
+                }
         }
 	XMoveResizeWindow(
                 dpy, selmon->barwin,

@@ -2290,15 +2290,12 @@ maprequest(XEvent *e)
 void
 monocle(Monitor *m)
 {
-	unsigned int n = 0;
+	unsigned int n;
         int oh, ov, ih, iv;
 	Client *c;
 
         getgaps(m, &oh, &ov, &ih, &iv, &n);
 
-	for (c = m->clients; c; c = c->next)
-		if (ISVISIBLE(c))
-			n++;
 	if (n > 0) /* override layout symbol */
 		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
         for (c = nexttiled(m->clients); c; c = nexttiled(c->next)) {

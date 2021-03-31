@@ -169,8 +169,10 @@ struct Monitor {
 	unsigned int sellt;
 	unsigned int tagset[2];
 	unsigned int alttag;
+	unsigned int centertitle;
 	unsigned int colorfultitle;
 	unsigned int colorfultag;
+	unsigned int showtitle;
         unsigned int showvacanttags;
 	int showbar;
 	int topbar;
@@ -323,11 +325,13 @@ static Client *termforwin(const Client *c);
 static void tile(Monitor *);
 static void togglealttag();
 static void togglebar(const Arg *arg);
+static void togglecentertitle();
 static void togglecolorfultitle();
 static void togglecolorfultag();
 static void togglefloating(const Arg *arg);
 static void togglegaps(const Arg *arg);
 static void toggletag(const Arg *arg);
+static void toggletitle();
 static void togglevacanttag();
 static void toggleview(const Arg *arg);
 static void unfocus(Client *c, int setfocus);
@@ -1050,11 +1054,13 @@ createmon(void)
 	m->gappiv = gappiv;
 	m->gappoh = gappoh;
 	m->gappov = gappov;
-	m->showbar = showbar;
-	m->topbar = topbar;
+        m->centertitle = centertitle ? centertitle : 0;
         m->colorfultag = colorfultag ? colorfultag : 0;
         m->colorfultitle = colorfultitle ? colorfultitle : 0;
+	m->showbar = showbar;
+        m->showtitle = showtitle ? showtitle : 0;
         m->showvacanttags = showvacanttags ? showvacanttags : 0;
+	m->topbar = topbar;
 	m->lt[0] = &layouts[taglayouts[1] % LENGTH(layouts)];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
 	m->pertag = ecalloc(1, sizeof(Pertag));
@@ -1161,6 +1167,7 @@ drawbar(Monitor *m)
 	int x, w, wdelta;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
+        unsigned int titlepad = lrpad / 2;
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
 
@@ -1269,7 +1276,7 @@ drawbar(Monitor *m)
                 w = m->ww - x;
         }
 	if (w > bh) {
-		if (m->sel) {
+		if (m->sel && m->showtitle) {
                         if (selmon->colorfultitle) {
                                 for (i = 0; i < LENGTH(tags); i++)
                                         if (selmon->sel->tags & 1 << i)
@@ -1283,14 +1290,28 @@ drawbar(Monitor *m)
                                                 : SchemeTitle;
                                 drw_setscheme(drw, scheme[s]);
                         }
+                        if (selmon->centertitle) {
+                                int width = w - 2 * sp;
+                                int txtwidth = (int)(TEXTW(m->sel->name))
+                                                - (lrpad + (2 * sp));
+                                int centerpad = (width - txtwidth) / 2;
+                                titlepad = centerpad >= lrpad / 2
+                                                ? centerpad
+                                                : (lrpad / 2) + (2 * sp);
+                        }
 			drw_text(
                                 drw,
                                 x, 0,
-                                w - 2 * sp, bh, lrpad / 2,
+                                w - 2 * sp, bh, titlepad,
                                 m->sel->name, 0
                         );
 			if (m->sel->isfloating)
-				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+				drw_rect(
+                                        drw,
+                                        x + boxs + titlepad - lrpad / 2, boxs,
+                                        boxw, boxw,
+                                        m->sel->isfixed, 0
+                                );
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_rect(drw, x, 0, w - 2 * sp, bh, 1, 1);
@@ -3269,6 +3290,13 @@ togglebar(const Arg *arg)
 }
 
 void
+togglecentertitle()
+{
+        selmon->centertitle = !selmon->centertitle;
+        drawbar(selmon);
+}
+
+void
 togglecolorfultitle()
 {
         selmon->colorfultitle = !selmon->colorfultitle;
@@ -3343,6 +3371,13 @@ toggletag(const Arg *arg)
 		arrange(selmon);
 	}
 	updatecurrentdesktop();
+}
+
+void
+toggletitle()
+{
+        selmon->showtitle = !selmon->showtitle;
+        drawbar(selmon);
 }
 
 void

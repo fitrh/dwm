@@ -11,9 +11,11 @@ static const unsigned int gappov    = 8;       /* vert outer gap between windows
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 /* bar */
 static const unsigned int barheight      = 29; /* 0 means default height*/
-static const unsigned int showvacanttags = 0;  /* 0 mean hide vacant tags */
+static const unsigned int centertitle    = 1;  /* 0 means left title */
 static const unsigned int colorfultitle  = 1;  /* 0 means title use SchemeTitle and SchemeTitleFloat */
 static const unsigned int colorfultag    = 1;  /* 0 means use SchemeSel for selected tag */
+static const unsigned int showvacanttags = 0;  /* 0 mean hide vacant tags */
+static const unsigned int showtitle      = 1;  /* 0 means no title */
 static const int vertpad                 = 8;  /* vertical padding of bar */
 static const int sidepad                 = 8;  /* horizontal padding of bar */
 static const int showbar                 = 1;  /* 0 means no bar */
@@ -239,8 +241,10 @@ static Key keys[] = {
 	{ MOD,                XK_0,            view,                {.ui = ~0 } },
 	{ MOD|SHIFT,          XK_0,            tag,                 {.ui = ~0 } },
 	{ MOD,                XK_n,            togglealttag,        {0} },
+	{ MOD|CTRL|SHIFT,     XK_n,            togglecentertitle,   {0} },
 	{ MOD|SHIFT,          XK_n,            togglecolorfultag,   {0} },
 	{ MOD|CTRL,           XK_n,            togglecolorfultitle, {0} },
+	{ MOD|ALT,            XK_n,            toggletitle,         {0} },
 	{ MOD|ALT|SHIFT,      XK_n,            togglevacanttag,     {0} },
 	{ ALT|SHIFT,          XK_bracketright, shiftview,           {.i = +1  } },
 	{ ALT|SHIFT,          XK_bracketleft,  shiftview,           {.i = -1  } },

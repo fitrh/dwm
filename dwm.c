@@ -615,7 +615,7 @@ void
 buttonpress(XEvent *e)
 {
         int i, x;
-        unsigned int click;
+        unsigned int click = 0, occ = 0;
 	Arg arg = {0};
 	Client *c;
 	Monitor *m;
@@ -629,12 +629,19 @@ buttonpress(XEvent *e)
 	}
 	if (ev->window == selmon->barwin) {
                 if (ev->x < ble - blw) {
-                        i = -1, x = -ev->x;
-                        do
-                                x += TEXTW(tags[++i]);
-                        while (x <= 0);
-                        click = ClkTagBar;
-                        arg.ui = 1 << i;
+                        for (c = m->clients; c; c = c->next)
+                                occ |= c->tags == 255 ? 0 : c->tags;
+                        i = x = 0;
+                        do {
+                                /* do not reserve space for vacant tags */
+                                if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+                                        continue;
+                                x += TEXTW(tags[i]);
+                        } while (ev->x >= x && ++i < LENGTH(tags));
+                        if (i < LENGTH(tags)) {
+                                click = ClkTagBar;
+                                arg.ui = 1 << i;
+                        }
                 } else if (ev->x < ble) {
                         click = ClkLtSymbol;
                 } else if (ev->x < selmon->ww - wstext) {
@@ -1161,12 +1168,15 @@ drawbar(Monitor *m)
 	}
 
 	for (c = m->clients; c; c = c->next) {
-		occ |= c->tags;
+		occ |= c->tags == 255 ? 0 : c->tags;
 		if (c->isurgent)
 			urg |= c->tags;
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
+		/* do not draw vacant tags */
+		if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+                        continue;
 		w = TEXTW(tags[i]);
 		wdelta = selmon->alttag
                                 ? (TEXTW(tagsalt[i]) - TEXTW(tags[i])) / 2

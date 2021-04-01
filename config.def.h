@@ -85,7 +85,7 @@ static const char *colors[][3]           = {
 	[SchemeTitle7]     = { col_br_green,    col_bg,    col_black },
 	[SchemeTitle8]     = { col_yellow,      col_bg,    col_black },
 	[SchemeTitle9]     = { col_br_red,      col_bg,    col_black },
-        [SchemeFloat]      = { col_fg,          col_bg,    col_blue },
+        [SchemeFloat]      = { col_fg,          col_bg,    col_br_black },
 };
 
 /* tagging */

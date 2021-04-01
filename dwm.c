@@ -85,7 +85,7 @@ enum { SchemeNorm, SchemeSel, SchemeDarker,
        SchemeBlack, SchemeWhite, 
        SchemeBrRed, SchemeBrGreen, SchemeBrBlue,
        SchemeBrCyan, SchemeBrMagenta, SchemeBrYellow, 
-       SchemeBrBlack, SchemeBrWhite, SchemeFloat,
+       SchemeBrBlack, SchemeBrWhite, SchemeFloat, SchemeInactive,
        SchemeTag, SchemeTag1, SchemeTag2, SchemeTag3, 
        SchemeTag4, SchemeTag5, SchemeTag6, SchemeTag7, 
        SchemeTag8, SchemeTag9, SchemeLayout, 
@@ -1232,50 +1232,63 @@ drawbar(Monitor *m)
                 drw_rect(drw, x, 0, m->ww - x, bh, 1, 1); /* to keep right padding clean */
 	}
 
-	for (c = m->clients; c; c = c->next) {
-		occ |= c->tags == 255 ? 0 : c->tags;
-		if (c->isurgent)
-			urg |= c->tags;
-	}
-	x = 0;
-	for (i = 0; i < LENGTH(tags); i++) {
-		/* do not draw vacant tags */
-		if (
-                        !selmon->showvacanttags
+        for (c = m->clients; c; c = c->next) {
+                occ |= c->tags == 255 ? 0 : c->tags;
+                if (c->isurgent)
+                        urg |= c->tags;
+        }
+        x = 0;
+        for (i = 0; i < LENGTH(tags); i++) {
+                /* do not draw vacant tags on current monitor */
+                if (
+                        !m->showvacanttags
                         && !(occ & 1 << i || m->tagset[m->seltags] & 1 << i)
                 )
                         continue;
-		w = TEXTW(tags[i]);
-		wdelta = selmon->alttag
+                w = TEXTW(tags[i]);
+                wdelta = m->alttag
                                 ? (TEXTW(tagsalt[i]) - TEXTW(tags[i])) / 2
                                 : 0;
-                if (selmon->colorfultag)
+                if (m->colorfultag)
                         drw_setscheme(
                                 drw,
-                                scheme[m->tagset[m->seltags] & 1 << i
-                                        ? tagschemes[i] : SchemeTag]
+                                scheme[
+                                        m->tagset[m->seltags] & 1 << i
+                                        ? tagschemes[i]
+                                        : SchemeTag
+                                ]
                         );
                 else
                         drw_setscheme(
                                 drw,
-                                scheme[m->tagset[m->seltags] & 1 << i
-                                ? SchemeSel : SchemeTag]
+                                scheme[
+                                        m->tagset[m->seltags] & 1 << i
+                                        ? SchemeSel
+                                        : SchemeTag
+                                ]
                         );
-		drw_text(
+                drw_text(
                         drw, x, 0,
                         w, bh, wdelta + lrpad / 2,
-                        (selmon->alttag ? tagsalt[i] : tags[i]),
+                        (m->alttag ? tagsalt[i] : tags[i]),
                         urg & 1 << i
                 );
                 /* draw bar indicator for selected tag */
+                /* check if the tag not a vacant tag*/
                 if (occ & 1 << i) {
+                        /* draw for current monitor and selected tag */
                         if (m == selmon && m->tagset[m->seltags] & 1 << i) {
-                                if (selmon->sel->tags & 1 << i)
+                                if (m->sel && m->sel->tags & 1 << i)
+                                /* draw full line at the top of selected tag
+                                * that have clients */
                                         drw_rect(
                                                 drw, x, 0, w, boxw - 2,
                                                 1, urg & 1 << 1
                                         );
-                                else
+                                else if (m->sel)
+                                /* if more than one tag selected, draw smaller
+                                 * line at the bottom of another selected non
+                                 * vacant tag */
                                         drw_rect(
                                                 drw,
                                                 x + (3 * boxw + 1),
@@ -1284,7 +1297,9 @@ drawbar(Monitor *m)
                                                 1, urg & 1 << 1
                                         );
                         } else {
-                                if (selmon->showvacanttags)
+                                if (m->showvacanttags)
+                                /* draw small line at the bottom of every non
+                                 * vacant tag */
                                         drw_rect(
                                                 drw,
                                                 x + (3 * boxw + 1),
@@ -1294,11 +1309,11 @@ drawbar(Monitor *m)
                                         );
                         }
                 }
-		x += w;
-	}
-	w = TEXTW(m->ltsymbol);
-	drw_setscheme(drw, scheme[SchemeLayout]);
-	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+                x += w;
+        }
+        w = TEXTW(m->ltsymbol);
+        drw_setscheme(drw, scheme[m == selmon ? SchemeLayout : SchemeInactive]);
+        x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
         if (m == selmon) {
                 blw = w, ble = x;
@@ -1308,20 +1323,26 @@ drawbar(Monitor *m)
         }
 	if (w > bh) {
 		if (m->sel && m->showtitle) {
-                        if (selmon->colorfultitle) {
+                        if (m->colorfultitle) {
                                 for (i = 0; i < LENGTH(tags); i++)
-                                        if (selmon->sel->tags & 1 << i)
+                                        if (m->sel->tags & 1 << i)
                                                 drw_setscheme(
                                                         drw,
-                                                        scheme[titleschemes[i]]
+                                                        scheme[
+                                                        m == selmon
+                                                        ? titleschemes[i]
+                                                        : SchemeInactive
+                                                        ]
                                                 );
                         } else {
-                                int s = (m == selmon) && m->sel->isfloating
+                                int s = m == selmon
+                                        ? m->sel->isfloating
                                                 ? SchemeTitleFloat
-                                                : SchemeTitle;
+                                                : SchemeTitle
+                                        : SchemeInactive;
                                 drw_setscheme(drw, scheme[s]);
                         }
-                        if (selmon->centertitle) {
+                        if (m->centertitle) {
                                 int width = w - 2 * sp;
                                 int txtwidth = (int)(TEXTW(m->sel->name))
                                                 - (lrpad + (2 * sp));

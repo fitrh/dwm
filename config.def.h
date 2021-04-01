@@ -63,6 +63,7 @@ static const char *colors[][3]           = {
         [SchemeBrYellow]   = { col_br_yellow,   col_bg,    col_black },   /* \x1b */
         [SchemeBrBlack]    = { col_br_black,    col_bg,    col_black },   /* \x1c */
         [SchemeBrWhite]    = { col_br_white,    col_bg,    col_black },   /* \x1d */
+        [SchemeInactive]   = { col_br_black,    col_bg,    col_black },   /* \x1e */
         [SchemeTag]        = { col_br_black,    col_bg,    col_black },
         [SchemeTag1]       = { col_fg,          col_dark,  col_black },
 	[SchemeTag2]       = { col_red,         col_dark,  col_black },

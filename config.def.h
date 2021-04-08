@@ -25,6 +25,9 @@ static const char *fonts[]               = { "SF Mono:style=Medium:size=10" };
 static const char dmenufont[]            = "SF Mono:style=Medium:size=10";
 static const char col_bg[]               = "#1a1b26";
 static const char col_dark[]             = "#16161E";
+static const char col_dark_1[]           = "#232433";
+static const char col_dark_2[]           = "#2a2b3d";
+static const char col_dark_3[]           = "#3b3d57";
 static const char col_fg[]               = "#a9b1d6";
 static const char col_black[]            = "#32344a";
 static const char col_red[]              = "#f7768e";
@@ -43,50 +46,50 @@ static const char col_br_magenta[]       = "#bb9af7";
 static const char col_br_cyan[]          = "#0db9d7";
 static const char col_br_white[]         = "#acb0d0";
 static const char *colors[][3]           = {
-	/*                     fg               bg         border   */
-	[SchemeNorm]       = { col_fg,          col_bg,    col_black },   /* \x0b */
-	[SchemeSel]        = { col_blue,        col_dark,  col_br_black },/* \x0c */
-        [SchemeDarker]     = { col_dark,        col_bg,    col_black },   /* \x0d */
-        [SchemeRed]        = { col_red,         col_bg,    col_black },   /* \x0e */
-        [SchemeGreen]      = { col_green,       col_bg,    col_black },   /* \x0f */
-        [SchemeBlue]       = { col_blue,        col_bg,    col_black },   /* \x10 */
-        [SchemeCyan]       = { col_cyan,        col_bg,    col_black },   /* \x11 */
-        [SchemeMagenta]    = { col_magenta,     col_bg,    col_black },   /* \x12 */
-        [SchemeYellow]     = { col_yellow,      col_bg,    col_black },   /* \x13 */
-        [SchemeBlack]      = { col_black,       col_bg,    col_black },   /* \x14 */
-        [SchemeWhite]      = { col_white,       col_bg,    col_black },   /* \x15 */
-        [SchemeBrRed]      = { col_br_red,      col_bg,    col_black },   /* \x16 */
-        [SchemeBrGreen]    = { col_br_green,    col_bg,    col_black },   /* \x17 */
-        [SchemeBrBlue]     = { col_br_blue,     col_bg,    col_black },   /* \x18 */
-        [SchemeBrCyan]     = { col_br_cyan,     col_bg,    col_black },   /* \x19 */
-        [SchemeBrMagenta]  = { col_br_magenta,  col_bg,    col_black },   /* \x1a */
-        [SchemeBrYellow]   = { col_br_yellow,   col_bg,    col_black },   /* \x1b */
-        [SchemeBrBlack]    = { col_br_black,    col_bg,    col_black },   /* \x1c */
-        [SchemeBrWhite]    = { col_br_white,    col_bg,    col_black },   /* \x1d */
-        [SchemeInactive]   = { col_br_black,    col_bg,    col_black },   /* \x1e */
-        [SchemeTag]        = { col_br_black,    col_bg,    col_black },
-        [SchemeTag1]       = { col_fg,          col_dark,  col_black },
-	[SchemeTag2]       = { col_red,         col_dark,  col_black },
-        [SchemeTag3]       = { col_br_yellow,   col_dark,  col_black },
-        [SchemeTag4]       = { col_br_blue,     col_dark,  col_black },
-        [SchemeTag5]       = { col_br_magenta,  col_dark,  col_black },
-	[SchemeTag6]       = { col_br_cyan,     col_dark,  col_black },
-	[SchemeTag7]       = { col_br_green,    col_dark,  col_black },
-	[SchemeTag8]       = { col_yellow,      col_dark,  col_black },
-	[SchemeTag9]       = { col_br_red,      col_dark,  col_black },
-	[SchemeLayout]     = { col_white,       col_bg,    col_black },
-	[SchemeTitle]      = { col_fg,          col_bg,    col_black },
-	[SchemeTitleFloat] = { col_br_blue,     col_bg,    col_black },
-	[SchemeTitle1]     = { col_fg,          col_bg,    col_black },
-	[SchemeTitle2]     = { col_red,         col_bg,    col_black },
-        [SchemeTitle3]     = { col_br_yellow,   col_bg,    col_black },
-        [SchemeTitle4]     = { col_br_blue,     col_bg,    col_black },
-        [SchemeTitle5]     = { col_br_magenta,  col_bg,    col_black },
-	[SchemeTitle6]     = { col_br_cyan,     col_bg,    col_black },
-	[SchemeTitle7]     = { col_br_green,    col_bg,    col_black },
-	[SchemeTitle8]     = { col_yellow,      col_bg,    col_black },
-	[SchemeTitle9]     = { col_br_red,      col_bg,    col_black },
-        [SchemeFloat]      = { col_fg,          col_bg,    col_br_black },
+	/*                     fg              bg              border   */
+	[SchemeNorm]       = { col_fg,         col_bg,         col_black },      /* \x0b */
+	[SchemeSel]        = { col_blue,       col_dark,       col_br_black },   /* \x0c */
+        [SchemeDarker]     = { col_dark,       col_bg,         col_black },      /* \x0d */
+        [SchemeRed]        = { col_red,        col_bg,         col_black },      /* \x0e */
+        [SchemeGreen]      = { col_green,      col_bg,         col_black },      /* \x0f */
+        [SchemeBlue]       = { col_blue,       col_bg,         col_black },      /* \x10 */
+        [SchemeCyan]       = { col_cyan,       col_bg,         col_black },      /* \x11 */
+        [SchemeMagenta]    = { col_magenta,    col_bg,         col_black },      /* \x12 */
+        [SchemeYellow]     = { col_yellow,     col_bg,         col_black },      /* \x13 */
+        [SchemeBlack]      = { col_black,      col_bg,         col_black },      /* \x14 */
+        [SchemeWhite]      = { col_white,      col_bg,         col_black },      /* \x15 */
+        [SchemeBrRed]      = { col_br_red,     col_bg,         col_black },      /* \x16 */
+        [SchemeBrGreen]    = { col_br_green,   col_bg,         col_black },      /* \x17 */
+        [SchemeBrBlue]     = { col_br_blue,    col_bg,         col_black },      /* \x18 */
+        [SchemeBrCyan]     = { col_br_cyan,    col_bg,         col_black },      /* \x19 */
+        [SchemeBrMagenta]  = { col_br_magenta, col_bg,         col_black },      /* \x1a */
+        [SchemeBrYellow]   = { col_br_yellow,  col_bg,         col_black },      /* \x1b */
+        [SchemeBrBlack]    = { col_br_black,   col_bg,         col_black },      /* \x1c */
+        [SchemeBrWhite]    = { col_br_white,   col_bg,         col_black },      /* \x1d */
+        [SchemeInactive]   = { col_br_black,   col_bg,         col_black },      /* \x1e */
+        [SchemeTag]        = { col_br_black,   col_bg,         col_black },
+        [SchemeTag1]       = { col_fg,         col_dark,       col_black },
+	[SchemeTag2]       = { col_red,        col_dark,       col_black },
+        [SchemeTag3]       = { col_br_yellow,  col_dark,       col_black },
+        [SchemeTag4]       = { col_br_blue,    col_dark,       col_black },
+        [SchemeTag5]       = { col_br_magenta, col_dark,       col_black },
+	[SchemeTag6]       = { col_br_cyan,    col_dark,       col_black },
+	[SchemeTag7]       = { col_br_green,   col_dark,       col_black },
+	[SchemeTag8]       = { col_yellow,     col_dark,       col_black },
+	[SchemeTag9]       = { col_br_red,     col_dark,       col_black },
+	[SchemeLayout]     = { col_white,      col_bg,         col_black },
+	[SchemeTitle]      = { col_fg,         col_bg,         col_black },
+	[SchemeTitleFloat] = { col_br_blue,    col_bg,         col_black },
+	[SchemeTitle1]     = { col_fg,         col_bg,         col_black },
+	[SchemeTitle2]     = { col_red,        col_bg,         col_black },
+        [SchemeTitle3]     = { col_br_yellow,  col_bg,         col_black },
+        [SchemeTitle4]     = { col_br_blue,    col_bg,         col_black },
+        [SchemeTitle5]     = { col_br_magenta, col_bg,         col_black },
+	[SchemeTitle6]     = { col_br_cyan,    col_bg,         col_black },
+	[SchemeTitle7]     = { col_br_green,   col_bg,         col_black },
+	[SchemeTitle8]     = { col_yellow,     col_bg,         col_black },
+	[SchemeTitle9]     = { col_br_red,     col_bg,         col_black },
+        [SchemeFloat]      = { col_fg,         col_bg,         col_br_black },
 };
 
 /* tagging */
@@ -118,24 +121,27 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 *      WM_WINDOW_ROLE(STRING) = role
 	 */
-	/* class                      role          instance         title            tags mask  isfloating  isterminal  noswallow  floatpos  monitor */
-	{ "Alacritty",                NULL,         NULL,            NULL,            0,         0,          1,          1,         NULL,     -1 },
-	{ "Float Term",               NULL,         NULL,            NULL,            0,         1,          1,          0,         NULL,     -1 },
-	{ NULL,                       NULL,         "File Manager",  NULL,            1 << 3,    1,          1,          0,         NULL,     -1 },
-	{ "discord",                  NULL,         NULL,            NULL,            1 << 6,    1,          0,          0,         NULL,     -1 },
-	{ NULL,                       NULL,         NULL,            "Event Tester",  0,         1,          0,          1,         NULL,     -1 },
-        { "firefoxdeveloperedition",  NULL,         NULL,            NULL,            1 << 2,    0,          0,          1,         NULL,     -1 },
-        { "firefoxdeveloperedition",  "Organizer",  NULL,            NULL,            1 << 2,    1,          0,          1,         NULL,     -1 },
-	{ "Gimp",                     NULL,         NULL,            NULL,            0,         1,          0,          0,         NULL,     -1 },
-	{ "jetbrains-idea",           NULL,         NULL,            NULL,            0,         1,          0,          1,         NULL,     -1 },
-	{ "jetbrains-studio",         NULL,         NULL,            NULL,            0,         1,          0,          1,         NULL,     -1 },
-	{ "mpv",                      NULL,         NULL,            NULL,            0,         1,          0,          0,         NULL,     -1 },
-	{ "qutebrowser",              NULL,         NULL,            NULL,            1 << 2,    0,          0,          1,         NULL,     -1 },
-	{ "scrcpy",                   NULL,         NULL,            NULL,            0,         1,          0,          1,         NULL,     -1 },
-	{ "Spotify",                  NULL,         NULL,            NULL,            1 << 5,    0,          0,          1,         NULL,     -1 },
-	{ "st",                       NULL,         NULL,            NULL,            0,         0,          1,          1,         NULL,     -1 },
-	{ "TelegramDesktop",          NULL,         NULL,            NULL,            1 << 6,    1,          0,          0,         NULL,     -1 },
-	{ "Tor Browser",              NULL,         NULL,            NULL,            1 << 2,    1,          0,          1,         NULL,     -1 },
+	/* class                      role                 instance         title            tags mask  isfloating  isterminal  noswallow  floatpos                   monitor */
+	{ "Alacritty",                NULL,                NULL,            NULL,            0,         0,          1,          1,         NULL,                      -1 },
+	{ "Float Term",               NULL,                NULL,            NULL,            0,         1,          1,          0,         NULL,                      -1 },
+	{ NULL,                       NULL,                "File Manager",  NULL,            1 << 3,    1,          1,          0,         NULL,                      -1 },
+	{ "discord",                  NULL,                NULL,            NULL,            1 << 6,    1,          0,          0,         NULL,                      -1 },
+	{ NULL,                       NULL,                NULL,            "Event Tester",  0,         1,          0,          1,         NULL,                      -1 },
+        { "firefoxdeveloperedition",  NULL,                NULL,            NULL,            1 << 2,    0,          0,          1,         NULL,                      -1 },
+        { "firefoxdeveloperedition",  "Organizer",         NULL,            NULL,            1 << 2,    1,          0,          1,         NULL,                      -1 },
+        { "firefoxdeveloperedition",  "PictureInPicture",  NULL,            NULL,            1 << 2,    1,          0,          1,         NULL,                      -1 },
+	{ "Gimp",                     NULL,                NULL,            NULL,            0,         1,          0,          0,         NULL,                      -1 },
+	{ "jetbrains-idea",           NULL,                NULL,            NULL,            0,         1,          0,          1,         NULL,                      -1 },
+	{ "jetbrains-studio",         NULL,                NULL,            NULL,            0,         1,          0,          1,         NULL,                      -1 },
+	{ "mpv",                      NULL,                NULL,            NULL,            0,         1,          0,          0,         NULL,                      -1 },
+	{ "qutebrowser",              NULL,                NULL,            NULL,            1 << 2,    0,          0,          1,         NULL,                      -1 },
+	{ "scrcpy",                   NULL,                NULL,            NULL,            0,         1,          0,          1,         NULL,                      -1 },
+	{ "Spotify",                  NULL,                NULL,            NULL,            1 << 5,    0,          0,          1,         NULL,                      -1 },
+	{ "st",                       NULL,                NULL,            NULL,            0,         0,          1,          1,         NULL,                      -1 },
+	{ "svkbd",                    NULL,                NULL,            NULL,            0,         1,          0,          1,         "  50%   74%   50%   50%", -1 },
+	{ "TelegramDesktop",          NULL,                NULL,            NULL,            1 << 6,    1,          0,          0,         NULL,                      -1 },
+	{ "Tor Browser",              NULL,                NULL,            NULL,            1 << 2,    1,          0,          1,         NULL,                      -1 },
+	{ "tty-clock",                NULL,                NULL,            NULL,            0,         1,          0,          1,         "  83%   15%  440W  190H", -1 },
 };
 
 /* layout(s) */
@@ -199,17 +205,17 @@ static Key keys[] = {
 	{ MOD,                XK_k,            focusstack,          {.i = -1 } },
 	{ MOD,                XK_i,            incnmaster,          {.i = +1 } },
 	{ MOD,                XK_d,            incnmaster,          {.i = -1 } },
-	{ MOD|CTRL,           XK_j,            inplacerotate,       {.i = +1} },
-	{ MOD|CTRL,           XK_k,            inplacerotate,       {.i = -1} },
-	{ MOD|CTRL,           XK_h,            inplacerotate,       {.i = +2} },
-	{ MOD|CTRL,           XK_l,            inplacerotate,       {.i = -2} },
-	{ MOD,                XK_h,            setmfact,            {.f = -0.01} },
-	{ MOD,                XK_l,            setmfact,            {.f = +0.01} },
-	{ MOD,                XK_o,            setmfact,            {.f = mfact} },
-	{ MOD|SHIFT,          XK_h,            setcfact,            {.f = -0.05} },
-	{ MOD|SHIFT,          XK_l,            setcfact,            {.f = +0.05} },
-	{ MOD|SHIFT,          XK_o,            setcfact,            {.f =  0.00} },
-	{ MOD|CTRL,           XK_o,            setcfact,            {.f =  1.00} },
+	{ MOD|CTRL,           XK_j,            inplacerotate,       {.i = +1 } },
+	{ MOD|CTRL,           XK_k,            inplacerotate,       {.i = -1 } },
+	{ MOD|CTRL,           XK_h,            inplacerotate,       {.i = +2 } },
+	{ MOD|CTRL,           XK_l,            inplacerotate,       {.i = -2 } },
+	{ MOD,                XK_h,            setmfact,            {.f = -0.01 } },
+	{ MOD,                XK_l,            setmfact,            {.f = +0.01 } },
+	{ MOD,                XK_o,            setmfact,            {.f = mfact } },
+	{ MOD|SHIFT,          XK_h,            setcfact,            {.f = -0.05 } },
+	{ MOD|SHIFT,          XK_l,            setcfact,            {.f = +0.05 } },
+	{ MOD|SHIFT,          XK_o,            setcfact,            {.f =  0.00 } },
+	{ MOD|CTRL,           XK_o,            setcfact,            {.f =  1.00 } },
 	{ MOD|CTRL|SHIFT,     XK_o,            resetfact,           {0} },
         { MOD|ALT,            XK_0,            togglegaps,          {0} },
         { MOD|SHIFT,          XK_equal,        defaultgaps,         {0} },
@@ -232,17 +238,17 @@ static Key keys[] = {
 	{ MOD|SHIFT,          XK_c,            killclient,          {0} },
 	{ MOD|CTRL,           XK_comma,        cyclelayout,         {.i = -1 } },
 	{ MOD|CTRL,           XK_period,       cyclelayout,         {.i = +1 } },
-        { MOD,                XK_t,            setlayout,           {.v = &layouts[0]} }, /* tile */
-        { MOD,                XK_f,            setlayout,           {.v = &layouts[1]} }, /* float */
-        { MOD,                XK_m,            setlayout,           {.v = &layouts[2]} }, /* monocle */
-        { MOD|ALT,            XK_t,            setlayout,           {.v = &layouts[3]} }, /* dwindle */
-        { MOD,                XK_g,            setlayout,           {.v = &layouts[4]} }, /* gaplessgrid */
-        { MOD|ALT,            XK_g,            setlayout,           {.v = &layouts[5]} }, /* horizgrid */
-        { MOD|ALT,            XK_b,            setlayout,           {.v = &layouts[6]} }, /* bstack */
-	{ MOD|CTRL,           XK_c,            setlayout,           {.v = &layouts[7]} }, /* centeredmaster */
-	{ MOD|ALT,            XK_c,            setlayout,           {.v = &layouts[8]} }, /* centeredfloatingmaster */
+        { MOD,                XK_t,            setlayout,           {.v = &layouts[0] } }, /* tile */
+        { MOD,                XK_f,            setlayout,           {.v = &layouts[1] } }, /* float */
+        { MOD,                XK_m,            setlayout,           {.v = &layouts[2] } }, /* monocle */
+        { MOD|ALT,            XK_t,            setlayout,           {.v = &layouts[3] } }, /* dwindle */
+        { MOD,                XK_g,            setlayout,           {.v = &layouts[4] } }, /* gaplessgrid */
+        { MOD|ALT,            XK_g,            setlayout,           {.v = &layouts[5] } }, /* horizgrid */
+        { MOD|ALT,            XK_b,            setlayout,           {.v = &layouts[6] } }, /* bstack */
+	{ MOD|CTRL,           XK_c,            setlayout,           {.v = &layouts[7] } }, /* centeredmaster */
+	{ MOD|ALT,            XK_c,            setlayout,           {.v = &layouts[8] } }, /* centeredfloatingmaster */
 	{ MOD|CTRL,           XK_space,        setlayout,           {0} },
-	{ MOD|SHIFT,          XK_space,        togglefloating,      {.v = " 50%  50%"} },
+	{ MOD|SHIFT,          XK_space,        togglefloating,      {.v = " 50%  50%" } },
 	{ MOD,                XK_0,            view,                {.ui = ~0 } },
 	{ MOD|SHIFT,          XK_0,            tag,                 {.ui = ~0 } },
 	{ MOD,                XK_n,            togglealttag,        {0} },
@@ -251,48 +257,53 @@ static Key keys[] = {
 	{ MOD|CTRL,           XK_n,            togglecolorfultitle, {0} },
 	{ MOD|ALT,            XK_n,            toggletitle,         {0} },
 	{ MOD|ALT|SHIFT,      XK_n,            togglevacanttag,     {0} },
-	{ ALT|SHIFT,          XK_bracketright, shiftview,           {.i = +1  } },
-	{ ALT|SHIFT,          XK_bracketleft,  shiftview,           {.i = -1  } },
-	{ MOD|SHIFT,          XK_bracketright, shiftclient,         {.i = +1  } },
-	{ MOD|SHIFT,          XK_bracketleft,  shiftclient,         {.i = -1  } },
+	{ ALT|SHIFT,          XK_bracketright, shiftview,           {.i = +1 } },
+	{ ALT|SHIFT,          XK_bracketleft,  shiftview,           {.i = -1 } },
+	{ MOD|SHIFT,          XK_bracketright, shiftclient,         {.i = +1 } },
+	{ MOD|SHIFT,          XK_bracketleft,  shiftclient,         {.i = -1 } },
 	{ MOD,                XK_comma,        focusmon,            {.i = -1 } },
 	{ MOD,                XK_period,       focusmon,            {.i = +1 } },
 	{ MOD|SHIFT,          XK_comma,        tagmon,              {.i = -1 } },
 	{ MOD|SHIFT,          XK_period,       tagmon,              {.i = +1 } },
 	/* Client position is limited to monitor window area */
-	{ SHIFT|ALT,          XK_k,            floatpos,            {.v = " 0x -8y"} }, // ↑
-	{ SHIFT|ALT,          XK_h,            floatpos,            {.v = "-8x  0y"} }, // ←
-	{ SHIFT|ALT,          XK_l,            floatpos,            {.v = " 8x  0y"} }, // →
-	{ SHIFT|ALT,          XK_j,            floatpos,            {.v = " 0x  8y"} }, // ↓
+	{ SHIFT|ALT,          XK_k,            floatpos,            {.v = " 0x -8y" } }, // ↑
+	{ SHIFT|ALT,          XK_h,            floatpos,            {.v = "-8x  0y" } }, // ←
+	{ SHIFT|ALT,          XK_l,            floatpos,            {.v = " 8x  0y" } }, // →
+	{ SHIFT|ALT,          XK_j,            floatpos,            {.v = " 0x  8y" } }, // ↓
 	/* Absolute positioning (allows moving windows between monitors) */
-	{ MOD|SHIFT|ALT,      XK_k,            floatpos,            {.v = " 0a -8a"} }, // ↑
-	{ MOD|SHIFT|ALT,      XK_h,            floatpos,            {.v = "-8a  0a"} }, // ←
-	{ MOD|SHIFT|ALT,      XK_l,            floatpos,            {.v = " 8a  0a"} }, // →
-	{ MOD|SHIFT|ALT,      XK_j,            floatpos,            {.v = " 0a  8a"} }, // ↓
+	{ MOD|SHIFT|ALT,      XK_k,            floatpos,            {.v = " 0a -8a" } }, // ↑
+	{ MOD|SHIFT|ALT,      XK_h,            floatpos,            {.v = "-8a  0a" } }, // ←
+	{ MOD|SHIFT|ALT,      XK_l,            floatpos,            {.v = " 8a  0a" } }, // →
+	{ MOD|SHIFT|ALT,      XK_j,            floatpos,            {.v = " 0a  8a" } }, // ↓
 	/* Client is positioned in the edge or in the middle of the screen. */
-        { MOD|ALT,            XK_k,            floatpos,            {.v = "  0x   0%"} }, // ↑
-        { MOD|ALT,            XK_h,            floatpos,            {.v = "  0%   0y"} }, // ←
-        { MOD,                XK_c,            floatpos,            {.v = " 50%  50%"} }, // ·
-        { MOD|ALT,            XK_l,            floatpos,            {.v = "100%   0y"} }, // →
-        { MOD|ALT,            XK_j,            floatpos,            {.v = "  0x 100%"} }, // ↓
+        { MOD|ALT,            XK_k,            floatpos,            {.v = "  0x   0%" } }, // ↑
+        { MOD|ALT,            XK_h,            floatpos,            {.v = "  0%   0y" } }, // ←
+        { MOD,                XK_c,            floatpos,            {.v = " 50%  50%" } }, // ·
+        { MOD|ALT,            XK_l,            floatpos,            {.v = "100%   0y" } }, // →
+        { MOD|ALT,            XK_j,            floatpos,            {.v = "  0x 100%" } }, // ↓
 	/* Resize, increase client size from every side*/
-	{ CTRL|ALT,          XK_k,             floatpos,            {.v = "-1Z -1Z  0w  8h"} }, // ↑
-	{ CTRL|ALT,          XK_h,             floatpos,            {.v = "-1Z -1Z  8w  0h"} }, // ←
-        { CTRL|ALT|SHIFT,    XK_k,             floatpos,            {.v = " 8w  8h"} }, // ·
-        { CTRL|ALT,          XK_l,             floatpos,            {.v = "-1S -1S  8w  0h"} }, // →
-	{ CTRL|ALT,          XK_j,             floatpos,            {.v = "-1S -1S  0w  8h"} }, // ↓
+	{ CTRL|ALT,           XK_k,            floatpos,            {.v = "-1Z -1Z  0w  8h" } }, // ↑
+	{ CTRL|ALT,           XK_h,            floatpos,            {.v = "-1Z -1Z  8w  0h" } }, // ←
+        { CTRL|ALT,           XK_l,            floatpos,            {.v = "-1S -1S  8w  0h" } }, // →
+	{ CTRL|ALT,           XK_j,            floatpos,            {.v = "-1S -1S  0w  8h" } }, // ↓
 	/* Resize, decrease client size from every side*/
-	{ MOD|CTRL|ALT,      XK_j,             floatpos,            {.v = "-1Z -1Z  0w -8h"} }, // ↑
-	{ MOD|CTRL|ALT,      XK_l,             floatpos,            {.v = "-1Z -1Z -8w  0h"} }, // ←
-        { CTRL|ALT|SHIFT,    XK_j,             floatpos,            {.v = "-8w -8h"} }, // ·
-        { MOD|CTRL|ALT,      XK_h,             floatpos,            {.v = "-1S -1S -8w  0h"} }, // →
-	{ MOD|CTRL|ALT,      XK_k,             floatpos,            {.v = "-1S -1S  0w -8h"} }, // ↓
+	{ MOD|CTRL|ALT,       XK_j,            floatpos,            {.v = "-1Z -1Z  0w -8h" } }, // ↑
+	{ MOD|CTRL|ALT,       XK_l,            floatpos,            {.v = "-1Z -1Z -8w  0h" } }, // ←
+        { MOD|CTRL|ALT,       XK_h,            floatpos,            {.v = "-1S -1S -8w  0h" } }, // →
+	{ MOD|CTRL|ALT,       XK_k,            floatpos,            {.v = "-1S -1S  0w -8h" } }, // ↓
+        /* Unify Resize */
+        { MOD|CTRL|ALT|SHIFT, XK_k,            floatpos,            {.v = " 8w  8h" } }, // 
+        { CTRL|ALT|SHIFT,     XK_l,            floatpos,            {.v = " 8w  0h" } }, // ←→
+        { CTRL|ALT|SHIFT,     XK_k,            floatpos,            {.v = " 0w  8h" } }, // ↑↓
+        { MOD|CTRL|ALT|SHIFT, XK_j,            floatpos,            {.v = "-8w -8h" } }, // 
+        { CTRL|ALT|SHIFT,     XK_h,            floatpos,            {.v = "-8w  0h" } }, // →←
+        { CTRL|ALT|SHIFT,     XK_j,            floatpos,            {.v = " 0w -8h" } }, // ↓↑
         /* Maximize the client in any given direction */
-        { CTRL|SHIFT,        XK_k,             floatpos,            {.v = " 0x  0Z   0%   0%"} }, // ↑
-        { CTRL|SHIFT,        XK_h,             floatpos,            {.v = " 0Z  0y   0%   0%"} }, // ←
-        { MOD|CTRL|SHIFT,    XK_c,             floatpos,            {.v = "50% 50%  80%  80%"} }, // ·
-        { CTRL|SHIFT,        XK_l,             floatpos,            {.v = "-1S  0y 100%   0%"} }, // →
-        { CTRL|SHIFT,        XK_j,             floatpos,            {.v = " 0x -1S   0% 100%"} }, // ↓
+        { CTRL|SHIFT,         XK_k,            floatpos,            {.v = " 0x  0Z   0%   0%" } }, // ↑
+        { CTRL|SHIFT,         XK_h,            floatpos,            {.v = " 0Z  0y   0%   0%" } }, // ←
+        { MOD|CTRL|SHIFT,     XK_c,            floatpos,            {.v = "50% 50%  80%  80%" } }, // ·
+        { CTRL|SHIFT,         XK_l,            floatpos,            {.v = "-1S  0y 100%   0%" } }, // →
+        { CTRL|SHIFT,         XK_j,            floatpos,            {.v = " 0x -1S   0% 100%" } }, // ↓
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)

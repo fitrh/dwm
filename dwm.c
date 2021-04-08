@@ -165,6 +165,7 @@ struct Monitor {
 	int gappiv;           /* vertical gap between windows */
 	int gappoh;           /* horizontal outer gaps */
 	int gappov;           /* vertical outer gaps */
+	unsigned int pertaggap;
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
@@ -193,6 +194,7 @@ struct Pertag {
 	int showbars[NUMTAGS + 1]; /* display bar for the current tag */
 	Client *prevzooms[NUMTAGS + 1]; /* store zoom information */
 	int enablegaps[NUMTAGS + 1]; /* toggle gap for the current tag */
+        unsigned int gaps[NUMTAGS + 1]; /* gap value per tag */
 	unsigned int sellts[NUMTAGS + 1]; /* selected layouts */
 	const Layout *ltidxs[NUMTAGS + 1][2]; /* matrix of tags and layouts indexes  */
 };
@@ -336,6 +338,7 @@ static void togglecolorfultitle();
 static void togglecolorfultag();
 static void togglefloating(const Arg *arg);
 static void togglegaps(const Arg *arg);
+static void togglepertaggaps(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggletitle();
 static void togglevacanttag();
@@ -1084,6 +1087,7 @@ createmon(void)
 	m->gappiv = gappiv;
 	m->gappoh = gappoh;
 	m->gappov = gappov;
+        m->pertaggap = pertaggap ? pertaggap : 0;
         m->centertitle = centertitle ? centertitle : 0;
         m->colorfultag = colorfultag ? colorfultag : 0;
         m->colorfultitle = colorfultitle ? colorfultitle : 0;
@@ -1109,6 +1113,10 @@ createmon(void)
 		m->pertag->showbars[i] = m->showbar;
 		m->pertag->prevzooms[i] = NULL;
 		m->pertag->enablegaps[i] = 1;
+                m->pertag->gaps[i] = ((gappoh & 0xFF) << 0)
+                                        | ((gappov & 0xFF) << 8)
+                                        | ((gappih & 0xFF) << 16)
+                                        | ((gappiv & 0xFF) << 24);
 	}
 
 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
@@ -3030,6 +3038,10 @@ setgaps(int oh, int ov, int ih, int iv)
 	selmon->gappov = ov;
 	selmon->gappih = ih;
 	selmon->gappiv = iv;
+        if (selmon->pertaggap)
+                selmon->pertag->gaps[selmon->pertag->curtag] =
+                        ((oh & 0xFF) << 0) | ((ov & 0xFF) << 8)
+                        | ((ih & 0xFF) << 16) | ((iv & 0xFF) << 24);
 	arrange(selmon);
 }
 
@@ -3577,6 +3589,13 @@ togglegaps(const Arg *arg)
         unsigned int curtag = selmon->pertag->curtag;
         int gap = !selmon->pertag->enablegaps[curtag];
 	selmon->pertag->enablegaps[curtag] = gap;
+	arrange(NULL);
+}
+
+void
+togglepertaggaps(const Arg *arg)
+{
+        selmon->pertaggap = !selmon->pertaggap;
 	arrange(NULL);
 }
 
@@ -4155,6 +4174,15 @@ view(const Arg *arg)
 	selmon->sellt = selmon->pertag->sellts[curtag];
 	selmon->lt[sellt] = selmon->pertag->ltidxs[curtag][sellt];
 	selmon->lt[sellt^1] = selmon->pertag->ltidxs[curtag][sellt^1];
+
+        if (selmon->pertaggap) {
+                selmon->gappoh = (selmon->pertag->gaps[curtag] & 0xff) >> 0;
+                selmon->gappov = (selmon->pertag->gaps[curtag] & 0xff00) >> 8;
+                selmon->gappih =
+                        (selmon->pertag->gaps[curtag] & 0xff0000) >> 16;
+                selmon->gappiv =
+                        (selmon->pertag->gaps[curtag] & 0xff000000) >> 24;
+        }
 
 	if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
 		togglebar(NULL);

@@ -166,6 +166,7 @@ struct Monitor {
 	int gappoh;           /* horizontal outer gaps */
 	int gappov;           /* vertical outer gaps */
 	unsigned int pertaggap;
+	unsigned int edgegap;
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
@@ -1088,6 +1089,7 @@ createmon(void)
 	m->gappoh = gappoh;
 	m->gappov = gappov;
         m->pertaggap = pertaggap ? pertaggap : 0;
+        m->edgegap = edgegap ? edgegap : 0;
         m->centertitle = centertitle ? centertitle : 0;
         m->colorfultag = colorfultag ? colorfultag : 0;
         m->colorfultitle = colorfultitle ? colorfultitle : 0;
@@ -2886,6 +2888,8 @@ setfloatpos(Client *c, const char *floatpos)
 {
 	char xCh, yCh, wCh, hCh;
 	int x, y, w, h, wx, ww, wy, wh;
+        int oh, ov, ih, iv;
+        unsigned int n;
 
 	if (!c || !floatpos)
 		return;
@@ -2922,6 +2926,15 @@ setfloatpos(Client *c, const char *floatpos)
 	wy = c->mon->wy;
 	ww = c->mon->ww;
 	wh = c->mon->wh;
+
+        if (selmon->edgegap) {
+                getgaps(c->mon, &oh, &ov, &ih, &iv, &n);
+                wx += ov;
+                wy += oh;
+                ww -= 2*ov;
+                wh -= 2*oh;
+        }
+
 	c->ignoresizehints = 1;
 
 	getfloatpos(x, xCh, w, wCh,

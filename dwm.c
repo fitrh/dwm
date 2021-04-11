@@ -2849,6 +2849,10 @@ sendmon(Client *c, Monitor *m)
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
 	attachbelow(c);
 	attachstack(c);
+        if (c->isfloating) {
+                setfloatpos(c, "50% 50%");
+                resizeclient(c, c->x, c->y, c->w, c->h);
+        }
 	focus(NULL);
 	arrange(NULL);
 }

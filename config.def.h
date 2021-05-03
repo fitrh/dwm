@@ -13,7 +13,7 @@ static const unsigned int gappov         = 8;  /* vert outer gap between windows
 static       int smartgaps               = 0;  /* 1 means no outer gap when there is only one window */
 /* bar */
 static const unsigned int barheight      = 29; /* 0 means default height*/
-static const unsigned int centertitle    = 0;  /* 0 means left title */
+static const unsigned int centertitle    = 1;  /* 0 means left title */
 static const unsigned int colorfultitle  = 1;  /* 0 means title use SchemeTitle and SchemeTitleFloat */
 static const unsigned int colorfultag    = 1;  /* 0 means use SchemeSel for selected tag */
 static const unsigned int showvacanttags = 0;  /* 0 mean hide vacant tags */
@@ -95,23 +95,27 @@ static const char *colors[][3]           = {
 };
 
 /* tagging */
-static const char *tags[] = { 
-                                "  ", "  ", "  ", "  " , "  ", 
-                                "  ", "  ", "  ", "  " 
+static const char *tags[] = {
+        "  ", "  ", "  ", "  " , "  ", 
+        "  ", "  ", "  ", "  " 
 };
 
 static const char *tagsalt[] = {
-                                " 1 ", " 2 ", " 3 ", " 4 ", " 5 ",
-                                " 6 ", " 7 ", " 8 ", " 9 "
+        " 1 ", " 2 ", " 3 ", " 4 ", " 5 ",
+        " 6 ", " 7 ", " 8 ", " 9 "
 };
 
-static const int tagschemes[] = { SchemeTag1, SchemeTag2, SchemeTag3,
-                                  SchemeTag4, SchemeTag5, SchemeTag6,
-                                  SchemeTag7, SchemeTag8, SchemeTag9 };
+static const int tagschemes[] = {
+        SchemeTag1, SchemeTag2, SchemeTag3,
+        SchemeTag4, SchemeTag5, SchemeTag6,
+        SchemeTag7, SchemeTag8, SchemeTag9 
+};
 
-static const int titleschemes[] = { SchemeTitle1, SchemeTitle2, SchemeTitle3,
-                                    SchemeTitle4, SchemeTitle5, SchemeTitle6,
-                                    SchemeTitle7, SchemeTitle8, SchemeTitle9 };
+static const int titleschemes[] = {
+        SchemeTitle1, SchemeTitle2, SchemeTitle3,
+        SchemeTitle4, SchemeTitle5, SchemeTitle6,
+        SchemeTitle7, SchemeTitle8, SchemeTitle9
+};
 
 static const int swallowfloating    = 0; /* 1 means swallow floating windows by default */
 static int floatposgrid_x           = 5; /* float grid columns */
@@ -122,34 +126,102 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 *      WM_WINDOW_ROLE(STRING) = role
-	 */
-	/* class                      role                 instance         title            tags mask  isfloating  isterminal  noswallow  floatpos (x y w h)         monitor */
-	{ "Alacritty",                NULL,                NULL,            NULL,            0,         0,          1,          1,         NULL,                      -1 },
-	{ "Float Term",               NULL,                NULL,            NULL,            0,         1,          1,          0,         NULL,                      -1 },
-	{ NULL,                       NULL,                "File Manager",  NULL,            1 << 3,    1,          1,          0,         NULL,                      -1 },
-	{ "discord",                  NULL,                NULL,            NULL,            1 << 6,    1,          0,          0,         "   0x   50%   70%  100%", -1 },
-	{ NULL,                       NULL,                NULL,            "Event Tester",  0,         1,          0,          1,         NULL,                      -1 },
-        { "firefoxdeveloperedition",  NULL,                NULL,            NULL,            1 << 2,    0,          0,          1,         NULL,                      -1 },
-        { "firefoxdeveloperedition",  "Organizer",         NULL,            NULL,            1 << 2,    1,          0,          1,         NULL,                      -1 },
-        { "firefoxdeveloperedition",  "PictureInPicture",  NULL,            NULL,            1 << 2,    1,          0,          1,         NULL,                      -1 },
-	{ "Gimp",                     NULL,                NULL,            NULL,            0,         1,          0,          0,         NULL,                      -1 },
-	{ "jetbrains-idea",           NULL,                NULL,            NULL,            0,         1,          0,          1,         NULL,                      -1 },
-	{ "jetbrains-studio",         NULL,                NULL,            NULL,            0,         1,          0,          1,         NULL,                      -1 },
-	{ "mpv",                      NULL,                NULL,            NULL,            0,         1,          0,          0,         NULL,                      -1 },
-	{ "qutebrowser",              NULL,                NULL,            NULL,            1 << 2,    0,          0,          1,         NULL,                      -1 },
-	{ "scrcpy",                   NULL,                NULL,            NULL,            0,         1,          0,          1,         NULL,                      -1 },
-	{ "Spotify",                  NULL,                NULL,            NULL,            1 << 5,    0,          0,          1,         NULL,                      -1 },
-	{ "st",                       NULL,                NULL,            NULL,            0,         0,          1,          1,         NULL,                      -1 },
-	{ "svkbd",                    NULL,                NULL,            NULL,            0,         1,          0,          1,         "  50%  100%   50%   50%", -1 },
-	{ "TelegramDesktop",          NULL,                NULL,            NULL,            1 << 6,    1,          0,          0,         " 100%   50%   30%  100%", -1 },
-	{ "Tor Browser",              NULL,                NULL,            NULL,            1 << 2,    1,          0,          1,         NULL,                      -1 },
-	{ "tty-clock",                NULL,                NULL,            NULL,            0,         1,          0,          1,         " 100%    0y  440W  190H", -1 },
+	 *
+         * {
+         *      class, role, instance, title,
+         *      tags mask, isfloating, isterminal, noswallow, floatpos, monitor
+         * }
+         */
+	{
+                "Alacritty", NULL, NULL, NULL,
+                0, 0, 1, 1, NULL, -1 
+        },
+	{
+                "Float Term", NULL, NULL, NULL,
+                0, 1, 1, 0, NULL, -1
+        },
+	{
+                NULL, NULL, "File Manager", NULL,
+                1 << 3, 1, 1, 0, NULL, -1 
+        },
+	{
+                "discord", NULL, NULL, NULL,
+                1 << 6, 1, 0, 0, "   0x   50%   70%  100%", -1
+        },
+	{
+                NULL, NULL, NULL, "Event Tester",
+                0, 1, 0, 1, NULL, -1
+        },
+        {
+                "firefoxdeveloperedition", NULL, NULL, NULL,
+                1 << 2, 0, 0, 1, NULL, -1
+        },
+        {
+                "firefoxdeveloperedition", "Organizer", NULL, NULL,
+                1 << 2, 1, 0, 1, NULL, -1
+        },
+        {
+                "firefoxdeveloperedition", "PictureInPicture", NULL, NULL,
+                1 << 2, 1, 0, 1, NULL, -1
+        },
+	{
+                "Gimp", NULL, NULL, NULL,
+                0, 1, 0, 0, NULL, -1
+        },
+	{
+                "jetbrains-idea", NULL, NULL, NULL,
+                0, 1, 0, 1, NULL, -1
+        },
+	{
+                "jetbrains-studio", NULL, NULL, NULL,
+                0, 1, 0, 1, NULL, -1
+        },
+	{
+                "mpv", NULL, NULL, NULL,
+                0, 1, 0, 0, NULL, -1
+        },
+	{
+                "qutebrowser", NULL, NULL, NULL,
+                1 << 2, 0, 0, 1, NULL, -1
+        },
+	{
+                "scrcpy", NULL, NULL, NULL,
+                0, 1, 0, 1, NULL, -1
+        },
+	{
+                "Spotify", NULL, NULL, NULL,
+                1 << 5, 0, 0, 1, NULL, -1
+        },
+	{
+                "st", NULL, NULL, NULL,
+                0, 0, 1, 1, NULL, -1
+        },
+	{
+                "svkbd", NULL, NULL, NULL,
+                0, 1, 0, 1, "  50%  100%   50%   50%", -1
+        },
+	{
+                "TelegramDesktop", NULL, NULL, NULL,
+                1 << 6, 1, 0, 0, " 100%   50%   30%  100%", -1
+        },
+	{
+                "Tor Browser", NULL, NULL, NULL,
+                1 << 2, 1, 0, 1, NULL, -1
+        },
+	{
+                "tty-clock", NULL, NULL, NULL,
+                0, 1, 0, 1, "  83%   56y  440W  190H", -1
+        },
+	{
+                "zoom", NULL, NULL, NULL,
+                0, 1, 0, 0, NULL, -1
+        },
 };
 
 /* layout(s) */
 static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int decorhints  = 1;    /* 1 means respect decoration hints */
 
 static const Layout layouts[] = {
@@ -169,8 +241,7 @@ static const Layout layouts[] = {
 /* default layout per tags */
 /* The first element is for all-tag view, following i-th element corresponds to */
 /* tags[i]. Layout is referred using the layouts array index.*/
-static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 0, 0, 2, 0, 0, 0};
-
+static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 0, 0, 2, 0, 7, 5 };
 
 /* key definitions */
 #define MOD Mod4Mask
@@ -198,145 +269,143 @@ static const char *dmenucmd[] = {
 static const char *termcmd[]  = { "alacritty", NULL };
 
 static Key keys[] = {
-	/* modifier           key              function             argument */
-	{ ALT,                XK_space,        spawn,               {.v = dmenucmd } },
-	{ MOD,                XK_space,        spawn,               {.v = termcmd } },
-	{ MOD,                XK_b,            togglebar,           {0} },
-	{ MOD,                XK_Return,       focusmaster,         {0} },
-	{ MOD,                XK_j,            focusstack,          {.i = +1 } },
-	{ MOD,                XK_k,            focusstack,          {.i = -1 } },
-	{ MOD,                XK_i,            incnmaster,          {.i = +1 } },
-	{ MOD,                XK_d,            incnmaster,          {.i = -1 } },
-	{ MOD|CTRL,           XK_j,            inplacerotate,       {.i = +1 } },
-	{ MOD|CTRL,           XK_k,            inplacerotate,       {.i = -1 } },
-	{ MOD|CTRL,           XK_h,            inplacerotate,       {.i = +2 } },
-	{ MOD|CTRL,           XK_l,            inplacerotate,       {.i = -2 } },
-	{ MOD,                XK_h,            setmfact,            {.f = -0.01 } },
-	{ MOD,                XK_l,            setmfact,            {.f = +0.01 } },
-	{ MOD,                XK_o,            setmfact,            {.f = mfact } },
-	{ MOD|SHIFT,          XK_h,            setcfact,            {.f = -0.05 } },
-	{ MOD|SHIFT,          XK_l,            setcfact,            {.f = +0.05 } },
-	{ MOD|SHIFT,          XK_o,            setcfact,            {.f =  0.00 } },
-	{ MOD|CTRL,           XK_o,            setcfact,            {.f =  1.00 } },
-	{ MOD|CTRL|SHIFT,     XK_o,            resetfact,           {0} },
-        { MOD|ALT,            XK_0,            togglegaps,          {0} },
-        { MOD|CTRL,           XK_0,            togglepertaggaps,    {0} },
-        { MOD|SHIFT,          XK_equal,        defaultgaps,         {0} },
-	{ MOD,                XK_equal,        incrgaps,            {.i = +1 } },
-	{ MOD,                XK_minus,        incrgaps,            {.i = -1 } },
-	{ MOD|ALT,            XK_i,            incrigaps,           {.i = +1 } },
-	{ MOD|ALT|SHIFT,      XK_i,            incrigaps,           {.i = -1 } },
-	{ MOD|ALT,            XK_o,            incrogaps,           {.i = +1 } },
-	{ MOD|ALT|SHIFT,      XK_o,            incrogaps,           {.i = -1 } },
-	{ MOD|ALT,            XK_x,            incrihgaps,          {.i = +1 } },
-	{ MOD|ALT|SHIFT,      XK_x,            incrihgaps,          {.i = -1 } },
-	{ MOD|ALT,            XK_y,            incrivgaps,          {.i = +1 } },
-	{ MOD|ALT|SHIFT,      XK_y,            incrivgaps,          {.i = -1 } },
-	{ MOD|CTRL,           XK_x,            incrohgaps,          {.i = +1 } },
-	{ MOD|CTRL|SHIFT,     XK_x,            incrohgaps,          {.i = -1 } },
-	{ MOD|CTRL,           XK_y,            incrovgaps,          {.i = +1 } },
-	{ MOD|CTRL|SHIFT,     XK_y,            incrovgaps,          {.i = -1 } },
-	{ MOD|SHIFT,          XK_Return,       zoom,                {0} },
-	{ MOD,                XK_Tab,          view,                {0} },
-	{ MOD|SHIFT,          XK_c,            killclient,          {0} },
-	{ MOD|CTRL,           XK_comma,        cyclelayout,         {.i = -1 } },
-	{ MOD|CTRL,           XK_period,       cyclelayout,         {.i = +1 } },
-        { MOD,                XK_t,            setlayout,           {.v = &layouts[0] } }, /* tile */
-        { MOD,                XK_f,            setlayout,           {.v = &layouts[1] } }, /* float */
-        { MOD,                XK_m,            setlayout,           {.v = &layouts[2] } }, /* monocle */
-        { MOD|ALT,            XK_t,            setlayout,           {.v = &layouts[3] } }, /* dwindle */
-        { MOD,                XK_g,            setlayout,           {.v = &layouts[4] } }, /* gaplessgrid */
-        { MOD|ALT,            XK_g,            setlayout,           {.v = &layouts[5] } }, /* horizgrid */
-        { MOD|ALT,            XK_b,            setlayout,           {.v = &layouts[6] } }, /* bstack */
-	{ MOD|CTRL,           XK_c,            setlayout,           {.v = &layouts[7] } }, /* centeredmaster */
-	{ MOD|ALT,            XK_c,            setlayout,           {.v = &layouts[8] } }, /* centeredfloatingmaster */
-	{ MOD|CTRL,           XK_space,        setlayout,           {0} },
-	{ MOD|SHIFT,          XK_space,        togglefloating,      {.v = " 50%  50%" } },
-	{ MOD,                XK_0,            view,                {.ui = ~0 } },
-	{ MOD|SHIFT,          XK_0,            tag,                 {.ui = ~0 } },
-	{ MOD,                XK_n,            togglealttag,        {0} },
-	{ MOD|CTRL|SHIFT,     XK_n,            togglecentertitle,   {0} },
-	{ MOD|SHIFT,          XK_n,            togglecolorfultag,   {0} },
-	{ MOD|CTRL,           XK_n,            togglecolorfultitle, {0} },
-	{ MOD|ALT,            XK_n,            toggletitle,         {0} },
-	{ MOD|ALT|SHIFT,      XK_n,            togglevacanttag,     {0} },
-	{ ALT|SHIFT,          XK_bracketright, shiftview,           {.i = +1 } },
-	{ ALT|SHIFT,          XK_bracketleft,  shiftview,           {.i = -1 } },
-	{ MOD|SHIFT,          XK_bracketright, shiftclient,         {.i = +1 } },
-	{ MOD|SHIFT,          XK_bracketleft,  shiftclient,         {.i = -1 } },
-	{ MOD,                XK_comma,        focusmon,            {.i = -1 } },
-	{ MOD,                XK_period,       focusmon,            {.i = +1 } },
-	{ MOD|SHIFT,          XK_comma,        tagmon,              {.i = -1 } },
-	{ MOD|SHIFT,          XK_period,       tagmon,              {.i = +1 } },
+	/* {
+         *      modifier, key
+         *      function, argument
+         * }
+         */
+	{ ALT, XK_space, spawn, {.v = dmenucmd } },
+	{ MOD, XK_space, spawn, {.v = termcmd } },
+	{ MOD, XK_b, togglebar, {0} },
+	{ MOD, XK_Return, focusmaster, {0} },
+	{ MOD, XK_j,      focusstack, {.i = +1 } },
+	{ MOD, XK_k,      focusstack, {.i = -1 } },
+	{ MOD, XK_i,      incnmaster, {.i = +1 } },
+	{ MOD, XK_d,      incnmaster, {.i = -1 } },
+	{ MOD|CTRL, XK_j, inplacerotate, {.i = +1 } },
+	{ MOD|CTRL, XK_k, inplacerotate, {.i = -1 } },
+	{ MOD|CTRL, XK_h, inplacerotate, {.i = +2 } },
+	{ MOD|CTRL, XK_l, inplacerotate, {.i = -2 } },
+	{ MOD, XK_h,            setmfact, {.f = -0.01 } },
+	{ MOD, XK_l,            setmfact, {.f = +0.01 } },
+	{ MOD, XK_o,            setmfact, {.f = mfact } },
+	{ MOD|SHIFT, XK_h,      setcfact, {.f = -0.05 } },
+	{ MOD|SHIFT, XK_l,      setcfact, {.f = +0.05 } },
+	{ MOD|SHIFT, XK_o,      setcfact, {.f =  0.00 } },
+	{ MOD|CTRL, XK_o,       setcfact, {.f =  1.00 } },
+	{ MOD|CTRL|SHIFT, XK_o, resetfact, {0} },
+        { MOD|ALT, XK_0,        togglegaps, {0} },
+        { MOD|CTRL, XK_0,       togglepertaggaps, {0} },
+        { MOD|SHIFT, XK_equal,  defaultgaps, {0} },
+	{ MOD, XK_equal,        incrgaps, {.i = +1 } },
+	{ MOD, XK_minus,        incrgaps, {.i = -1 } },
+	{ MOD|ALT, XK_i,        incrigaps, {.i = +1 } },
+	{ MOD|ALT|SHIFT, XK_i,  incrigaps, {.i = -1 } },
+	{ MOD|ALT, XK_o,        incrogaps, {.i = +1 } },
+	{ MOD|ALT|SHIFT, XK_o,  incrogaps, {.i = -1 } },
+	{ MOD|ALT, XK_x,        incrihgaps, {.i = +1 } },
+	{ MOD|ALT|SHIFT, XK_x,  incrihgaps, {.i = -1 } },
+	{ MOD|ALT, XK_y,        incrivgaps, {.i = +1 } },
+	{ MOD|ALT|SHIFT, XK_y,  incrivgaps, {.i = -1 } },
+	{ MOD|CTRL, XK_x,       incrohgaps, {.i = +1 } },
+	{ MOD|CTRL|SHIFT, XK_x, incrohgaps, {.i = -1 } },
+	{ MOD|CTRL, XK_y,       incrovgaps, {.i = +1 } },
+	{ MOD|CTRL|SHIFT, XK_y, incrovgaps, {.i = -1 } },
+	{ MOD|SHIFT, XK_Return, zoom, {0} },
+	{ MOD, XK_Tab, view, {0} },
+	{ MOD|SHIFT, XK_c, killclient, {0} },
+	{ MOD|CTRL, XK_comma,  cyclelayout, {.i = -1 } },
+	{ MOD|CTRL, XK_period, cyclelayout, {.i = +1 } },
+        { MOD, XK_t,           setlayout, {.v = &layouts[0] } /* tile */ },
+        { MOD, XK_f,           setlayout, {.v = &layouts[1] } /* float */ },
+        { MOD, XK_m,           setlayout, {.v = &layouts[2] } /* monocle */ },
+        { MOD|ALT, XK_t,       setlayout, {.v = &layouts[3] } /* dwindle */ },
+        { MOD, XK_g,           setlayout, {.v = &layouts[4] } /* gaplessgrid */ },
+        { MOD|ALT, XK_g,       setlayout, {.v = &layouts[5] } /* horizgrid */ },
+        { MOD|ALT, XK_b,       setlayout, {.v = &layouts[6] } /* bstack */ },
+	{ MOD|CTRL, XK_c,      setlayout, {.v = &layouts[7] } /* centeredmaster */ }, 
+	{ MOD|ALT, XK_c,       setlayout, {.v = &layouts[8] } /* centeredfloatingmaster */ },
+	{ MOD|CTRL, XK_space,  setlayout, {0} },
+	{ MOD|SHIFT, XK_space, togglefloating, {.v = " 50%  50%" } },
+	{ MOD, XK_0, view, {.ui = ~0 } },
+	{ MOD|SHIFT, XK_0, tag, {.ui = ~0 } },
+	{ MOD, XK_n,            togglealttag, {0} },
+	{ MOD|CTRL|SHIFT, XK_n, togglecentertitle, {0} },
+	{ MOD|SHIFT, XK_n,      togglecolorfultag, {0} },
+	{ MOD|CTRL, XK_n,       togglecolorfultitle, {0} },
+	{ MOD|ALT, XK_n,        toggletitle, {0} },
+	{ MOD|ALT|SHIFT, XK_n,  togglevacanttag, {0} },
+	{ ALT|SHIFT, XK_bracketright, shiftview, {.i = +1 } },
+	{ ALT|SHIFT, XK_bracketleft,  shiftview, {.i = -1 } },
+	{ MOD|SHIFT, XK_bracketright, shiftclient, {.i = +1 } },
+	{ MOD|SHIFT, XK_bracketleft,  shiftclient, {.i = -1 } },
+	{ MOD, XK_comma,  focusmon, {.i = -1 } },
+	{ MOD, XK_period, focusmon, {.i = +1 } },
+	{ MOD|SHIFT, XK_comma,  tagmon, {.i = -1 } },
+	{ MOD|SHIFT, XK_period, tagmon, {.i = +1 } },
 	/* Client position is limited to monitor window area */
-	{ SHIFT|ALT,          XK_k,            floatpos,            {.v = " 0x -8y" } }, // ↑
-	{ SHIFT|ALT,          XK_h,            floatpos,            {.v = "-8x  0y" } }, // ←
-	{ SHIFT|ALT,          XK_l,            floatpos,            {.v = " 8x  0y" } }, // →
-	{ SHIFT|ALT,          XK_j,            floatpos,            {.v = " 0x  8y" } }, // ↓
-	/* Absolute positioning (allows moving windows between monitors) */
-	{ MOD|SHIFT|ALT,      XK_k,            floatpos,            {.v = " 0a -8a" } }, // ↑
-	{ MOD|SHIFT|ALT,      XK_h,            floatpos,            {.v = "-8a  0a" } }, // ←
-	{ MOD|SHIFT|ALT,      XK_l,            floatpos,            {.v = " 8a  0a" } }, // →
-	{ MOD|SHIFT|ALT,      XK_j,            floatpos,            {.v = " 0a  8a" } }, // ↓
+        { SHIFT|ALT, XK_k, floatpos, {.v = " 0x -8y" } }, // ↑
+        { SHIFT|ALT, XK_h, floatpos, {.v = "-8x  0y" } }, // ←
+	{ SHIFT|ALT, XK_l, floatpos, {.v = " 8x  0y" } }, // → 
+	{ SHIFT|ALT, XK_j, floatpos, {.v = " 0x  8y" } }, // ↓
 	/* Client is positioned in the edge or in the middle of the screen. */
-        { MOD|ALT,            XK_k,            floatpos,            {.v = "  0x   0%" } }, // ↑
-        { MOD|ALT,            XK_h,            floatpos,            {.v = "  0%   0y" } }, // ←
-        { MOD,                XK_c,            floatpos,            {.v = " 50%  50%" } }, // ·
-        { MOD|ALT,            XK_l,            floatpos,            {.v = "100%   0y" } }, // →
-        { MOD|ALT,            XK_j,            floatpos,            {.v = "  0x 100%" } }, // ↓
+        { MOD|ALT, XK_k, floatpos, {.v = "  0x   0%" } }, // ↑
+        { MOD|ALT, XK_h, floatpos, {.v = "  0%   0y" } }, // ←
+        { MOD, XK_c,     floatpos, {.v = " 50%  50%" } }, // ·
+        { MOD|ALT, XK_l, floatpos, {.v = "100%   0y" } }, // →
+        { MOD|ALT, XK_j, floatpos, {.v = "  0x 100%" } }, // ↓
 	/* Resize, increase client size from every side*/
-	{ CTRL|ALT,           XK_k,            floatpos,            {.v = "-1Z -1Z  0w  8h" } }, // ↑
-	{ CTRL|ALT,           XK_h,            floatpos,            {.v = "-1Z -1Z  8w  0h" } }, // ←
-        { CTRL|ALT,           XK_l,            floatpos,            {.v = "-1S -1S  8w  0h" } }, // →
-	{ CTRL|ALT,           XK_j,            floatpos,            {.v = "-1S -1S  0w  8h" } }, // ↓
+	{ CTRL|ALT, XK_k, floatpos, {.v = "-1Z -1Z  0w  8h" } }, // ↑
+	{ CTRL|ALT, XK_h, floatpos, {.v = "-1Z -1Z  8w  0h" } }, // ←  
+        { CTRL|ALT, XK_l, floatpos, {.v = "-1S -1S  8w  0h" } }, // → 
+	{ CTRL|ALT, XK_j, floatpos, {.v = "-1S -1S  0w  8h" } }, // ↓
 	/* Resize, decrease client size from every side*/
-	{ MOD|CTRL|ALT,       XK_j,            floatpos,            {.v = "-1Z -1Z  0w -8h" } }, // ↑
-	{ MOD|CTRL|ALT,       XK_l,            floatpos,            {.v = "-1Z -1Z -8w  0h" } }, // ←
-        { MOD|CTRL|ALT,       XK_h,            floatpos,            {.v = "-1S -1S -8w  0h" } }, // →
-	{ MOD|CTRL|ALT,       XK_k,            floatpos,            {.v = "-1S -1S  0w -8h" } }, // ↓
+	{ MOD|CTRL|ALT, XK_j, floatpos, {.v = "-1Z -1Z  0w -8h" } }, // ↑
+	{ MOD|CTRL|ALT, XK_l, floatpos, {.v = "-1Z -1Z -8w  0h" } }, // ← 
+        { MOD|CTRL|ALT, XK_h, floatpos, {.v = "-1S -1S -8w  0h" } }, // → 
+	{ MOD|CTRL|ALT, XK_k, floatpos, {.v = "-1S -1S  0w -8h" } }, // ↓
         /* Unify Resize */
-        { MOD|CTRL|ALT|SHIFT, XK_k,            floatpos,            {.v = " 8w  8h" } }, // 
-        { CTRL|ALT|SHIFT,     XK_l,            floatpos,            {.v = " 8w  0h" } }, // ←→
-        { CTRL|ALT|SHIFT,     XK_k,            floatpos,            {.v = " 0w  8h" } }, // ↑↓
-        { MOD|CTRL|ALT|SHIFT, XK_j,            floatpos,            {.v = "-8w -8h" } }, // 
-        { CTRL|ALT|SHIFT,     XK_h,            floatpos,            {.v = "-8w  0h" } }, // →←
-        { CTRL|ALT|SHIFT,     XK_j,            floatpos,            {.v = " 0w -8h" } }, // ↓↑
+        { MOD|ALT|SHIFT, XK_k,  floatpos, {.v = " 8w  8h" } }, // 
+        { CTRL|ALT|SHIFT, XK_l, floatpos, {.v = " 8w  0h" } }, // ←→ 
+        { CTRL|ALT|SHIFT, XK_k, floatpos, {.v = " 0w  8h" } }, // ↑↓
+        { MOD|ALT|SHIFT, XK_j,  floatpos, {.v = "-8w -8h" } }, // 
+        { CTRL|ALT|SHIFT, XK_h, floatpos, {.v = "-8w  0h" } }, // →← 
+        { CTRL|ALT|SHIFT, XK_j, floatpos, {.v = " 0w -8h" } }, // ↓↑
         /* Maximize the client in any given direction */
-        { CTRL|SHIFT,         XK_k,            floatpos,            {.v = " 0x  0Z   0%   0%" } }, // ↑
-        { CTRL|SHIFT,         XK_h,            floatpos,            {.v = " 0Z  0y   0%   0%" } }, // ←
-        { MOD|CTRL|SHIFT,     XK_c,            floatpos,            {.v = "50% 50%  80%  80%" } }, // ·
-        { CTRL|SHIFT,         XK_l,            floatpos,            {.v = "-1S  0y 100%   0%" } }, // →
-        { CTRL|SHIFT,         XK_j,            floatpos,            {.v = " 0x -1S   0% 100%" } }, // ↓
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-	{ MOD|SHIFT,                    XK_q,      quit,           {0} },
+        { CTRL|SHIFT, XK_k,     floatpos, {.v = " 0x  0Z   0%   0%" } }, // ↑ 
+        { CTRL|SHIFT, XK_h,     floatpos, {.v = " 0Z  0y   0%   0%" } }, // ← 
+        { MOD|CTRL|SHIFT, XK_c, floatpos, {.v = "50% 50%  80%  80%" } }, // · 
+        { CTRL|SHIFT, XK_l,     floatpos, {.v = "-1S  0y 100%   0%" } }, // → 
+        { CTRL|SHIFT, XK_j,     floatpos, {.v = " 0x -1S   0% 100%" } }, // ↓ 
+	{ MOD|SHIFT, XK_q, quit, {0} },
+	TAGKEYS(XK_1, 0)
+	TAGKEYS(XK_2, 1)
+	TAGKEYS(XK_3, 2)
+	TAGKEYS(XK_4, 3)
+	TAGKEYS(XK_5, 4)
+	TAGKEYS(XK_6, 5)
+	TAGKEYS(XK_7, 6)
+	TAGKEYS(XK_8, 7)
+	TAGKEYS(XK_9, 8)
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
-	/* click                event mask   button          function        argument */
-	{ ClkLtSymbol,          0,           Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,           Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,           Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,           Button1,        sigdwmblocks,   {.i = 1} },
-	{ ClkStatusText,        0,           Button2,        sigdwmblocks,   {.i = 2} },
-	{ ClkStatusText,        0,           Button3,        sigdwmblocks,   {.i = 3} },
-	{ ClkClientWin,         MOD,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MOD,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MOD,         Button3,        resizemouse,    {0} },
-	{ ClkTagBar,            0,           Button1,        view,           {0} },
-	{ ClkTagBar,            0,           Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MOD,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MOD,         Button3,        toggletag,      {0} },
-        { ClkTagBar,	        0,           Button4,        shiftview,      {.i = -1} },
-	{ ClkTagBar,	        0,	     Button5,        shiftview,      {.i = 1} },
+	/* click         event mask   button   function        argument */
+	{ ClkLtSymbol,   0,           Button1, setlayout,      {0} },
+	{ ClkLtSymbol,   0,           Button3, setlayout,      {.v = &layouts[2]} },
+	{ ClkWinTitle,   0,           Button2, zoom,           {0} },
+	{ ClkStatusText, 0,           Button1, sigdwmblocks,   {.i = 1} },
+	{ ClkStatusText, 0,           Button2, sigdwmblocks,   {.i = 2} },
+	{ ClkStatusText, 0,           Button3, sigdwmblocks,   {.i = 3} },
+	{ ClkClientWin,  MOD,         Button1, movemouse,      {0} },
+	{ ClkClientWin,  MOD,         Button2, togglefloating, {0} },
+	{ ClkClientWin,  MOD,         Button3, resizemouse,    {0} },
+	{ ClkTagBar,     0,           Button1, view,           {0} },
+	{ ClkTagBar,     0,           Button3, toggleview,     {0} },
+	{ ClkTagBar,     MOD,         Button1, tag,            {0} },
+	{ ClkTagBar,     MOD,         Button3, toggletag,      {0} },
+        { ClkTagBar,	 0,           Button4, shiftview,      {.i = -1} },
+	{ ClkTagBar,	 0,	      Button5, shiftview,      {.i = 1} },
 };
-

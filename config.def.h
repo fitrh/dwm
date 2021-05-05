@@ -181,6 +181,10 @@ static const Rule rules[] = {
                 0, 1, 0, 0, NULL, -1
         },
 	{
+                "Notify Term", NULL, NULL, NULL,
+                0, 1, 0, 1, "100% 0y", -1
+        },
+	{
                 "qutebrowser", NULL, NULL, NULL,
                 1 << 2, 0, 0, 1, NULL, -1
         },
@@ -207,10 +211,6 @@ static const Rule rules[] = {
 	{
                 "Tor Browser", NULL, NULL, NULL,
                 1 << 2, 1, 0, 1, NULL, -1
-        },
-	{
-                "tty-clock", NULL, NULL, NULL,
-                0, 1, 0, 1, "  83%   56y  440W  190H", -1
         },
 	{
                 "zoom", NULL, NULL, NULL,

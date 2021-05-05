@@ -63,6 +63,8 @@
 #define MWM_DECOR_BORDER            (1 << 1)
 #define MWM_DECOR_TITLE             (1 << 3)
 #define NUMTAGS                     9
+#define RULE(...)                   { .monitor = -1, ##__VA_ARGS__ },
+#define WTYPE                       "_NET_WM_WINDOW_TYPE_"
 #define WIDTH(X)                    ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)                   ((X)->h + 2 * (X)->bw)
 #define TAGMASK                     ((1 << LENGTH(tags)) - 1)
@@ -205,6 +207,7 @@ typedef struct {
 	const char *role;
 	const char *instance;
 	const char *title;
+	const char *wintype;
 	unsigned int tags;
 	int isfloating;
         int isterminal;
@@ -421,6 +424,7 @@ void
 applyrules(Client *c)
 {
 	const char *class, *instance;
+	Atom wintype;
 	char role[64];
 	unsigned int i;
 	const Rule *r;
@@ -430,10 +434,12 @@ applyrules(Client *c)
 	/* rule matching */
 	c->isfloating = 0;
         c->floatruled = 0;
+        c->noswallow = -1;
 	c->tags = 0;
 	XGetClassHint(dpy, c->win, &ch);
 	class    = ch.res_class ? ch.res_class : broken;
 	instance = ch.res_name  ? ch.res_name  : broken;
+	wintype  = getatomprop(c, netatom[NetWMWindowType]);
 	gettextprop(c->win, wmatom[WMWindowRole], role, sizeof(role));
 
 	for (i = 0; i < LENGTH(rules); i++) {
@@ -441,7 +447,8 @@ applyrules(Client *c)
 		if ((!r->title || strstr(c->name, r->title))
 		&& (!r->class || strstr(class, r->class))
 		&& (!r->role || strstr(role, r->role))
-		&& (!r->instance || strstr(instance, r->instance)))
+		&& (!r->instance || strstr(instance, r->instance))
+		&& (!r->wintype || wintype == XInternAtom(dpy, r->wintype, 0)))
 		{
 			c->isterminal = r->isterminal;
 			c->noswallow  = r->noswallow;

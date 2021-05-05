@@ -126,96 +126,56 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 *      WM_WINDOW_ROLE(STRING) = role
+	 *	_NET_WM_WINDOW_TYPE(ATOM) = wintype
 	 *
-         * {
-         *      class, role, instance, title,
-         *      tags mask, isfloating, isterminal, noswallow, floatpos, monitor
-         * }
+         * RULE(
+         *      .class = "class", .wintype = WTYPE "type", .role = "role",
+         *      .instance = "instance", .title = "title",
+         *      .tags = 0, .isfloating = 0, .isterminal = 0, .noswallow = -1,
+         *      .floatpos = "x y w h",
+         *      .monitor = -1
+         * )
          */
-	{
-                "Alacritty", NULL, NULL, NULL,
-                0, 0, 1, 1, NULL, -1 
-        },
-	{
-                "Float Term", NULL, NULL, NULL,
-                0, 1, 1, 0, NULL, -1
-        },
-	{
-                NULL, NULL, "File Manager", NULL,
-                1 << 3, 1, 1, 0, NULL, -1 
-        },
-	{
-                "discord", NULL, NULL, NULL,
-                1 << 6, 1, 0, 0, "   0x   50%   70%  100%", -1
-        },
-	{
-                NULL, NULL, NULL, "Event Tester",
-                0, 1, 0, 1, NULL, -1
-        },
-        {
-                "firefoxdeveloperedition", NULL, NULL, NULL,
-                1 << 2, 0, 0, 1, NULL, -1
-        },
-        {
-                "firefoxdeveloperedition", "Organizer", NULL, NULL,
-                1 << 2, 1, 0, 1, NULL, -1
-        },
-        {
-                "firefoxdeveloperedition", "PictureInPicture", NULL, NULL,
-                1 << 2, 1, 0, 1, NULL, -1
-        },
-	{
-                "Gimp", NULL, NULL, NULL,
-                0, 1, 0, 0, NULL, -1
-        },
-	{
-                "jetbrains-idea", NULL, NULL, NULL,
-                0, 1, 0, 1, NULL, -1
-        },
-	{
-                "jetbrains-studio", NULL, NULL, NULL,
-                0, 1, 0, 1, NULL, -1
-        },
-	{
-                "mpv", NULL, NULL, NULL,
-                0, 1, 0, 0, NULL, -1
-        },
-	{
-                "Notify Term", NULL, NULL, NULL,
-                0, 1, 0, 1, "100% 0y", -1
-        },
-	{
-                "qutebrowser", NULL, NULL, NULL,
-                1 << 2, 0, 0, 1, NULL, -1
-        },
-	{
-                "scrcpy", NULL, NULL, NULL,
-                0, 1, 0, 1, NULL, -1
-        },
-	{
-                "Spotify", NULL, NULL, NULL,
-                1 << 5, 0, 0, 1, NULL, -1
-        },
-	{
-                "st", NULL, NULL, NULL,
-                0, 0, 1, 1, NULL, -1
-        },
-	{
-                "svkbd", NULL, NULL, NULL,
-                0, 1, 0, 1, "  50%  100%   50%   50%", -1
-        },
-	{
-                "TelegramDesktop", NULL, NULL, NULL,
-                1 << 6, 1, 0, 0, " 100%   50%   30%  100%", -1
-        },
-	{
-                "Tor Browser", NULL, NULL, NULL,
-                1 << 2, 1, 0, 1, NULL, -1
-        },
-	{
-                "zoom", NULL, NULL, NULL,
-                0, 1, 0, 0, NULL, -1
-        },
+        RULE(.class = "Alacritty", .isfloating = 1, .isterminal = 1)
+        RULE(.class = "Float Term", .isfloating = 1, .isterminal = 1)
+        RULE(
+                .instance = "File Manager",
+                .tags = 1 << 3, .isfloating = 1, .isterminal = 1
+        )
+        RULE(
+                .class= "discord",
+                .tags = 1 << 6, .isfloating = 1, .floatpos = "0x 50% 70% 100%"
+        )
+        RULE(.title = "Event Tester", .isfloating = 1, .noswallow = 1)
+        RULE(.class = "firefoxdeveloperedition", .tags = 1 << 2, .noswallow = 1)
+        RULE(
+                .class = "firefoxdeveloperedition", .role = "Organizer",
+                .tags = 1 << 2, .isfloating = 1, .noswallow = 1
+        )
+        RULE(
+                .class = "firefoxdeveloperedition", .role = "PictureInPicture",
+                .tags = 1 << 2, .isfloating = 1, .noswallow = 1
+        )
+        RULE(.class = "Gimp", .isfloating = 1)
+        RULE(.class = "jetbrains-idea", .isfloating = 1, .noswallow = 1)
+        RULE(.class = "jetbrains-studio", .isfloating = 1, .noswallow = 1)
+        RULE(.class = "mpv", .isfloating = 1)
+        RULE(.class = "Notify Term", .isfloating = 1, .floatpos = "100% 0y")
+        RULE(.class = "qutebrowser", .tags = 1 << 2, .noswallow = 1)
+        RULE(.class = "scrcpy", .isfloating = 1, .noswallow = 1)
+        RULE(.class = "Spotify", .tags = 1 << 5, .noswallow = 1)
+        RULE(.class = "st", .isterminal = 1, .noswallow = 1)
+        RULE(.class = "svkbd", .isfloating = 1, .floatpos = "50% 100% 50% 50%")
+        RULE(
+                .class = "TelegramDesktop",
+                .tags = 1 << 6, .isfloating = 1,
+                .floatpos = "100% 50% 30% 100%"
+        )
+        RULE(
+                .class = "Tor Browser",
+                .tags = 1 << 2, .isfloating = 1, .noswallow = 1
+        )
+        RULE(.class = "zoom", .isfloating = 1)
 };
 
 /* layout(s) */

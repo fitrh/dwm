@@ -132,21 +132,19 @@ static const Rule rules[] = {
          *      .class = "class", .wintype = WTYPE "type", .role = "role",
          *      .instance = "instance", .title = "title",
          *      .tags = 0, .isfloating = 0, .isterminal = 0, .noswallow = -1,
-         *      .floatpos = "x y w h",
-         *      .monitor = -1
+         *      .floatpos = "x y w h", .monitor = -1
          * )
          */
-        RULE(.class = "Alacritty", .isfloating = 1, .isterminal = 1)
-        RULE(.class = "Float Term", .isfloating = 1, .isterminal = 1)
-        RULE(
-                .instance = "File Manager",
-                .tags = 1 << 3, .isfloating = 1, .isterminal = 1
-        )
+        RULE(.class = "Alacritty", .isterminal = 1, .noswallow = 1)
         RULE(
                 .class= "discord",
                 .tags = 1 << 6, .isfloating = 1, .floatpos = "0x 50% 70% 100%"
         )
         RULE(.title = "Event Tester", .isfloating = 1, .noswallow = 1)
+        RULE(
+                .class = "File Manager",
+                .tags = 1 << 3, .isfloating = 1, .isterminal = 1
+        )
         RULE(.class = "firefoxdeveloperedition", .tags = 1 << 2, .noswallow = 1)
         RULE(
                 .class = "firefoxdeveloperedition", .role = "Organizer",
@@ -156,6 +154,7 @@ static const Rule rules[] = {
                 .class = "firefoxdeveloperedition", .role = "PictureInPicture",
                 .tags = 1 << 2, .isfloating = 1, .noswallow = 1
         )
+        RULE(.class = "Float Term", .isfloating = 1, .isterminal = 1)
         RULE(.class = "Gimp", .isfloating = 1)
         RULE(.class = "jetbrains-idea", .isfloating = 1, .noswallow = 1)
         RULE(.class = "jetbrains-studio", .isfloating = 1, .noswallow = 1)

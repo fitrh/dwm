@@ -2348,8 +2348,8 @@ manage(Window w, XWindowAttributes *wa)
 	updatewmhints(c);
 	updatemotifhints(c);
         if (
-                ((c->isfloating && !c->isfullscreen) || c->isfixed)
-                && !c->floatruled
+                (((c->isfloating && !c->isfullscreen) || c->isfixed)
+                && !c->floatruled) || !c->mon->lt[c->mon->sellt]->arrange
         ) {
                 c->x = selmon->wx + ((selmon->ww - c->w - c->bw*2) / 2);
                 c->y = selmon->wy + ((selmon->wh - c->h - c->bw*2) / 2);
@@ -3538,7 +3538,10 @@ togglebar(const Arg *arg)
 	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag];
 	updatebarpos(selmon);
         for (c = selmon->clients; c; c = c->next) {
-                if (c->isfloating && !c->isfullscreen) {
+                if (
+                        (c->isfloating && !c->isfullscreen)
+                        || !c->mon->lt[c->mon->sellt]->arrange
+                ) {
                         int barspace = bh - vp - 3;
                         c->y += (selmon->showbar) ? barspace : -barspace;
                 }

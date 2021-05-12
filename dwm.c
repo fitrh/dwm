@@ -434,7 +434,7 @@ applyrules(Client *c)
 	/* rule matching */
 	c->isfloating = 0;
         c->floatruled = 0;
-        c->noswallow = -1;
+        c->noswallow = 0;
 	c->tags = 0;
 	XGetClassHint(dpy, c->win, &ch);
 	class    = ch.res_class ? ch.res_class : broken;

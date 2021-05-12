@@ -200,7 +200,7 @@ static const Layout layouts[] = {
 /* default layout per tags */
 /* The first element is for all-tag view, following i-th element corresponds to */
 /* tags[i]. Layout is referred using the layouts array index.*/
-static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 0, 0, 2, 0, 7, 5 };
+static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 1, 0, 2, 0, 7, 5 };
 
 /* key definitions */
 #define MOD Mod4Mask

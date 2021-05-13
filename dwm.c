@@ -457,8 +457,9 @@ applyrules(Client *c)
 			for (m = mons; m && m->num != r->monitor; m = m->next);
 			if (m)
 				c->mon = m;
-			if (c->isfloating && r->floatpos) {
-				setfloatpos(c, r->floatpos);
+			if (r->floatpos) {
+                                c->isfloating = 1;
+                                setfloatpos(c, r->floatpos);
                                 c->floatruled = 1;
 			}
 		}

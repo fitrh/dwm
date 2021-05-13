@@ -136,10 +136,7 @@ static const Rule rules[] = {
          * )
          */
         RULE(.class = "Alacritty", .isterminal = 1, .noswallow = 1)
-        RULE(
-                .class= "discord",
-                .tags = 1 << 6, .isfloating = 1, .floatpos = "0x 50% 70% 100%"
-        )
+        RULE(.class= "discord", .tags = 1 << 6, .floatpos = "0% 50% 70% 100%")
         RULE(.title = "Event Tester", .isfloating = 1, .noswallow = 1)
         RULE(
                 .class = "File Manager",
@@ -148,27 +145,26 @@ static const Rule rules[] = {
         RULE(.class = "firefoxdeveloperedition", .tags = 1 << 2, .noswallow = 1)
         RULE(
                 .class = "firefoxdeveloperedition", .role = "Organizer",
-                .tags = 1 << 2, .isfloating = 1, .noswallow = 1
+                .tags = 1 << 2, .isfloating = 1
         )
         RULE(
                 .class = "firefoxdeveloperedition", .role = "PictureInPicture",
-                .tags = 1 << 2, .isfloating = 1, .noswallow = 1
+                .tags = 1 << 2, .isfloating = 1
         )
         RULE(.class = "Float Term", .isfloating = 1, .isterminal = 1)
         RULE(.class = "Gimp", .isfloating = 1)
         RULE(.class = "jetbrains-idea", .isfloating = 1, .noswallow = 1)
         RULE(.class = "jetbrains-studio", .isfloating = 1, .noswallow = 1)
         RULE(.class = "mpv", .isfloating = 1)
-        RULE(.class = "Notify Term", .isfloating = 1, .floatpos = "100% 0y")
+        RULE(.class = "Notify Term", .floatpos = "100% 0y")
         RULE(.class = "qutebrowser", .tags = 1 << 2, .noswallow = 1)
         RULE(.class = "scrcpy", .isfloating = 1, .noswallow = 1)
         RULE(.class = "Spotify", .tags = 1 << 5, .noswallow = 1)
         RULE(.class = "st", .isterminal = 1, .noswallow = 1)
-        RULE(.class = "svkbd", .isfloating = 1, .floatpos = "50% 100% 50% 50%")
+        RULE(.class = "svkbd", .floatpos = "50% 100% 50% 50%")
         RULE(
                 .class = "TelegramDesktop",
-                .tags = 1 << 6, .isfloating = 1,
-                .floatpos = "100% 50% 30% 100%"
+                .tags = 1 << 6, .floatpos = "100% 50% 30% 100%"
         )
         RULE(
                 .class = "Tor Browser",

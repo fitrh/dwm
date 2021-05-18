@@ -212,6 +212,7 @@ typedef struct {
 	int isfloating;
         int isterminal;
         int noswallow;
+        int matchonce;
 	const char *floatpos;
 	int monitor;
 } Rule;
@@ -462,6 +463,8 @@ applyrules(Client *c)
                                 setfloatpos(c, r->floatpos);
                                 c->isfloatpos = 1;
 			}
+                        if (r->matchonce)
+                                break;
 		}
 	}
 	if (ch.res_class)

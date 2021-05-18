@@ -168,7 +168,7 @@ static const Rule rules[] = {
                 .tags = 1 << 2, .isfloating = 1, .noswallow = 1
         )
         RULE(.class = "zoom", .isfloating = 1)
-        RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
+        RULE(.wintype = WTYPE "UTILITY", .isfloating = 1, .matchonce = 1)
 };
 
 /* layout(s) */

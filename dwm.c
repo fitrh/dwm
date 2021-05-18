@@ -131,8 +131,8 @@ struct Client {
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
 	int bw, oldbw;
 	unsigned int tags;
-	int isfixed, isfloating, isurgent,  isfullscreen, isterminal;
-        int neverfocus, oldstate, noswallow, floatruled;
+	int isfixed, isfloating, isfloatpos, isurgent,  isfullscreen, isterminal;
+        int neverfocus, oldstate, noswallow;
 	int ignoresizehints;
 	pid_t pid;
 	Client *next;
@@ -433,7 +433,7 @@ applyrules(Client *c)
 
 	/* rule matching */
 	c->isfloating = 0;
-        c->floatruled = 0;
+        c->isfloatpos = 0;
         c->noswallow = 0;
 	c->tags = 0;
 	XGetClassHint(dpy, c->win, &ch);
@@ -460,7 +460,7 @@ applyrules(Client *c)
 			if (r->floatpos) {
                                 c->isfloating = 1;
                                 setfloatpos(c, r->floatpos);
-                                c->floatruled = 1;
+                                c->isfloatpos = 1;
 			}
 		}
 	}
@@ -2349,8 +2349,8 @@ manage(Window w, XWindowAttributes *wa)
 	updatewmhints(c);
 	updatemotifhints(c);
         if (
-                (((c->isfloating && !c->isfullscreen) || c->isfixed)
-                && !c->floatruled) || !c->mon->lt[c->mon->sellt]->arrange
+                ((c->isfloating && !c->isfullscreen) || c->isfixed
+                || !c->mon->lt[c->mon->sellt]->arrange) && !c->isfloatpos
         ) {
                 c->x = selmon->wx + ((selmon->ww - c->w - c->bw*2) / 2);
                 c->y = selmon->wy + ((selmon->wh - c->h - c->bw*2) / 2);

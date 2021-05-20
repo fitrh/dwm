@@ -2650,7 +2650,7 @@ resetfact(const Arg *arg)
         for (c = nexttiled(selmon->clients); c; c = nexttiled(c->next)) {
                 c->cfact = 1.0;
         }
-	arrange(selmon);
+        setgaps(gappoh, gappov, gappih, gappiv);
 }
 
 void

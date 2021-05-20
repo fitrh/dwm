@@ -137,7 +137,8 @@ static const Rule rules[] = {
          */
         RULE(.class = "Alacritty", .isterminal = 1, .noswallow = 1)
         RULE(.class = "codespace", .tags = 1 << 1)
-        RULE(.class = "discord", .tags = 1 << 6, .isfloating = 1)
+        RULE(.title = "Discord Updater", .tags = 1 << 6, .matchonce = 1)
+        RULE(.class = "discord", .tags = 1 << 6, .floatpos = "0% 50% 70% 100%")
         RULE(.title = "Event Tester", .isfloating = 1, .noswallow = 1)
         RULE(
                 .class = "File Manager",
@@ -168,7 +169,7 @@ static const Rule rules[] = {
                 .tags = 1 << 2, .isfloating = 1, .noswallow = 1
         )
         RULE(.class = "zoom", .isfloating = 1)
-        RULE(.wintype = WTYPE "UTILITY", .isfloating = 1, .matchonce = 1)
+        RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 };
 
 /* layout(s) */

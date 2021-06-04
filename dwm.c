@@ -1276,24 +1276,14 @@ drawbar(Monitor *m)
                 wdelta = m->alttag
                                 ? (TEXTW(tagsalt[i]) - TEXTW(tags[i])) / 2
                                 : 0;
-                if (m->colorfultag)
-                        drw_setscheme(
-                                drw,
-                                scheme[
-                                        m->tagset[m->seltags] & 1 << i
-                                        ? tagschemes[i]
-                                        : SchemeTag
-                                ]
-                        );
-                else
-                        drw_setscheme(
-                                drw,
-                                scheme[
-                                        m->tagset[m->seltags] & 1 << i
-                                        ? SchemeSel
-                                        : SchemeTag
-                                ]
-                        );
+                drw_setscheme(
+                        drw,
+                        scheme[
+                                m->tagset[m->seltags] & 1 << i
+                                ? (m->colorfultag ? tagschemes[i] : SchemeSel)
+                                : SchemeTag
+                        ]
+                );
                 drw_text(
                         drw, x, 0,
                         w, bh, wdelta + lrpad / 2,

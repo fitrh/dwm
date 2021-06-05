@@ -23,7 +23,10 @@ static const int sidepad                 = 8;  /* horizontal padding of bar */
 static const int showbar                 = 1;  /* 0 means no bar */
 static const int topbar                  = 1;  /* 0 means bottom bar */
 /* font and color */
-static const char *fonts[]               = { "SF Mono:style=Medium:size=10" };
+static const char *fonts[]               = {
+        "SF Mono:style=Medium:size=10",
+        "Material Design Icons Desktop:style=Regular:size=10"
+};
 static const char dmenufont[]            = "SF Mono:style=Medium:size=10";
 static const char col_bg[]               = "#1a1b26";
 static const char col_dark[]             = "#16161E";

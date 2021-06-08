@@ -1277,9 +1277,7 @@ drawbar(Monitor *m)
                 )
                         continue;
                 w = TEXTW(tags[i]);
-                wdelta = m->alttag
-                                ? (TEXTW(tagsalt[i]) - TEXTW(tags[i])) / 2
-                                : 0;
+                wdelta = m->alttag ? (TEXTW(tagsalt[i]) - w) / 2 : 0;
                 if (m == selmon && m->tagset[m->seltags] & 1 << i) {
                         tagscheme = SchemeNorm;
                         if (m->sel && m->sel->tags & 1 << i)

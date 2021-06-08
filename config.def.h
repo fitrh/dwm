@@ -15,9 +15,10 @@ static       int smartgaps               = 0;  /* 1 means no outer gap when ther
 static const unsigned int barheight      = 29; /* 0 means default height*/
 static const unsigned int centertitle    = 1;  /* 0 means left title */
 static const unsigned int colorfultitle  = 1;  /* 0 means title use SchemeTitle and SchemeTitleFloat */
-static const unsigned int colorfultag    = 1;  /* 0 means use SchemeSel for selected tag */
-static const unsigned int showvacanttags = 0;  /* 0 mean hide vacant tags */
+static const unsigned int colorfultag    = 1;  /* 0 means use SchemeSel for selected non vacant tag */
+static const unsigned int showindicator  = 0;  /* 0 means no top full line indicator for selected non vacant tag */
 static const unsigned int showtitle      = 1;  /* 0 means no title */
+static const unsigned int showvacanttags = 0;  /* 0 mean hide vacant tags */
 static const int vertpad                 = 8;  /* vertical padding of bar */
 static const int sidepad                 = 8;  /* horizontal padding of bar */
 static const int showbar                 = 1;  /* 0 means no bar */
@@ -290,6 +291,7 @@ static Key keys[] = {
 	{ MOD|CTRL|SHIFT, XK_n, togglecentertitle, {0} },
 	{ MOD|SHIFT, XK_n,      togglecolorfultag, {0} },
 	{ MOD|CTRL, XK_n,       togglecolorfultitle, {0} },
+	{ MOD|ALT|CTRL, XK_n,   toggleindicator, {0} },
 	{ MOD|ALT, XK_n,        toggletitle, {0} },
 	{ MOD|ALT|SHIFT, XK_n,  togglevacanttag, {0} },
 	{ ALT|SHIFT, XK_bracketright, shiftview, {.i = +1 } },

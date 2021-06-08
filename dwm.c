@@ -176,6 +176,7 @@ struct Monitor {
 	unsigned int centertitle;
 	unsigned int colorfultitle;
 	unsigned int colorfultag;
+	unsigned int showindicator;
 	unsigned int showtitle;
         unsigned int showvacanttags;
 	int showbar;
@@ -343,6 +344,7 @@ static void togglecolorfultitle();
 static void togglecolorfultag();
 static void togglefloating(const Arg *arg);
 static void togglegaps(const Arg *arg);
+static void toggleindicator();
 static void togglepertaggaps(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggletitle();
@@ -1108,6 +1110,7 @@ createmon(void)
         m->colorfultag = colorfultag ? colorfultag : 0;
         m->colorfultitle = colorfultitle ? colorfultitle : 0;
 	m->showbar = showbar;
+        m->showindicator = showindicator ? showindicator : 0;
         m->showtitle = showtitle ? showtitle : 0;
         m->showvacanttags = showvacanttags ? showvacanttags : 0;
 	m->topbar = topbar;
@@ -1218,7 +1221,7 @@ dirtomon(int dir)
 void
 drawbar(Monitor *m)
 {
-	int x, w, wdelta;
+	int x, w, wdelta, tagscheme;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
         unsigned int titlepad = lrpad / 2;
@@ -1266,6 +1269,7 @@ drawbar(Monitor *m)
         }
         x = 0;
         for (i = 0; i < LENGTH(tags); i++) {
+                tagscheme = SchemeTag;
                 /* do not draw vacant tags on current monitor */
                 if (
                         !m->showvacanttags
@@ -1276,14 +1280,15 @@ drawbar(Monitor *m)
                 wdelta = m->alttag
                                 ? (TEXTW(tagsalt[i]) - TEXTW(tags[i])) / 2
                                 : 0;
-                drw_setscheme(
-                        drw,
-                        scheme[
-                                m->tagset[m->seltags] & 1 << i
-                                ? (m->colorfultag ? tagschemes[i] : SchemeSel)
-                                : SchemeTag
-                        ]
-                );
+                if (m == selmon && m->tagset[m->seltags] & 1 << i) {
+                        tagscheme = SchemeNorm;
+                        if (m->sel && m->sel->tags & 1 << i)
+                                tagscheme = m->colorfultag
+                                                ? tagschemes[i] : SchemeSel;
+                        else if (m->sel && m->colorfultag && m->showindicator)
+                                tagscheme = tagschemes[i];
+                }
+                drw_setscheme(drw, scheme[tagscheme]);
                 drw_text(
                         drw, x, 0,
                         w, bh, wdelta + lrpad / 2,
@@ -1299,7 +1304,8 @@ drawbar(Monitor *m)
                                 /* draw full line at the top of selected tag
                                 * that have clients */
                                         drw_rect(
-                                                drw, x, 0, w, boxw - 2,
+                                                m->showindicator ? drw : NULL,
+                                                x, 0, w, boxw - 2,
                                                 1, urg & 1 << 1
                                         );
                                 else if (m->sel)
@@ -1314,16 +1320,15 @@ drawbar(Monitor *m)
                                                 1, urg & 1 << 1
                                         );
                         } else {
-                                if (m->showvacanttags)
                                 /* draw small line at the bottom of every non
                                  * vacant tag */
-                                        drw_rect(
-                                                drw,
-                                                x + (3 * boxw + 1),
-                                                bh - (boxw - 2),
-                                                w - (6 * boxw + 1), boxw - 2,
-                                                1, urg & 1 << 1
-                                        );
+                                drw_rect(
+                                        m->showvacanttags ? drw : NULL,
+                                        x + (3 * boxw + 1),
+                                        bh - (boxw - 2),
+                                        w - (6 * boxw + 1), boxw - 2,
+                                        1, urg & 1 << 1
+                                );
                         }
                 }
                 x += w;
@@ -1340,25 +1345,21 @@ drawbar(Monitor *m)
         }
 	if (w > bh) {
 		if (m->sel && m->showtitle) {
-                        if (m->colorfultitle) {
+                        if (m == selmon && m->colorfultitle)
                                 for (i = 0; i < LENGTH(tags); i++)
-                                        if (m->sel->tags & 1 << i)
-                                                drw_setscheme(
-                                                        drw,
-                                                        scheme[
-                                                        m == selmon
-                                                        ? titleschemes[i]
-                                                        : SchemeInactive
-                                                        ]
-                                                );
-                        } else {
-                                int s = m == selmon
-                                        ? m->sel->isfloating
-                                                ? SchemeTitleFloat
-                                                : SchemeTitle
-                                        : SchemeInactive;
-                                drw_setscheme(drw, scheme[s]);
-                        }
+                                        drw_setscheme(
+                                                m->sel->tags & 1 << i
+                                                ? drw : NULL,
+                                                scheme[titleschemes[i]]
+                                        );
+                        else
+                                drw_setscheme(
+                                        drw, scheme[m == selmon
+                                                ? m->sel->isfloating
+                                                        ? SchemeTitleFloat
+                                                        : SchemeTitle
+                                                : SchemeInactive]
+                                );
                         if (m->centertitle) {
                                 int width = w - 2 * sp;
                                 int txtwidth = (int)(TEXTW(m->sel->name))
@@ -3614,6 +3615,13 @@ togglegaps(const Arg *arg)
         int gap = !selmon->pertag->enablegaps[curtag];
 	selmon->pertag->enablegaps[curtag] = gap;
 	arrange(NULL);
+}
+
+void
+toggleindicator()
+{
+        selmon->showindicator = !selmon->showindicator;
+        drawbar(selmon);
 }
 
 void

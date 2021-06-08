@@ -1363,7 +1363,7 @@ drawbar(Monitor *m)
                                 int centerpad = (width - txtwidth) / 2;
                                 titlepad = centerpad >= lrpad / 2
                                                 ? centerpad - sp
-                                                : lrpad / 2;
+                                                : (lrpad / 2) + ((2 * sp) / 2);
                         }
 			drw_text(
                                 drw,

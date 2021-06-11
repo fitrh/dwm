@@ -189,7 +189,6 @@ static const Layout layouts[] = {
 	{ "[M]",      monocle },
         { "[@]",      dwindle },
         { ":::",      gaplessgrid },
-        { "---",      horizgrid },
         { "TTT",      bstack },
         { "|M|",      centeredmaster },
         { ">M>",      centeredfloatingmaster },
@@ -199,7 +198,7 @@ static const Layout layouts[] = {
 /* default layout per tags */
 /* The first element is for all-tag view, following i-th element corresponds to */
 /* tags[i]. Layout is referred using the layouts array index.*/
-static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 1, 0, 2, 0, 7, 5 };
+static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 1, 0, 2, 0, 6, 4 };
 
 /* key definitions */
 #define MOD Mod4Mask
@@ -279,10 +278,9 @@ static Key keys[] = {
         { MOD, XK_m,           setlayout, {.v = &layouts[2] } /* monocle */ },
         { MOD|ALT, XK_t,       setlayout, {.v = &layouts[3] } /* dwindle */ },
         { MOD, XK_g,           setlayout, {.v = &layouts[4] } /* gaplessgrid */ },
-        { MOD|ALT, XK_g,       setlayout, {.v = &layouts[5] } /* horizgrid */ },
-        { MOD|ALT, XK_b,       setlayout, {.v = &layouts[6] } /* bstack */ },
-	{ MOD|CTRL, XK_c,      setlayout, {.v = &layouts[7] } /* centeredmaster */ }, 
-	{ MOD|ALT, XK_c,       setlayout, {.v = &layouts[8] } /* centeredfloatingmaster */ },
+        { MOD|ALT, XK_b,       setlayout, {.v = &layouts[5] } /* bstack */ },
+	{ MOD|CTRL, XK_c,      setlayout, {.v = &layouts[6] } /* centeredmaster */ }, 
+	{ MOD|ALT, XK_c,       setlayout, {.v = &layouts[7] } /* centeredfloatingmaster */ },
 	{ MOD|CTRL, XK_space,  setlayout, {0} },
 	{ MOD|SHIFT, XK_space, togglefloating, {.v = " 50%  50%" } },
 	{ MOD, XK_0, view, {.ui = ~0 } },

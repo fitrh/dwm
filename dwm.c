@@ -173,6 +173,7 @@ struct Monitor {
 	unsigned int sellt;
 	unsigned int tagset[2];
 	unsigned int alttag;
+	unsigned int bargap;
 	unsigned int centertitle;
 	unsigned int colorfultitle;
 	unsigned int colorfultag;
@@ -1106,6 +1107,7 @@ createmon(void)
 	m->gappov = gappov;
         m->pertaggap = pertaggap ? pertaggap : 0;
         m->edgegap = edgegap ? edgegap : 0;
+        m->bargap = bargap ? bargap : 0;
         m->centertitle = centertitle ? centertitle : 0;
         m->colorfultag = colorfultag ? colorfultag : 0;
         m->colorfultitle = colorfultitle ? colorfultitle : 0;
@@ -3474,6 +3476,32 @@ togglebar(const Arg *arg)
 }
 
 void
+togglebargap()
+{
+        Client *c;
+        selmon->bargap = !selmon->bargap;
+        sp = selmon->bargap ? sidepad : 0;
+        vp = selmon->bargap ? (topbar ? vertpad : - vertpad) : 0;
+        updatebars();
+        updatestatus();
+        updatebarpos(selmon);
+        for (c = selmon->clients; c; c = c->next) {
+                if ((c->isfloating && !c->isfullscreen)
+                        || !c->mon->lt[c->mon->sellt]->arrange)
+                {
+                        int barspace = bh - vp - 3;
+                        c->y += (selmon->showbar) ? barspace : -barspace;
+                }
+        }
+	XMoveResizeWindow(
+                dpy, selmon->barwin,
+                selmon->wx + sp, selmon->by + vp,
+                selmon->ww - 2 * sp, bh
+        );
+	arrange(selmon);
+}
+
+void
 togglecentertitle()
 {
         selmon->centertitle = !selmon->centertitle;
@@ -3756,11 +3784,12 @@ updatebars(void)
 void
 updatebarpos(Monitor *m)
 {
+        int vpad = m->bargap ? vertpad : 0;
 	m->wy = m->my;
 	m->wh = m->mh;
 	if (m->showbar) {
-		m->wh = m->wh - vertpad - bh;
-		m->by = m->topbar ? m->wy : m->wy + m->wh + vertpad;
+		m->wh = m->wh - vpad - bh;
+		m->by = m->topbar ? m->wy : m->wy + m->wh + vpad;
 		m->wy = m->topbar ? m->wy + bh + vp : m->wy;
 	} else
 		m->by = -bh - vp;

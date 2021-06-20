@@ -18,7 +18,8 @@ static const unsigned int colorfultitle  = 1;  /* 0 means title use SchemeTitle 
 static const unsigned int colorfultag    = 1;  /* 0 means use SchemeSel for selected non vacant tag */
 static const unsigned int showindicator  = 0;  /* 0 means no top full line indicator for selected non vacant tag */
 static const unsigned int showtitle      = 1;  /* 0 means no title */
-static const unsigned int showvacanttags = 0;  /* 0 mean hide vacant tags */
+static const unsigned int showvacanttags = 0;  /* 0 means hide vacant tags */
+static const unsigned int bargap         = 1;  /* 0 means vertpad & sidepad is 0 */
 static const int vertpad                 = 8;  /* vertical padding of bar */
 static const int sidepad                 = 8;  /* horizontal padding of bar */
 static const int showbar                 = 1;  /* 0 means no bar */
@@ -252,6 +253,7 @@ static Key keys[] = {
 	{ MOD|CTRL, XK_o,    setcfact, {.f =  1.00 } },
 	{ MOD|ALT, XK_space, resetfact, {0} },
         { MOD|ALT, XK_0,        togglegaps, {0} },
+        { MOD|ALT, XK_0,        togglebargap, {0} },
         { MOD|CTRL, XK_0,       togglepertaggaps, {0} },
         { MOD|SHIFT, XK_equal,  defaultgaps, {0} },
 	{ MOD, XK_equal,        incrgaps, {.i = +1 } },

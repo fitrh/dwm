@@ -338,6 +338,7 @@ static Client *termforwin(const Client *c);
 static void tile(Monitor *);
 static void togglealttag();
 static void togglebar(const Arg *arg);
+static void togglebargap();
 static void togglecentertitle();
 static void togglecolorfultitle();
 static void togglecolorfultag();
@@ -1539,10 +1540,9 @@ focus(Client *c)
 		attachstack(c);
 		grabbuttons(c, 1);
 		if(c->isfloating)
-			XSetWindowBorder(
-                                dpy, c->win,
-                                scheme[SchemeFloat][ColBorder].pixel
-                        );
+                        XSetWindowBorder(dpy, c->win,
+                                        scheme[c->mon->showtitle ? SchemeSel
+                                        : SchemeFloat][ColBorder].pixel);
 		else
 			XSetWindowBorder(
                                 dpy, c->win,
@@ -2287,7 +2287,8 @@ manage(Window w, XWindowAttributes *wa)
 	if (!c->isfloating)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
 	if (c->isfloating) {
-                XSetWindowBorder(dpy, w, scheme[SchemeFloat][ColBorder].pixel);
+                XSetWindowBorder(dpy, w, scheme[c->mon->showtitle ? SchemeSel
+                                : SchemeFloat][ColBorder].pixel);
 		XRaiseWindow(dpy, c->win);
         }
 	attachbelow(c);
@@ -3503,18 +3504,15 @@ togglefloating(const Arg *arg)
 	selmon->sel->isfloating = !selmon->sel->isfloating
                                         || selmon->sel->isfixed;
 	if (selmon->sel->isfloating) {
-		XSetWindowBorder(
-                        dpy, selmon->sel->win,
-                        scheme[SchemeFloat][ColBorder].pixel
-                );
-		/* restore last known float dimensions */
+		XSetWindowBorder(dpy, selmon->sel->win,
+                                scheme[selmon->showtitle
+                                        ? SchemeSel
+                                        : SchemeFloat][ColBorder].pixel);
 		resize(selmon->sel, selmon->sel->sfx, selmon->sel->sfy,
 		       selmon->sel->sfw, selmon->sel->sfh, 0);
         } else {
-		XSetWindowBorder(
-                        dpy, selmon->sel->win,
-                        scheme[SchemeSel][ColBorder].pixel
-                );
+		XSetWindowBorder(dpy, selmon->sel->win,
+                                scheme[SchemeSel][ColBorder].pixel);
 		/* save last known float dimensions */
 		selmon->sel->sfx = selmon->sel->x;
 		selmon->sel->sfy = selmon->sel->y;
@@ -3575,6 +3573,7 @@ void
 toggletitle()
 {
         selmon->showtitle = !selmon->showtitle;
+        focus(NULL);
         drawbar(selmon);
 }
 

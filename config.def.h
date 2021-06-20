@@ -72,7 +72,8 @@ static const char *colors[][3]           = {
         [SchemeBrYellow]   = { col_br_yellow,  col_bg,         col_black },      /* \x1b */
         [SchemeBrBlack]    = { col_br_black,   col_bg,         col_black },      /* \x1c */
         [SchemeBrWhite]    = { col_br_white,   col_bg,         col_black },      /* \x1d */
-        [SchemeInactive]   = { col_br_black,   col_bg,         col_black },      /* \x1e */
+        [SchemeFloat]      = { col_fg,         col_bg,         col_blue },       /* \x1e */
+        [SchemeInactive]   = { col_br_black,   col_bg,         col_black },      /* \x1f */
         [SchemeTag]        = { col_br_black,   col_bg,         col_black },
         [SchemeTag1]       = { col_fg,         col_dark,       col_black },
 	[SchemeTag2]       = { col_red,        col_dark,       col_black },
@@ -95,7 +96,6 @@ static const char *colors[][3]           = {
 	[SchemeTitle7]     = { col_br_green,   col_bg,         col_black },
 	[SchemeTitle8]     = { col_yellow,     col_bg,         col_black },
 	[SchemeTitle9]     = { col_br_red,     col_bg,         col_black },
-        [SchemeFloat]      = { col_fg,         col_bg,         col_br_black },
 };
 
 /* tagging */

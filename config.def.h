@@ -234,7 +234,8 @@ static Key keys[] = {
          */
 	{ ALT, XK_space, spawn, {.v = dmenucmd } },
 	{ MOD, XK_space, spawn, {.v = termcmd } },
-	{ MOD, XK_b, togglebar, {0} },
+	{ MOD, XK_b,      togglebar, {0} },
+        { MOD|CTRL, XK_b, togglebargap, {0} },
 	{ MOD, XK_Return, focusmaster, {0} },
 	{ MOD, XK_j,      focusstack, {.i = +1 } },
 	{ MOD, XK_k,      focusstack, {.i = -1 } },
@@ -253,7 +254,6 @@ static Key keys[] = {
 	{ MOD|CTRL, XK_o,    setcfact, {.f =  1.00 } },
 	{ MOD|ALT, XK_space, resetfact, {0} },
         { MOD|ALT, XK_0,        togglegaps, {0} },
-        { MOD|ALT, XK_0,        togglebargap, {0} },
         { MOD|CTRL, XK_0,       togglepertaggaps, {0} },
         { MOD|SHIFT, XK_equal,  defaultgaps, {0} },
 	{ MOD, XK_equal,        incrgaps, {.i = +1 } },

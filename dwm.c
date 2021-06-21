@@ -3437,7 +3437,7 @@ tile(Monitor *m)
 }
 
 void
-togglealttag()
+togglealttag(const Arg *arg)
 {
 	selmon->alttag = !selmon->alttag;
 	drawbar(selmon);
@@ -3466,7 +3466,7 @@ togglebar(const Arg *arg)
 }
 
 void
-togglebargap()
+togglebargap(const Arg *arg)
 {
         Client *c;
         selmon->bargap = !selmon->bargap;
@@ -3489,21 +3489,21 @@ togglebargap()
 }
 
 void
-togglecentertitle()
+togglecentertitle(const Arg *arg)
 {
         selmon->centertitle = !selmon->centertitle;
         drawbar(selmon);
 }
 
 void
-togglecolorfultitle()
+togglecolorfultitle(const Arg *arg)
 {
         selmon->colorfultitle = !selmon->colorfultitle;
         drawbar(selmon);
 }
 
 void
-togglecolorfultag()
+togglecolorfultag(const Arg *arg)
 {
         selmon->colorfultag = !selmon->colorfultag;
         drawbar(selmon);
@@ -3554,7 +3554,7 @@ togglegaps(const Arg *arg)
 }
 
 void
-toggleindicator()
+toggleindicator(const Arg *arg)
 {
         selmon->showindicator = !selmon->showindicator;
         drawbar(selmon);
@@ -3585,7 +3585,7 @@ toggletag(const Arg *arg)
 }
 
 void
-toggletitle()
+toggletitle(const Arg *arg)
 {
         selmon->showtitle = !selmon->showtitle;
         focus(NULL);
@@ -3593,7 +3593,7 @@ toggletitle()
 }
 
 void
-togglevacanttag()
+togglevacanttag(const Arg *arg)
 {
 	selmon->showvacanttags = !selmon->showvacanttags;
 	drawbar(selmon);

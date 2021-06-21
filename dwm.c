@@ -2250,14 +2250,10 @@ manage(Window w, XWindowAttributes *wa)
 		c->y = c->mon->my + c->mon->mh - HEIGHT(c);
 	c->x = MAX(c->x, c->mon->mx);
 	/* only fix client y-offset, if the client center might cover the bar */
-	c->y = MAX(
-                        c->y,
-                        ((c->mon->by == c->mon->my)
-                        && (c->x + (c->w / 2) >= c->mon->wx)
-		        && (c->x + (c->w / 2) < c->mon->wx + c->mon->ww))
-                        ? bh
-                        : c->mon->my
-                );
+	c->y = MAX(c->y, ((c->mon->by == c->mon->my)
+                && (c->x + (c->w / 2) >= c->mon->wx)
+		&& (c->x + (c->w / 2) < c->mon->wx + c->mon->ww))
+                ? bh : c->mon->my);
 
 	wc.border_width = c->bw;
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
@@ -2267,13 +2263,9 @@ manage(Window w, XWindowAttributes *wa)
 	updatesizehints(c);
 	updatewmhints(c);
 	updatemotifhints(c);
-        if (
-                ((c->isfloating && !c->isfullscreen) || c->isfixed
-                || !c->mon->lt[c->mon->sellt]->arrange) && !c->isfloatpos
-        ) {
-                c->x = selmon->wx + ((selmon->ww - c->w - c->bw*2) / 2);
-                c->y = selmon->wy + ((selmon->wh - c->h - c->bw*2) / 2);
-        }
+        if (((c->isfloating && !c->isfullscreen) || c->isfixed
+                || !c->mon->lt[c->mon->sellt]->arrange) && !c->isfloatpos)
+                setfloatpos(c, "50% 50%");
 	c->sfx = c->x;
 	c->sfy = c->y;
 	c->sfw = c->w;

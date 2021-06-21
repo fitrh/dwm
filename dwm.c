@@ -3459,12 +3459,10 @@ togglebar(const Arg *arg)
 	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag];
 	updatebarpos(selmon);
         for (c = selmon->clients; c; c = c->next) {
-                if (
-                        (c->isfloating && !c->isfullscreen)
-                        || !c->mon->lt[c->mon->sellt]->arrange
-                ) {
-                        int barspace = bh - vp - 3;
-                        c->y += (selmon->showbar) ? barspace : -barspace;
+                if ((c->isfloating && !c->isfullscreen)
+                        || !c->mon->lt[c->mon->sellt]->arrange) 
+                {
+                        setfloatpos(c, "0x 50%");
                 }
         }
 	XMoveResizeWindow(
@@ -3482,15 +3480,12 @@ togglebargap()
         selmon->bargap = !selmon->bargap;
         sp = selmon->bargap ? sidepad : 0;
         vp = selmon->bargap ? (topbar ? vertpad : - vertpad) : 0;
-        updatebars();
-        updatestatus();
         updatebarpos(selmon);
         for (c = selmon->clients; c; c = c->next) {
                 if ((c->isfloating && !c->isfullscreen)
                         || !c->mon->lt[c->mon->sellt]->arrange)
                 {
-                        int barspace = bh - vp - 3;
-                        c->y += (selmon->showbar) ? barspace : -barspace;
+                        setfloatpos(c, "0x 50%");
                 }
         }
 	XMoveResizeWindow(

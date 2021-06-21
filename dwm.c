@@ -63,7 +63,7 @@
 #define MWM_DECOR_BORDER            (1 << 1)
 #define MWM_DECOR_TITLE             (1 << 3)
 #define NUMTAGS                     9
-#define RULE(...)                   { .monitor = -1, ##__VA_ARGS__ },
+#define RULE(...)                   { .monitor = -1, __VA_ARGS__ },
 #define WTYPE                       "_NET_WM_WINDOW_TYPE_"
 #define WIDTH(X)                    ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)                   ((X)->h + 2 * (X)->bw)

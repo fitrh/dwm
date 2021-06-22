@@ -3469,23 +3469,23 @@ void
 togglebargap(const Arg *arg)
 {
         Client *c;
-        selmon->bargap = !selmon->bargap;
-        sp = selmon->bargap ? sidepad : 0;
-        vp = selmon->bargap ? (topbar ? vertpad : - vertpad) : 0;
-        updatebarpos(selmon);
-        for (c = selmon->clients; c; c = c->next) {
-                if ((c->isfloating && !c->isfullscreen)
-                        || !c->mon->lt[c->mon->sellt]->arrange)
-                {
-                        setfloatpos(c, "0x 50%");
+	Monitor *m;
+	for (m = mons; m; m = m->next) {
+                m->bargap = !m->bargap;
+                sp = m->bargap ? sidepad : 0;
+                vp = m->bargap ? (topbar ? vertpad : - vertpad) : 0;
+                updatebarpos(m);
+                XMoveResizeWindow(dpy, m->barwin, m->wx + sp,
+                        m->by + vp, m->ww - 2 * sp, bh);
+                for (c = m->clients; c; c = c->next) {
+                        if ((c->isfloating && !c->isfullscreen)
+                                || !c->mon->lt[c->mon->sellt]->arrange)
+                        {
+                                setfloatpos(c, "0x 50%");
+                        }
                 }
-        }
-	XMoveResizeWindow(
-                dpy, selmon->barwin,
-                selmon->wx + sp, selmon->by + vp,
-                selmon->ww - 2 * sp, bh
-        );
-	arrange(selmon);
+                arrange(m);
+	}
 }
 
 void

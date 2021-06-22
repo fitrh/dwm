@@ -81,24 +81,24 @@
 /* enums */
 enum { CurResizeBR, CurResizeBL, CurResizeTR, CurResizeTL,
        CurNormal, CurHand, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel, SchemeDarker, 
-       SchemeRed, SchemeGreen, SchemeBlue, 
-       SchemeCyan, SchemeMagenta, SchemeYellow, 
-       SchemeBlack, SchemeWhite, 
+enum { SchemeNorm, SchemeSel, SchemeDarker,
+       SchemeRed, SchemeGreen, SchemeBlue,
+       SchemeCyan, SchemeMagenta, SchemeYellow,
+       SchemeBlack, SchemeWhite,
        SchemeBrRed, SchemeBrGreen, SchemeBrBlue,
-       SchemeBrCyan, SchemeBrMagenta, SchemeBrYellow, 
+       SchemeBrCyan, SchemeBrMagenta, SchemeBrYellow,
        SchemeBrBlack, SchemeBrWhite, SchemeFloat, SchemeInactive,
-       SchemeTag, SchemeTag1, SchemeTag2, SchemeTag3, 
-       SchemeTag4, SchemeTag5, SchemeTag6, SchemeTag7, 
-       SchemeTag8, SchemeTag9, SchemeLayout, 
+       SchemeTag, SchemeTag1, SchemeTag2, SchemeTag3,
+       SchemeTag4, SchemeTag5, SchemeTag6, SchemeTag7,
+       SchemeTag8, SchemeTag9, SchemeLayout,
        SchemeTitle, SchemeTitleFloat,
-       SchemeTitle1, SchemeTitle2, SchemeTitle3, 
-       SchemeTitle4, SchemeTitle5, SchemeTitle6, 
+       SchemeTitle1, SchemeTitle2, SchemeTitle3,
+       SchemeTitle4, SchemeTitle5, SchemeTitle6,
        SchemeTitle7, SchemeTitle8, SchemeTitle9 }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
-       NetWMWindowTypeDialog, NetClientList, NetDesktopNames, 
-       NetDesktopViewport, NetNumberOfDesktops, NetCurrentDesktop, 
+       NetWMWindowTypeDialog, NetClientList, NetDesktopNames,
+       NetDesktopViewport, NetNumberOfDesktops, NetCurrentDesktop,
        NetClientListStacking, NetLast }; /* EWMH atoms */
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMWindowRole, WMLast }; /* default atoms */
 enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
@@ -167,22 +167,22 @@ struct Monitor {
 	int gappiv;           /* vertical gap between windows */
 	int gappoh;           /* horizontal outer gaps */
 	int gappov;           /* vertical outer gaps */
-	unsigned int pertaggap;
-	unsigned int edgegap;
+	int pertaggap;
+	int edgegap;
+	int bargap;
+	int centertitle;
+	int colorfultitle;
+	int colorfultag;
+	int showindicator;
+	int showtitle;
+        int showvacanttags;
+	int showbar;
+	int topbar;
+        int statushandcursor;
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
 	unsigned int alttag;
-	unsigned int bargap;
-	unsigned int centertitle;
-	unsigned int colorfultitle;
-	unsigned int colorfultag;
-	unsigned int showindicator;
-	unsigned int showtitle;
-        unsigned int showvacanttags;
-	int showbar;
-	int topbar;
-        int statushandcursor;
 	Client *clients;
 	Client *sel;
 	Client *stack;
@@ -579,7 +579,7 @@ attach(Client *c)
 void
 attachbelow(Client *c)
 {
-	/* If there is nothing on the monitor or */ 
+	/* If there is nothing on the monitor or */
         /* the selected client is floating, attach as normal */
 	if (c->mon->sel == NULL || c->mon->sel->isfloating) {
                 Client *at = nexttagged(c);
@@ -822,7 +822,7 @@ centeredmaster(Monitor *m)
 	mh = m->wh - 2*oh - ih * ((!m->nmaster ? n : MIN(n, m->nmaster)) - 1);
 	mw = m->ww - 2*ov;
 	lh = m->wh - 2*oh - ih * (((n - m->nmaster) / 2) - 1);
-	rh = m->wh - 2*oh - ih 
+	rh = m->wh - 2*oh - ih
                 * (((n - m->nmaster) / 2) - ((n - m->nmaster) % 2 ? 0 : 1));
 
 	if (m->nmaster && n > m->nmaster) {
@@ -1958,14 +1958,14 @@ grabbuttons(Client *c, int focused)
 	updatenumlockmask();
 	{
 		unsigned int i, j;
-		unsigned int modifiers[] = { 
-                        0, LockMask, numlockmask, numlockmask|LockMask 
+		unsigned int modifiers[] = {
+                        0, LockMask, numlockmask, numlockmask|LockMask
                 };
 		XUngrabButton(dpy, AnyButton, AnyModifier, c->win);
 		if (!focused)
 			XGrabButton(
                                 dpy, AnyButton, AnyModifier, c->win, False,
-				BUTTONMASK, GrabModeSync, GrabModeSync, 
+				BUTTONMASK, GrabModeSync, GrabModeSync,
                                 None, None
                         );
 		for (i = 0; i < LENGTH(buttons); i++)
@@ -1987,8 +1987,8 @@ grabkeys(void)
 	updatenumlockmask();
 	{
 		unsigned int i, j;
-		unsigned int modifiers[] = { 
-                        0, LockMask, numlockmask, numlockmask|LockMask 
+		unsigned int modifiers[] = {
+                        0, LockMask, numlockmask, numlockmask|LockMask
                 };
 		KeyCode code;
 
@@ -2292,7 +2292,7 @@ manage(Window w, XWindowAttributes *wa)
                 XA_WINDOW, 32, PropModeAppend,
 		(unsigned char *) &(c->win), 1
         );
-	XChangeProperty(dpy, root, netatom[NetClientListStacking], 
+	XChangeProperty(dpy, root, netatom[NetClientListStacking],
                         XA_WINDOW, 32, PropModePrepend,
                         (unsigned char *) &(c->win), 1);
         Atom target = XInternAtom(dpy, "_IS_FLOATING", 0);
@@ -2649,8 +2649,8 @@ resizemouse(const Arg *arg)
                                 : (ocw + (ev.xmotion.x - opx)), 1
                         );
 			nh = MAX(
-                                vertcorner 
-                                ? (ocy + och - ny) 
+                                vertcorner
+                                ? (ocy + och - ny)
                                 : (och + (ev.xmotion.y - opy)), 1
                         );
 			if (
@@ -2749,7 +2749,7 @@ scan(void)
 				continue;
 			if (
                                 XGetTransientForHint(dpy, wins[i], &d1)
-			        && (wa.map_state == IsViewable 
+			        && (wa.map_state == IsViewable
                                         || getstate(wins[i])
                                         == IconicState)
                         )
@@ -2885,15 +2885,15 @@ void
 setcurrentdesktop(void)
 {
 	long data[] = { 0 };
-	XChangeProperty(dpy, root, netatom[NetCurrentDesktop], 
-                        XA_CARDINAL, 32, PropModeReplace, 
+	XChangeProperty(dpy, root, netatom[NetCurrentDesktop],
+                        XA_CARDINAL, 32, PropModeReplace,
                         (unsigned char *)data, 1);
 }
 
 void setdesktopnames(void)
 {
 	XTextProperty text;
-	Xutf8TextListToTextProperty(dpy, tags, TAGSLENGTH, 
+	Xutf8TextListToTextProperty(dpy, tags, TAGSLENGTH,
                                         XUTF8StringStyle, &text);
 	XSetTextProperty(dpy, root, &text, netatom[NetDesktopNames]);
 }
@@ -3031,8 +3031,8 @@ void
 setnumdesktops(void)
 {
 	long data[] = { TAGSLENGTH };
-	XChangeProperty(dpy, root, netatom[NetNumberOfDesktops], 
-                        XA_CARDINAL, 32, PropModeReplace, 
+	XChangeProperty(dpy, root, netatom[NetNumberOfDesktops],
+                        XA_CARDINAL, 32, PropModeReplace,
                         (unsigned char *)data, 1);
 }
 
@@ -3164,7 +3164,7 @@ seturgent(Client *c, int urg)
 	XSetWMHints(dpy, c->win, wmh);
 	XFree(wmh);
 }
- 
+
 void
 shiftclient(const Arg *arg)
 {
@@ -3452,7 +3452,7 @@ togglebar(const Arg *arg)
 	updatebarpos(selmon);
         for (c = selmon->clients; c; c = c->next) {
                 if ((c->isfloating && !c->isfullscreen)
-                        || !c->mon->lt[c->mon->sellt]->arrange) 
+                        || !c->mon->lt[c->mon->sellt]->arrange)
                 {
                         setfloatpos(c, "0x 50%");
                 }
@@ -3534,7 +3534,7 @@ togglefloating(const Arg *arg)
 		selmon->sel->sfw = selmon->sel->w;
 		selmon->sel->sfh = selmon->sel->h;
         }
-        
+
 	Atom target = XInternAtom(dpy, "_IS_FLOATING", 0);
 	unsigned int floating[1] = {selmon->sel->isfloating};
         XChangeProperty(dpy, selmon->sel->win, target,
@@ -3963,9 +3963,9 @@ updatemotifhints(Client *c)
 			height = HEIGHT(c);
 
 			if (
-                                motif[MWM_HINTS_DECORATIONS_FIELD] 
+                                motif[MWM_HINTS_DECORATIONS_FIELD]
                                         & MWM_DECOR_ALL
-                                || motif[MWM_HINTS_DECORATIONS_FIELD] 
+                                || motif[MWM_HINTS_DECORATIONS_FIELD]
                                         & MWM_DECOR_BORDER
                                 || motif[MWM_HINTS_DECORATIONS_FIELD]
                                         & MWM_DECOR_TITLE
@@ -4138,7 +4138,7 @@ view(const Arg *arg)
         }
 
         unsigned int curtag = selmon->pertag->curtag;
-        unsigned int sellt = selmon->sellt; 
+        unsigned int sellt = selmon->sellt;
 	selmon->nmaster = selmon->pertag->nmasters[curtag];
 	selmon->mfact = selmon->pertag->mfacts[curtag];
 	selmon->sellt = selmon->pertag->sellts[curtag];

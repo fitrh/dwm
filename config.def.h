@@ -1,29 +1,29 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx       = 1;  /* border pixel of windows */
-static const unsigned int snap           = 8;  /* snap pixel */
+static const unsigned int borderpx  = 1;  /* border pixel of windows */
+static const unsigned int snap      = 8;  /* snap pixel */
 /* vanitygaps */
-static const unsigned int pertaggap      = 1;  /* 0 means all tag have same gap */
-static const unsigned int edgegap        = 1;  /* 1 means floating client respect the outer gap */
-static const unsigned int gappih         = 8;  /* horiz inner gap between windows */
-static const unsigned int gappiv         = 8;  /* vert inner gap between windows */
-static const unsigned int gappoh         = 8;  /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov         = 8;  /* vert outer gap between windows and screen edge */
-static       int smartgaps               = 0;  /* 1 means no outer gap when there is only one window */
+static const unsigned int gappih    = 8;  /* horiz inner gap between windows */
+static const unsigned int gappiv    = 8;  /* vert inner gap between windows */
+static const unsigned int gappoh    = 8;  /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 8;  /* vert outer gap between windows and screen edge */
+static       int smartgaps          = 0;  /* 1 means no outer gap when there is only one window */
+static       int pertaggap          = 1;  /* 0 means all tag have same gap */
+static       int edgegap            = 1;  /* 1 means floating client respect the outer gap */
 /* bar */
-static const unsigned int barheight      = 29; /* 0 means default height*/
-static const unsigned int centertitle    = 1;  /* 0 means left title */
-static const unsigned int colorfultitle  = 1;  /* 0 means title use SchemeTitle and SchemeTitleFloat */
-static const unsigned int colorfultag    = 1;  /* 0 means use SchemeSel for selected non vacant tag */
-static const unsigned int showindicator  = 0;  /* 0 means no top full line indicator for selected non vacant tag */
-static const unsigned int showtitle      = 1;  /* 0 means no title */
-static const unsigned int showvacanttags = 0;  /* 0 means hide vacant tags */
-static const unsigned int bargap         = 1;  /* 0 means vertpad & sidepad is 0 */
-static const int vertpad                 = 8;  /* vertical padding of bar */
-static const int sidepad                 = 8;  /* horizontal padding of bar */
-static const int showbar                 = 1;  /* 0 means no bar */
-static const int topbar                  = 1;  /* 0 means bottom bar */
+static const unsigned int barheight = 29; /* 0 means default height*/
+static const unsigned int vertpad   = 8;  /* vertical padding of bar */
+static const unsigned int sidepad   = 8;  /* horizontal padding of bar */
+static const int showbar            = 1;  /* 0 means no bar */
+static const int topbar             = 1;  /* 0 means bottom bar */
+static const int bargap             = 1;  /* 0 means vertpad & sidepad ignored */
+static const int centertitle        = 1;  /* 0 means left title */
+static const int colorfultitle      = 1;  /* 0 means title use SchemeTitle and SchemeTitleFloat */
+static const int colorfultag        = 1;  /* 0 means use SchemeSel for selected non vacant tag */
+static const int showindicator      = 0;  /* 0 means no line indicator for selected non vacant tag */
+static const int showtitle          = 1;  /* 0 means no title */
+static const int showvacanttags     = 0;  /* 0 means hide vacant tags */
 /* font and color */
 static const char *fonts[]               = {
         "SF Mono:style=Medium:size=10",
@@ -101,8 +101,8 @@ static const char *colors[][3]           = {
 
 /* tagging */
 static const char *tags[] = {
-        "  ", "  ", "  ", "  " , "  ", 
-        "  ", "  ", "  ", "  " 
+        "  ", "  ", "  ", "  " , "  ",
+        "  ", "  ", "  ", "  "
 };
 
 static const char *tagsalt[] = {
@@ -113,7 +113,7 @@ static const char *tagsalt[] = {
 static const int tagschemes[] = {
         SchemeTag1, SchemeTag2, SchemeTag3,
         SchemeTag4, SchemeTag5, SchemeTag6,
-        SchemeTag7, SchemeTag8, SchemeTag9 
+        SchemeTag7, SchemeTag8, SchemeTag9
 };
 
 static const int titleschemes[] = {
@@ -211,10 +211,10 @@ static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 1, 0, 2, 0, 6, 4 };
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { 
-        "dmenu_run", 
-        "-m", dmenumon, 
-        "-fn", dmenufont, 
+static const char *dmenucmd[] = {
+        "dmenu_run",
+        "-m", dmenumon,
+        "-fn", dmenufont,
         "-h", "32",
         "-i", "-c", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
@@ -274,7 +274,7 @@ static Key keys[] = {
         { MOD|ALT, XK_t,       setlayout, {.v = &layouts[3] } /* dwindle */ },
         { MOD, XK_g,           setlayout, {.v = &layouts[4] } /* gaplessgrid */ },
         { MOD|ALT, XK_b,       setlayout, {.v = &layouts[5] } /* bstack */ },
-	{ MOD|CTRL, XK_c,      setlayout, {.v = &layouts[6] } /* centeredmaster */ }, 
+	{ MOD|CTRL, XK_c,      setlayout, {.v = &layouts[6] } /* centeredmaster */ },
 	{ MOD|ALT, XK_c,       setlayout, {.v = &layouts[7] } /* centeredfloatingmaster */ },
 	{ MOD|CTRL, XK_space,  setlayout, {0} },
 	{ MOD|SHIFT, XK_space, togglefloating, {.v = " 50%  50%" } },
@@ -298,7 +298,7 @@ static Key keys[] = {
 	/* Client position is limited to monitor window area */
         { SHIFT|ALT, XK_k, floatpos, {.v = " 0x -8y" } }, // ↑
         { SHIFT|ALT, XK_h, floatpos, {.v = "-8x  0y" } }, // ←
-	{ SHIFT|ALT, XK_l, floatpos, {.v = " 8x  0y" } }, // → 
+	{ SHIFT|ALT, XK_l, floatpos, {.v = " 8x  0y" } }, // →
 	{ SHIFT|ALT, XK_j, floatpos, {.v = " 0x  8y" } }, // ↓
 	/* Client is positioned in the edge or in the middle of the screen. */
         { MOD|ALT, XK_k, floatpos, {.v = "  0x   0%" } }, // ↑
@@ -308,27 +308,27 @@ static Key keys[] = {
         { MOD|ALT, XK_j, floatpos, {.v = "  0x 100%" } }, // ↓
 	/* Resize, increase client size from every side*/
 	{ CTRL|ALT, XK_k, floatpos, {.v = "-1Z -1Z  0w  8h" } }, // ↑
-	{ CTRL|ALT, XK_h, floatpos, {.v = "-1Z -1Z  8w  0h" } }, // ←  
-        { CTRL|ALT, XK_l, floatpos, {.v = "-1S -1S  8w  0h" } }, // → 
+	{ CTRL|ALT, XK_h, floatpos, {.v = "-1Z -1Z  8w  0h" } }, // ←
+        { CTRL|ALT, XK_l, floatpos, {.v = "-1S -1S  8w  0h" } }, // →
 	{ CTRL|ALT, XK_j, floatpos, {.v = "-1S -1S  0w  8h" } }, // ↓
 	/* Resize, decrease client size from every side*/
 	{ MOD|CTRL|ALT, XK_j, floatpos, {.v = "-1Z -1Z  0w -8h" } }, // ↑
-	{ MOD|CTRL|ALT, XK_l, floatpos, {.v = "-1Z -1Z -8w  0h" } }, // ← 
-        { MOD|CTRL|ALT, XK_h, floatpos, {.v = "-1S -1S -8w  0h" } }, // → 
+	{ MOD|CTRL|ALT, XK_l, floatpos, {.v = "-1Z -1Z -8w  0h" } }, // ←
+        { MOD|CTRL|ALT, XK_h, floatpos, {.v = "-1S -1S -8w  0h" } }, // →
 	{ MOD|CTRL|ALT, XK_k, floatpos, {.v = "-1S -1S  0w -8h" } }, // ↓
         /* Unify Resize */
         { MOD|ALT|SHIFT, XK_k,  floatpos, {.v = " 8w  8h" } }, // 
-        { CTRL|ALT|SHIFT, XK_l, floatpos, {.v = " 8w  0h" } }, // ←→ 
+        { CTRL|ALT|SHIFT, XK_l, floatpos, {.v = " 8w  0h" } }, // ←→
         { CTRL|ALT|SHIFT, XK_k, floatpos, {.v = " 0w  8h" } }, // ↑↓
         { MOD|ALT|SHIFT, XK_j,  floatpos, {.v = "-8w -8h" } }, // 
-        { CTRL|ALT|SHIFT, XK_h, floatpos, {.v = "-8w  0h" } }, // →← 
+        { CTRL|ALT|SHIFT, XK_h, floatpos, {.v = "-8w  0h" } }, // →←
         { CTRL|ALT|SHIFT, XK_j, floatpos, {.v = " 0w -8h" } }, // ↓↑
         /* Maximize the client in any given direction */
-        { CTRL|SHIFT, XK_k,     floatpos, {.v = " 0x  0Z   0%   0%" } }, // ↑ 
-        { CTRL|SHIFT, XK_h,     floatpos, {.v = " 0Z  0y   0%   0%" } }, // ← 
-        { MOD|CTRL|SHIFT, XK_c, floatpos, {.v = "50% 50%  80%  80%" } }, // · 
-        { CTRL|SHIFT, XK_l,     floatpos, {.v = "-1S  0y 100%   0%" } }, // → 
-        { CTRL|SHIFT, XK_j,     floatpos, {.v = " 0x -1S   0% 100%" } }, // ↓ 
+        { CTRL|SHIFT, XK_k,     floatpos, {.v = " 0x  0Z   0%   0%" } }, // ↑
+        { CTRL|SHIFT, XK_h,     floatpos, {.v = " 0Z  0y   0%   0%" } }, // ←
+        { MOD|CTRL|SHIFT, XK_c, floatpos, {.v = "50% 50%  80%  80%" } }, // ·
+        { CTRL|SHIFT, XK_l,     floatpos, {.v = "-1S  0y 100%   0%" } }, // →
+        { CTRL|SHIFT, XK_j,     floatpos, {.v = " 0x -1S   0% 100%" } }, // ↓
 	{ MOD|SHIFT, XK_q, quit, {0} },
 	TAGKEYS(XK_1, 0)
 	TAGKEYS(XK_2, 1)

@@ -3484,6 +3484,11 @@ togglebargap(const Arg *arg)
                                 setfloatpos(c, "0x 50%");
                         }
                 }
+                if (m->bargap && m == selmon) {
+                        unsigned int curtag = selmon->pertag->curtag;
+                        selmon->pertag->enablegaps[curtag] = m->bargap;
+                        arrange(NULL);
+                }
                 arrange(m);
 	}
 }
@@ -3550,6 +3555,7 @@ togglegaps(const Arg *arg)
         unsigned int curtag = selmon->pertag->curtag;
         int gap = !selmon->pertag->enablegaps[curtag];
 	selmon->pertag->enablegaps[curtag] = gap;
+        togglebargap(NULL);
 	arrange(NULL);
 }
 

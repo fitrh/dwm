@@ -340,15 +340,15 @@ static void tile(Monitor *);
 static void togglealttag(const Arg *arg);
 static void togglebar(const Arg *arg);
 static void togglebargap(const Arg *arg);
-static void togglecentertitle(const Arg *arg);
-static void togglecolorfultitle(const Arg *arg);
-static void togglecolorfultag(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void togglegaps(const Arg *arg);
 static void toggleindicator(const Arg *arg);
-static void togglepertaggaps(const Arg *arg);
 static void toggletag(const Arg *arg);
+static void toggletagcolor(const Arg *arg);
+static void toggletaggaps(const Arg *arg);
 static void toggletitle(const Arg *arg);
+static void toggletitlecolor(const Arg *arg);
+static void toggletitlepos(const Arg *arg);
 static void togglevacanttag(const Arg *arg);
 static void toggleview(const Arg *arg);
 static void unfocus(Client *c, int setfocus);
@@ -3494,27 +3494,6 @@ togglebargap(const Arg *arg)
 }
 
 void
-togglecentertitle(const Arg *arg)
-{
-        selmon->centertitle = !selmon->centertitle;
-        drawbar(selmon);
-}
-
-void
-togglecolorfultitle(const Arg *arg)
-{
-        selmon->colorfultitle = !selmon->colorfultitle;
-        drawbar(selmon);
-}
-
-void
-togglecolorfultag(const Arg *arg)
-{
-        selmon->colorfultag = !selmon->colorfultag;
-        drawbar(selmon);
-}
-
-void
 togglefloating(const Arg *arg)
 {
 	if (!selmon->sel)
@@ -3567,14 +3546,6 @@ toggleindicator(const Arg *arg)
 }
 
 void
-togglepertaggaps(const Arg *arg)
-{
-        selmon->pertaggap = !selmon->pertaggap;
-	arrange(NULL);
-}
-
-
-void
 toggletag(const Arg *arg)
 {
 	unsigned int newtags;
@@ -3591,10 +3562,38 @@ toggletag(const Arg *arg)
 }
 
 void
+toggletagcolor(const Arg *arg)
+{
+        selmon->colorfultag = !selmon->colorfultag;
+        drawbar(selmon);
+}
+
+void
+toggletaggaps(const Arg *arg)
+{
+        selmon->pertaggap = !selmon->pertaggap;
+	arrange(NULL);
+}
+
+void
 toggletitle(const Arg *arg)
 {
         selmon->showtitle = !selmon->showtitle;
         focus(NULL);
+        drawbar(selmon);
+}
+
+void
+toggletitlecolor(const Arg *arg)
+{
+        selmon->colorfultitle = !selmon->colorfultitle;
+        drawbar(selmon);
+}
+
+void
+toggletitlepos(const Arg *arg)
+{
+        selmon->centertitle = !selmon->centertitle;
         drawbar(selmon);
 }
 

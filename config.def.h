@@ -195,16 +195,16 @@ static const Layout layouts[] = {
 static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 1, 0, 2, 0, 6, 4 };
 
 /* key definitions */
-#define MOD Mod4Mask
-#define ALT Mod1Mask
-#define SHIFT ShiftMask
-#define CTRL  ControlMask
+#define M Mod4Mask
+#define A Mod1Mask
+#define S ShiftMask
+#define C ControlMask
 #define TAGKEYS(KEY,TAG) \
-	{ MOD,            KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MOD|CTRL,       KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MOD|SHIFT,      KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MOD|ALT,        KEY,      tagview,        {.ui = 1 << TAG} }, \
-	{ MOD|CTRL|SHIFT, KEY,      toggletag,      {.ui = 1 << TAG} },
+	{ M,     KEY,  view,       {.ui = 1 << TAG} }, \
+	{ M|C,   KEY,  toggleview, {.ui = 1 << TAG} }, \
+	{ M|S,   KEY,  tag,        {.ui = 1 << TAG} }, \
+	{ M|A,   KEY,  tagview,    {.ui = 1 << TAG} }, \
+	{ M|C|S, KEY,  toggletag,  {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -225,120 +225,120 @@ static Key keys[] = {
          *      function, argument
          * }
          */
-	{ ALT, XK_space, spawn, {.v = dmenucmd } },
-	{ MOD, XK_space, spawn, {.v = termcmd } },
-	{ MOD, XK_b,      togglebar, {0} },
-        { MOD|CTRL, XK_b, togglebargap, {0} },
-	{ MOD, XK_Return, focusmaster, {0} },
-	{ MOD, XK_j,      focusstack, {.i = +1 } },
-	{ MOD, XK_k,      focusstack, {.i = -1 } },
-	{ MOD, XK_i,      incnmaster, {.i = +1 } },
-	{ MOD, XK_d,      incnmaster, {.i = -1 } },
-	{ MOD|CTRL, XK_j, inplacerotate, {.i = +1 } },
-	{ MOD|CTRL, XK_k, inplacerotate, {.i = -1 } },
-	{ MOD|CTRL, XK_h, inplacerotate, {.i = +2 } },
-	{ MOD|CTRL, XK_l, inplacerotate, {.i = -2 } },
-	{ MOD, XK_h,         setmfact, {.f = -0.01 } },
-	{ MOD, XK_l,         setmfact, {.f = +0.01 } },
-	{ MOD, XK_o,         setmfact, {.f = mfact } },
-	{ MOD|SHIFT, XK_h,   setcfact, {.f = -0.05 } },
-	{ MOD|SHIFT, XK_l,   setcfact, {.f = +0.05 } },
-	{ MOD|SHIFT, XK_o,   setcfact, {.f =  0.00 } },
-	{ MOD|CTRL, XK_o,    setcfact, {.f =  1.00 } },
-	{ MOD|ALT, XK_space, resetfact, {0} },
-        { MOD|ALT, XK_0,        togglegaps, {0} },
-        { MOD|CTRL, XK_0,       togglepertaggaps, {0} },
-        { MOD|SHIFT, XK_equal,  defaultgaps, {0} },
-	{ MOD, XK_equal,        incrgaps, {.i = +1 } },
-	{ MOD, XK_minus,        incrgaps, {.i = -1 } },
-	{ MOD|ALT, XK_i,        incrigaps, {.i = +1 } },
-	{ MOD|ALT|SHIFT, XK_i,  incrigaps, {.i = -1 } },
-	{ MOD|ALT, XK_o,        incrogaps, {.i = +1 } },
-	{ MOD|ALT|SHIFT, XK_o,  incrogaps, {.i = -1 } },
-	{ MOD|ALT, XK_x,        incrihgaps, {.i = +1 } },
-	{ MOD|ALT|SHIFT, XK_x,  incrihgaps, {.i = -1 } },
-	{ MOD|ALT, XK_y,        incrivgaps, {.i = +1 } },
-	{ MOD|ALT|SHIFT, XK_y,  incrivgaps, {.i = -1 } },
-	{ MOD|CTRL, XK_x,       incrohgaps, {.i = +1 } },
-	{ MOD|CTRL|SHIFT, XK_x, incrohgaps, {.i = -1 } },
-	{ MOD|CTRL, XK_y,       incrovgaps, {.i = +1 } },
-	{ MOD|CTRL|SHIFT, XK_y, incrovgaps, {.i = -1 } },
-	{ MOD|SHIFT, XK_Return, zoom, {0} },
-	{ MOD, XK_Tab, view, {0} },
-	{ MOD|SHIFT, XK_c, killclient, {0} },
-	{ MOD|CTRL, XK_comma,  cyclelayout, {.i = -1 } },
-	{ MOD|CTRL, XK_period, cyclelayout, {.i = +1 } },
-        { MOD, XK_t,           setlayout, {.v = &layouts[0] } /* tile */ },
-        { MOD, XK_f,           setlayout, {.v = &layouts[1] } /* float */ },
-        { MOD, XK_m,           setlayout, {.v = &layouts[2] } /* monocle */ },
-        { MOD|ALT, XK_t,       setlayout, {.v = &layouts[3] } /* dwindle */ },
-        { MOD, XK_g,           setlayout, {.v = &layouts[4] } /* gaplessgrid */ },
-        { MOD|ALT, XK_b,       setlayout, {.v = &layouts[5] } /* bstack */ },
-	{ MOD|CTRL, XK_c,      setlayout, {.v = &layouts[6] } /* centeredmaster */ },
-	{ MOD|ALT, XK_c,       setlayout, {.v = &layouts[7] } /* centeredfloatingmaster */ },
-	{ MOD|CTRL, XK_space,  setlayout, {0} },
-	{ MOD|SHIFT, XK_space, togglefloating, {.v = " 50%  50%" } },
-	{ MOD, XK_0, view, {.ui = ~0 } },
-	{ MOD|SHIFT, XK_0, tag, {.ui = ~0 } },
-	{ MOD, XK_n,            togglealttag, {0} },
-	{ MOD|CTRL|SHIFT, XK_n, togglecentertitle, {0} },
-	{ MOD|SHIFT, XK_n,      togglecolorfultag, {0} },
-	{ MOD|CTRL, XK_n,       togglecolorfultitle, {0} },
-	{ MOD|ALT|CTRL, XK_n,   toggleindicator, {0} },
-	{ MOD|ALT, XK_n,        toggletitle, {0} },
-	{ MOD|ALT|SHIFT, XK_n,  togglevacanttag, {0} },
-	{ ALT|SHIFT, XK_bracketright, shiftview, {.i = +1 } },
-	{ ALT|SHIFT, XK_bracketleft,  shiftview, {.i = -1 } },
-	{ MOD|SHIFT, XK_bracketright, shiftclient, {.i = +1 } },
-	{ MOD|SHIFT, XK_bracketleft,  shiftclient, {.i = -1 } },
-	{ MOD, XK_comma,  focusmon, {.i = -1 } },
-	{ MOD, XK_period, focusmon, {.i = +1 } },
-	{ MOD|SHIFT, XK_comma,  tagmon, {.i = -1 } },
-	{ MOD|SHIFT, XK_period, tagmon, {.i = +1 } },
+	{ A,      XK_space,        spawn,            {.v = dmenucmd } },
+	{ M,      XK_space,        spawn,            {.v = termcmd } },
+	{ M,      XK_b,            togglebar,        {0} },
+        { M|C,    XK_b,            togglebargap,     {0} },
+	{ M,      XK_Return,       focusmaster,      {0} },
+	{ M,      XK_j,            focusstack,       {.i = +1 } },
+	{ M,      XK_k,            focusstack,       {.i = -1 } },
+	{ M,      XK_i,            incnmaster,       {.i = +1 } },
+	{ M,      XK_d,            incnmaster,       {.i = -1 } },
+	{ M|C,    XK_j,            inplacerotate,    {.i = +1 } },
+	{ M|C,    XK_k,            inplacerotate,    {.i = -1 } },
+	{ M|C,    XK_h,            inplacerotate,    {.i = +2 } },
+	{ M|C,    XK_l,            inplacerotate,    {.i = -2 } },
+	{ M,      XK_h,            setmfact,         {.f = -0.01 } },
+	{ M,      XK_l,            setmfact,         {.f = +0.01 } },
+	{ M,      XK_o,            setmfact,         {.f = mfact } },
+	{ M|S,    XK_h,            setcfact,         {.f = -0.05 } },
+	{ M|S,    XK_l,            setcfact,         {.f = +0.05 } },
+	{ M|S,    XK_o,            setcfact,         {.f =  0.00 } },
+	{ M|C,    XK_o,            setcfact,         {.f =  1.00 } },
+	{ M|A,    XK_space,        resetfact,        {0} },
+        { M|A,    XK_0,            togglegaps,       {0} },
+        { M|C,    XK_0,            toggletaggaps,    {0} },
+        { M|S,    XK_equal,        defaultgaps,      {0} },
+	{ M,      XK_equal,        incrgaps,         {.i = +1 } },
+	{ M,      XK_minus,        incrgaps,         {.i = -1 } },
+	{ M|A,    XK_i,            incrigaps,        {.i = +1 } },
+	{ M|A|S,  XK_i,            incrigaps,        {.i = -1 } },
+	{ M|A,    XK_o,            incrogaps,        {.i = +1 } },
+	{ M|A|S,  XK_o,            incrogaps,        {.i = -1 } },
+	{ M|A,    XK_x,            incrihgaps,       {.i = +1 } },
+	{ M|A|S,  XK_x,            incrihgaps,       {.i = -1 } },
+	{ M|A,    XK_y,            incrivgaps,       {.i = +1 } },
+	{ M|A|S,  XK_y,            incrivgaps,       {.i = -1 } },
+	{ M|C,    XK_x,            incrohgaps,       {.i = +1 } },
+	{ M|C|S,  XK_x,            incrohgaps,       {.i = -1 } },
+	{ M|C,    XK_y,            incrovgaps,       {.i = +1 } },
+	{ M|C|S,  XK_y,            incrovgaps,       {.i = -1 } },
+	{ M|S,    XK_Return,       zoom,             {0} },
+	{ M,      XK_Tab,          view,             {0} },
+	{ M|S,    XK_c,            killclient,       {0} },
+	{ M|C,    XK_comma,        cyclelayout,      {.i = -1 } },
+	{ M|C,    XK_period,       cyclelayout,      {.i = +1 } },
+        { M,      XK_t,            setlayout,        {.v = &layouts[0] } /* tile */ },
+        { M,      XK_f,            setlayout,        {.v = &layouts[1] } /* float */ },
+        { M,      XK_m,            setlayout,        {.v = &layouts[2] } /* monocle */ },
+        { M|A,    XK_t,            setlayout,        {.v = &layouts[3] } /* dwindle */ },
+        { M,      XK_g,            setlayout,        {.v = &layouts[4] } /* gaplessgrid */ },
+        { M|A,    XK_b,            setlayout,        {.v = &layouts[5] } /* bstack */ },
+	{ M|C,    XK_c,            setlayout,        {.v = &layouts[6] } /* centeredmaster */ },
+	{ M|A,    XK_c,            setlayout,        {.v = &layouts[7] } /* centeredfloatingmaster */ },
+	{ M|C,    XK_space,        setlayout,        {0} },
+	{ M|S,    XK_space,        togglefloating,   {.v = " 50%  50%" } },
+	{ M,      XK_0,            view,             {.ui = ~0 } },
+	{ M|S,    XK_0,            tag,              {.ui = ~0 } },
+	{ M,      XK_n,            togglealttag,     {0} },
+	{ M|A|C,  XK_n,            toggleindicator,  {0} },
+	{ M|S,    XK_n,            toggletagcolor,   {0} },
+	{ M|A,    XK_n,            toggletitle,      {0} },
+	{ M|C|S,  XK_n,            toggletitlepos,   {0} },
+	{ M|C,    XK_n,            toggletitlecolor, {0} },
+	{ M|A|S,  XK_n,            togglevacanttag,  {0} },
+	{ A|S,    XK_bracketright, shiftview,        {.i = +1 } },
+	{ A|S,    XK_bracketleft,  shiftview,        {.i = -1 } },
+	{ M|S,    XK_bracketright, shiftclient,      {.i = +1 } },
+	{ M|S,    XK_bracketleft,  shiftclient,      {.i = -1 } },
+	{ M,      XK_comma,        focusmon,         {.i = -1 } },
+	{ M,      XK_period,       focusmon,         {.i = +1 } },
+	{ M|S,    XK_comma,        tagmon,           {.i = -1 } },
+	{ M|S,    XK_period,       tagmon,           {.i = +1 } },
 	/* Client position is limited to monitor window area */
-        { SHIFT|ALT, XK_k, floatpos, {.v = " 0x -8y" } }, // ↑
-        { SHIFT|ALT, XK_h, floatpos, {.v = "-8x  0y" } }, // ←
-	{ SHIFT|ALT, XK_l, floatpos, {.v = " 8x  0y" } }, // →
-	{ SHIFT|ALT, XK_j, floatpos, {.v = " 0x  8y" } }, // ↓
+        { S|A,    XK_k,            floatpos,         {.v = " 0x -8y" } }, // ↑
+        { S|A,    XK_h,            floatpos,         {.v = "-8x  0y" } }, // ←
+	{ S|A,    XK_l,            floatpos,         {.v = " 8x  0y" } }, // →
+	{ S|A,    XK_j,            floatpos,         {.v = " 0x  8y" } }, // ↓
 	/* Client is positioned in the edge or in the middle of the screen. */
-        { MOD|ALT, XK_k, floatpos, {.v = "  0x   0%" } }, // ↑
-        { MOD|ALT, XK_h, floatpos, {.v = "  0%   0y" } }, // ←
-        { MOD, XK_c,     floatpos, {.v = " 50%  50%" } }, // ·
-        { MOD|ALT, XK_l, floatpos, {.v = "100%   0y" } }, // →
-        { MOD|ALT, XK_j, floatpos, {.v = "  0x 100%" } }, // ↓
+        { M|A,    XK_k,            floatpos,         {.v = "  0x   0%" } }, // ↑
+        { M|A,    XK_h,            floatpos,         {.v = "  0%   0y" } }, // ←
+        { M,      XK_c,            floatpos,         {.v = " 50%  50%" } }, // ·
+        { M|A,    XK_l,            floatpos,         {.v = "100%   0y" } }, // →
+        { M|A,    XK_j,            floatpos,         {.v = "  0x 100%" } }, // ↓
 	/* Resize, increase client size from every side*/
-	{ CTRL|ALT, XK_k, floatpos, {.v = "-1Z -1Z  0w  8h" } }, // ↑
-	{ CTRL|ALT, XK_h, floatpos, {.v = "-1Z -1Z  8w  0h" } }, // ←
-        { CTRL|ALT, XK_l, floatpos, {.v = "-1S -1S  8w  0h" } }, // →
-	{ CTRL|ALT, XK_j, floatpos, {.v = "-1S -1S  0w  8h" } }, // ↓
+	{ C|A,    XK_k,            floatpos,         {.v = "-1Z -1Z  0w  8h" } }, // ↑
+	{ C|A,    XK_h,            floatpos,         {.v = "-1Z -1Z  8w  0h" } }, // ←
+        { C|A,    XK_l,            floatpos,         {.v = "-1S -1S  8w  0h" } }, // →
+	{ C|A,    XK_j,            floatpos,         {.v = "-1S -1S  0w  8h" } }, // ↓
 	/* Resize, decrease client size from every side*/
-	{ MOD|CTRL|ALT, XK_j, floatpos, {.v = "-1Z -1Z  0w -8h" } }, // ↑
-	{ MOD|CTRL|ALT, XK_l, floatpos, {.v = "-1Z -1Z -8w  0h" } }, // ←
-        { MOD|CTRL|ALT, XK_h, floatpos, {.v = "-1S -1S -8w  0h" } }, // →
-	{ MOD|CTRL|ALT, XK_k, floatpos, {.v = "-1S -1S  0w -8h" } }, // ↓
+	{ M|C|A,  XK_j,            floatpos,         {.v = "-1Z -1Z  0w -8h" } }, // ↑
+	{ M|C|A,  XK_l,            floatpos,         {.v = "-1Z -1Z -8w  0h" } }, // ←
+        { M|C|A,  XK_h,            floatpos,         {.v = "-1S -1S -8w  0h" } }, // →
+	{ M|C|A,  XK_k,            floatpos,         {.v = "-1S -1S  0w -8h" } }, // ↓
         /* Unify Resize */
-        { MOD|ALT|SHIFT, XK_k,  floatpos, {.v = " 8w  8h" } }, // 
-        { CTRL|ALT|SHIFT, XK_l, floatpos, {.v = " 8w  0h" } }, // ←→
-        { CTRL|ALT|SHIFT, XK_k, floatpos, {.v = " 0w  8h" } }, // ↑↓
-        { MOD|ALT|SHIFT, XK_j,  floatpos, {.v = "-8w -8h" } }, // 
-        { CTRL|ALT|SHIFT, XK_h, floatpos, {.v = "-8w  0h" } }, // →←
-        { CTRL|ALT|SHIFT, XK_j, floatpos, {.v = " 0w -8h" } }, // ↓↑
+        { M|A|S,  XK_k,            floatpos,         {.v = " 8w  8h" } }, // 
+        { C|A|S,  XK_l,            floatpos,         {.v = " 8w  0h" } }, // ←→
+        { C|A|S,  XK_k,            floatpos,         {.v = " 0w  8h" } }, // ↑↓
+        { M|A|S,  XK_j,            floatpos,         {.v = "-8w -8h" } }, // 
+        { C|A|S,  XK_h,            floatpos,         {.v = "-8w  0h" } }, // →←
+        { C|A|S,  XK_j,            floatpos,         {.v = " 0w -8h" } }, // ↓↑
         /* Maximize the client in any given direction */
-        { CTRL|SHIFT, XK_k,     floatpos, {.v = " 0x  0Z   0%   0%" } }, // ↑
-        { CTRL|SHIFT, XK_h,     floatpos, {.v = " 0Z  0y   0%   0%" } }, // ←
-        { MOD|CTRL|SHIFT, XK_c, floatpos, {.v = "50% 50%  80%  80%" } }, // ·
-        { CTRL|SHIFT, XK_l,     floatpos, {.v = "-1S  0y 100%   0%" } }, // →
-        { CTRL|SHIFT, XK_j,     floatpos, {.v = " 0x -1S   0% 100%" } }, // ↓
-	{ MOD|SHIFT, XK_q, quit, {0} },
-	TAGKEYS(XK_1, 0)
-	TAGKEYS(XK_2, 1)
-	TAGKEYS(XK_3, 2)
-	TAGKEYS(XK_4, 3)
-	TAGKEYS(XK_5, 4)
-	TAGKEYS(XK_6, 5)
-	TAGKEYS(XK_7, 6)
-	TAGKEYS(XK_8, 7)
-	TAGKEYS(XK_9, 8)
+        { C|S,    XK_k,            floatpos,         {.v = " 0x  0Z   0%   0%" } }, // ↑
+        { C|S,    XK_h,            floatpos,         {.v = " 0Z  0y   0%   0%" } }, // ←
+        { M|C|S,  XK_c,            floatpos,         {.v = "50% 50%  80%  80%" } }, // ·
+        { C|S,    XK_l,            floatpos,         {.v = "-1S  0y 100%   0%" } }, // →
+        { C|S,    XK_j,            floatpos,         {.v = " 0x -1S   0% 100%" } }, // ↓
+	{ M|S,    XK_q,            quit,             {0} },
+	TAGKEYS(  XK_1,                              0)
+	TAGKEYS(  XK_2,                              1)
+	TAGKEYS(  XK_3,                              2)
+	TAGKEYS(  XK_4,                              3)
+	TAGKEYS(  XK_5,                              4)
+	TAGKEYS(  XK_6,                              5)
+	TAGKEYS(  XK_7,                              6)
+	TAGKEYS(  XK_8,                              7)
+	TAGKEYS(  XK_9,                              8)
 };
 
 /* button definitions */
@@ -351,13 +351,13 @@ static Button buttons[] = {
 	{ ClkStatusText, 0,           Button1, sigdwmblocks,   {.i = 1} },
 	{ ClkStatusText, 0,           Button2, sigdwmblocks,   {.i = 2} },
 	{ ClkStatusText, 0,           Button3, sigdwmblocks,   {.i = 3} },
-	{ ClkClientWin,  MOD,         Button1, movemouse,      {0} },
-	{ ClkClientWin,  MOD,         Button2, togglefloating, {0} },
-	{ ClkClientWin,  MOD,         Button3, resizemouse,    {0} },
+	{ ClkClientWin,  M,           Button1, movemouse,      {0} },
+	{ ClkClientWin,  M,           Button2, togglefloating, {0} },
+	{ ClkClientWin,  M,           Button3, resizemouse,    {0} },
 	{ ClkTagBar,     0,           Button1, view,           {0} },
 	{ ClkTagBar,     0,           Button3, toggleview,     {0} },
-	{ ClkTagBar,     MOD,         Button1, tag,            {0} },
-	{ ClkTagBar,     MOD,         Button3, toggletag,      {0} },
+	{ ClkTagBar,     M,           Button1, tag,            {0} },
+	{ ClkTagBar,     M,           Button3, toggletag,      {0} },
         { ClkTagBar,	 0,           Button4, shiftview,      {.i = -1} },
 	{ ClkTagBar,	 0,	      Button5, shiftview,      {.i = 1} },
 };

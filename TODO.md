@@ -10,7 +10,7 @@
 - [ ] [swaptags](https://dwm.suckless.org/patches/swaptags)
 - [ ] [warp](https://dwm.suckless.org/patches/warp)
 - [ ] [cursorwarp](https://dwm.suckless.org/patches/cursorwarp)
-- [ ] [Bar Border](https://codemadness.org/paste/dwm-border-bar.patch)
+- [x] 2e8d3d6 - [Bar Border](https://codemadness.org/paste/dwm-border-bar.patch)
 - [ ] [focusedontop](https://github.com/bakkeby/patches/commit/cf9ea5e)
 
 ---
@@ -29,6 +29,7 @@
 - [x] center using floatpos, possibility for removing alwayscenter patch
   - ref: [bakkeby dusk](https://github.com/bakkeby/dusk/commit/cd0eeb8)
 - [x] toggle bar gap on toggle gap
+- [ ] configurable bar border and create separe color scheme for it
 
 ---
 

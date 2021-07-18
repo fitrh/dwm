@@ -1224,11 +1224,17 @@ void
 drawbar(Monitor *m)
 {
 	int x, w, wdelta, tagscheme;
+        int y = borderpx;
+        int h = bh - borderpx * 2;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
         unsigned int titlepad = lrpad / 2;
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
+
+        /* draw rectangle that will look like border */
+        XSetForeground(drw->dpy, drw->gc, scheme[SchemeSel][ColBorder].pixel);
+        XFillRectangle(drw->dpy, drw->drawable, drw->gc, 0, 0, m->ww, bh);
 
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
@@ -1238,7 +1244,7 @@ drawbar(Monitor *m)
 
                 drw_setscheme(drw, scheme[SchemeNorm]);
                 x = m->ww - wstext - 2 * sp;
-                drw_rect(drw, x, 0, LSPAD, bh, 1, 1); x += LSPAD; /* to keep left padding clean */
+                drw_rect(drw, x, y, LSPAD, h, 1, 1); x += LSPAD; /* to keep left padding clean */
                 for (;;) {
                         if ((unsigned char)*stc >= ' ') {
                                 stc++;
@@ -1248,7 +1254,7 @@ drawbar(Monitor *m)
                         if (stp != stc) {
                                 *stc = '\0';
                                 x = drw_text(
-                                        drw, x, 0, TTEXTW(stp), bh, 0, stp, 0
+                                        drw, x, y, TTEXTW(stp), h, 0, stp, 0
                                 );
                         }
                         if (tmp == '\0')
@@ -1261,7 +1267,7 @@ drawbar(Monitor *m)
                         stp = ++stc;
                 }
                 drw_setscheme(drw, scheme[SchemeNorm]);
-                drw_rect(drw, x, 0, m->ww - x, bh, 1, 1); /* to keep right padding clean */
+                drw_rect(drw, x, y, LSPAD - y, h, 1, 1); /* to keep right padding clean */
 	}
 
         for (c = m->clients; c; c = c->next) {
@@ -1269,7 +1275,7 @@ drawbar(Monitor *m)
                 if (c->isurgent)
                         urg |= c->tags;
         }
-        x = 0;
+        x = borderpx;
         for (i = 0; i < LENGTH(tags); i++) {
                 tagscheme = SchemeTag;
                 /* do not draw vacant tags on current monitor */
@@ -1290,8 +1296,8 @@ drawbar(Monitor *m)
                 }
                 drw_setscheme(drw, scheme[tagscheme]);
                 drw_text(
-                        drw, x, 0,
-                        w, bh, wdelta + lrpad / 2,
+                        drw, x, y,
+                        w + y, h, wdelta + lrpad / 2,
                         (m->alttag ? tagsalt[i] : tags[i]),
                         urg & 1 << i
                 );
@@ -1305,7 +1311,7 @@ drawbar(Monitor *m)
                                 * that have clients */
                                         drw_rect(
                                                 m->showindicator ? drw : NULL,
-                                                x, 0, w, boxw - 2,
+                                                x, y, w, boxw - 2,
                                                 1, urg & 1 << 1
                                         );
                                 else if (m->sel)
@@ -1315,7 +1321,7 @@ drawbar(Monitor *m)
                                         drw_rect(
                                                 drw,
                                                 x + (3 * boxw + 1),
-                                                bh - (boxw - 2),
+                                                h - (boxw - 2),
                                                 w - (6 * boxw + 1), boxw - 2,
                                                 1, urg & 1 << 1
                                         );
@@ -1325,7 +1331,7 @@ drawbar(Monitor *m)
                                 drw_rect(
                                         m->showvacanttags ? drw : NULL,
                                         x + (3 * boxw + 1),
-                                        bh - (boxw - 2),
+                                        h - (boxw - 2),
                                         w - (6 * boxw + 1), boxw - 2,
                                         1, urg & 1 << 1
                                 );
@@ -1335,7 +1341,7 @@ drawbar(Monitor *m)
         }
         w = TEXTW(m->ltsymbol);
         drw_setscheme(drw, scheme[m == selmon ? SchemeLayout : SchemeInactive]);
-        x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+        x = drw_text(drw, x, y, w, h, lrpad / 2, m->ltsymbol, 0);
 
         if (m == selmon) {
                 blw = w, ble = x;
@@ -1343,7 +1349,7 @@ drawbar(Monitor *m)
         } else {
                 w = m->ww - x;
         }
-	if (w > bh) {
+	if (w > h) {
 		if (m->sel && m->showtitle) {
                         if (m->colorfultitle)
                                 for (i = 0; i < LENGTH(tags); i++)
@@ -1369,8 +1375,8 @@ drawbar(Monitor *m)
                         }
 			drw_text(
                                 drw,
-                                x, 0,
-                                w - 2 * sp, bh, titlepad,
+                                x, y,
+                                w - 2 * sp, h, titlepad,
                                 m->sel->name, 0
                         );
                         drw_rect(
@@ -1381,7 +1387,7 @@ drawbar(Monitor *m)
                         );
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
-			drw_rect(drw, x, 0, w - 2 * sp, bh, 1, 1);
+			drw_rect(drw, x, y, w - 2 * sp, h, 1, 1);
 		}
 	}
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
@@ -3056,7 +3062,7 @@ setup(void)
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
-	bh = barheight ? barheight : drw->fonts->h + 2;
+	bh = barheight ? barheight + borderpx * 2 : drw->fonts->h + 2 + borderpx * 2;
 	sp = sidepad;
 	vp = (topbar == 1) ? vertpad : - vertpad;
 	updategeom();

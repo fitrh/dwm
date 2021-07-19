@@ -1275,7 +1275,7 @@ drawbar(Monitor *m)
                 if (c->isurgent)
                         urg |= c->tags;
         }
-        x = borderpx;
+        x = barborder;
         for (i = 0; i < LENGTH(tags); i++) {
                 tagscheme = SchemeTag;
                 /* do not draw vacant tags on current monitor */

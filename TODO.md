@@ -57,8 +57,6 @@
 
 - [ ] setdesktopnames
 
-### REFS
-
 [1]: <https://github.com/fitrh/dwm/commit/2e8d3d61e2758f63bf4c11cb6df07049543b19e6> "2e8d3d6"
 [2]: <https://github.com/fitrh/dwm/commit/c797410334f26c90b544ec74b98425844838f16f> "c797410"
 [3]: <https://github.com/fitrh/dwm/commit/aa0b0563aa459f830fc8ade1bef9b9ad582b0621> "aa0b056"

@@ -1224,8 +1224,8 @@ void
 drawbar(Monitor *m)
 {
 	int x, w, wdelta, tagscheme;
-        int y = barborder;
-        int h = bh - barborder * 2;
+        int y = m->bargap ? barborder : 0;
+        int h = bh - y * 2;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
         unsigned int titlepad = lrpad / 2;
@@ -1275,7 +1275,7 @@ drawbar(Monitor *m)
                 if (c->isurgent)
                         urg |= c->tags;
         }
-        x = barborder;
+        x = y;
         for (i = 0; i < LENGTH(tags); i++) {
                 tagscheme = SchemeTag;
                 /* do not draw vacant tags on current monitor */

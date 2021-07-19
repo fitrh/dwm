@@ -1381,7 +1381,7 @@ drawbar(Monitor *m)
                         );
                         drw_rect(
                                 m->sel->isfloating ? drw : NULL,
-                                x + boxs + titlepad - lrpad / 2, boxs,
+                                x + boxs + titlepad - lrpad / 2, boxs + y,
                                 boxw, boxw,
                                 m->sel->isfixed, 0
                         );

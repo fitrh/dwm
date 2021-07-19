@@ -29,7 +29,7 @@
 - [x] center using floatpos, possibility for removing alwayscenter patch
   - ref: [bakkeby dusk](https://github.com/bakkeby/dusk/commit/cd0eeb8)
 - [x] toggle bar gap on toggle gap
-- [ ] configurable bar border and create separe color scheme for it
+- [x] c797410 aa0b056 - configurable bar border and create separe color scheme for it
 
 ---
 

@@ -5,6 +5,7 @@ static const unsigned int snap      = 8;  /* snap pixel */
 static const int lockfullscreen     = 1;  /* 1 will force focus on the fullscreen window */
 /* appearance */
 static const unsigned int borderpx  = 1;  /* border pixel of windows */
+static const unsigned int barborder = 2;  /* border pixel of bar */
 /* vanitygaps */
 static const unsigned int gappih    = 8;  /* horiz inner gap between windows */
 static const unsigned int gappiv    = 8;  /* vert inner gap between windows */

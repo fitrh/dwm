@@ -1224,8 +1224,8 @@ void
 drawbar(Monitor *m)
 {
 	int x, w, wdelta, tagscheme;
-        int y = borderpx;
-        int h = bh - borderpx * 2;
+        int y = barborder;
+        int h = bh - barborder * 2;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
         unsigned int titlepad = lrpad / 2;

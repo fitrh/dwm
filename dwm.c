@@ -87,7 +87,7 @@ enum { SchemeNorm, SchemeSel, SchemeDarker,
        SchemeBlack, SchemeWhite,
        SchemeBrRed, SchemeBrGreen, SchemeBrBlue,
        SchemeBrCyan, SchemeBrMagenta, SchemeBrYellow,
-       SchemeBrBlack, SchemeBrWhite, SchemeFloat, SchemeInactive,
+       SchemeBrBlack, SchemeBrWhite, SchemeFloat, SchemeInactive, SchemeBar,
        SchemeTag, SchemeTag1, SchemeTag2, SchemeTag3,
        SchemeTag4, SchemeTag5, SchemeTag6, SchemeTag7,
        SchemeTag8, SchemeTag9, SchemeLayout,
@@ -1233,7 +1233,7 @@ drawbar(Monitor *m)
 	Client *c;
 
         /* draw rectangle that will look like border */
-        XSetForeground(drw->dpy, drw->gc, scheme[SchemeSel][ColBorder].pixel);
+        XSetForeground(drw->dpy, drw->gc, scheme[SchemeBar][ColBorder].pixel);
         XFillRectangle(drw->dpy, drw->drawable, drw->gc, 0, 0, m->ww, bh);
 
 	/* draw status first so it can be overdrawn by tags later */
@@ -1242,7 +1242,7 @@ drawbar(Monitor *m)
                 char *stp = stextc;
                 char tmp;
 
-                drw_setscheme(drw, scheme[SchemeNorm]);
+                drw_setscheme(drw, scheme[SchemeBar]);
                 x = m->ww - wstext - 2 * sp;
                 drw_rect(drw, x, y, LSPAD, h, 1, 1); x += LSPAD; /* to keep left padding clean */
                 for (;;) {
@@ -1266,7 +1266,7 @@ drawbar(Monitor *m)
                         *stc = tmp;
                         stp = ++stc;
                 }
-                drw_setscheme(drw, scheme[SchemeNorm]);
+                drw_setscheme(drw, scheme[SchemeBar]);
                 drw_rect(drw, x, y, LSPAD - y, h, 1, 1); /* to keep right padding clean */
 	}
 
@@ -1287,7 +1287,7 @@ drawbar(Monitor *m)
                 w = TEXTW(tags[i]);
                 wdelta = m->alttag ? (TEXTW(tagsalt[i]) - w) / 2 : 0;
                 if (m == selmon && m->tagset[m->seltags] & 1 << i) {
-                        tagscheme = SchemeNorm;
+                        tagscheme = SchemeBar;
                         if (m->sel && m->sel->tags & 1 << i)
                                 tagscheme = m->colorfultag
                                                 ? tagschemes[i] : SchemeSel;
@@ -1386,7 +1386,7 @@ drawbar(Monitor *m)
                                 m->sel->isfixed, 0
                         );
 		} else {
-			drw_setscheme(drw, scheme[SchemeNorm]);
+			drw_setscheme(drw, scheme[SchemeBar]);
 			drw_rect(drw, x, y, w - 2 * sp, h, 1, 1);
 		}
 	}

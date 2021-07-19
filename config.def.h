@@ -78,6 +78,7 @@ static const char *colors[][3]           = {
         [SchemeBrWhite]    = { col_br_white,   col_bg,         col_black },      /* \x1d */
         [SchemeFloat]      = { col_fg,         col_bg,         col_blue },       /* \x1e */
         [SchemeInactive]   = { col_br_black,   col_bg,         col_black },      /* \x1f */
+        [SchemeBar]        = { col_fg,         col_bg,         col_black },
         [SchemeTag]        = { col_br_black,   col_bg,         col_black },
         [SchemeTag1]       = { col_fg,         col_dark,       col_black },
 	[SchemeTag2]       = { col_red,        col_dark,       col_black },

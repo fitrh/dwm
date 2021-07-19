@@ -3477,8 +3477,11 @@ togglebargap(const Arg *arg)
 {
         Client *c;
 	Monitor *m;
+        int h = barheight ? barheight + barborder * 2
+                : drw->fonts->h + 2 + barborder * 2;
 	for (m = mons; m; m = m->next) {
                 m->bargap = !m->bargap;
+                bh = m->bargap ? h : h - barborder * 2;
                 sp = m->bargap ? sidepad : 0;
                 vp = m->bargap ? (topbar ? vertpad : - vertpad) : 0;
                 updatebarpos(m);

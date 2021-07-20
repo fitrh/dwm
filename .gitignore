@@ -1,3 +1,8 @@
-patch/
 *.diff
 *.log
+*.o
+dwm
+config.h
+compile_commands.json
+.cache/
+patch/

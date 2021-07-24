@@ -1293,6 +1293,8 @@ drawbar(Monitor *m)
                                                 ? tagschemes[i] : SchemeSel;
                         else if (m->sel && m->colorfultag && m->showindicator)
                                 tagscheme = tagschemes[i];
+                        else if (m->sel && !m->showvacanttags)
+                                tagscheme = SchemeTag;
                 }
                 drw_setscheme(drw, scheme[tagscheme]);
                 drw_text(
@@ -1314,7 +1316,7 @@ drawbar(Monitor *m)
                                                 x, y, w, boxw - 2,
                                                 1, urg & 1 << 1
                                         );
-                                else if (m->sel)
+                                else if (m->sel && !m->showvacanttags)
                                 /* if more than one tag selected, draw smaller
                                  * line at the bottom of another selected non
                                  * vacant tag */

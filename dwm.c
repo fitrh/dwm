@@ -2843,8 +2843,7 @@ setup(void)
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
-	bh = barheight ? barheight + barborder * 2
-                : drw->fonts->h + 2 + barborder * 2;
+	bh = (barheight ? barheight : drw->fonts->h + 2) + barborder * 2;
 	sp = sidepad;
 	vp = (topbar == 1) ? vertpad : - vertpad;
 	updategeom();
@@ -3226,8 +3225,7 @@ togglebargap(const Arg *arg)
 {
         Client *c;
 	Monitor *m;
-        int h = barheight ? barheight + barborder * 2
-                : drw->fonts->h + 2 + barborder * 2;
+        int h = (barheight ? barheight : drw->fonts->h + 2) + barborder * 2;
 	for (m = mons; m; m = m->next) {
                 m->bargap = !m->bargap;
                 bh = m->bargap ? h : h - barborder * 2;

@@ -679,8 +679,8 @@ buttonpress(XEvent *e)
                         do {
                                 /* do not reserve space for vacant tags */
                                 if (!selmon->showvacanttags) {
-                                        if(occ & 1 << i
-                                        || m->tagset[m->seltags] & 1 << i)
+                                        if (!(occ & 1 << i
+                                        || m->tagset[m->seltags] & 1 << i))
                                                 continue;
                                 }
                                 x += TEXTW(tags[i]);

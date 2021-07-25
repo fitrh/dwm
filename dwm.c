@@ -3254,7 +3254,9 @@ togglefloating(const Arg *arg)
 	if (!selmon->sel) return;
 	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
 		return;
-	if (!selmon->sel->isfloating || selmon->sel->isfixed) {
+        selmon->sel->isfloating = !selmon->sel->isfloating
+                                  || selmon->sel->isfixed;
+        if (selmon->sel->isfloating) {
 		XSetWindowBorder(dpy, selmon->sel->win,
                                 scheme[selmon->showtitle
                                         ? SchemeSel

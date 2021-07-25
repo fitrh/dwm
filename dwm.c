@@ -221,9 +221,8 @@ typedef struct {
 
 /* function declarations */
 static void applyrules(Client *c);
-static int applysizehints(
-                Client *c, int *x, int *y, int *w, int *h, int interact
-);
+static int applysizehints(Client *c, int *x, int *y,
+                                int *w, int *h, int interact);
 static void arrange(Monitor *m);
 static void arrangemon(Monitor *m);
 static void attach(Client *c);
@@ -261,15 +260,13 @@ static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
 static void gaplessgrid(Monitor *m);
 static Atom getatomprop(Client *c, Atom prop);
-static void getfacts(
-                Monitor *m, int msize, int ssize,
-                float *mf, float *sf, int *mr, int *sr);
+static void getfacts(Monitor *m, int msize, int ssize,
+                        float *mf, float *sf, int *mr, int *sr);
 static void getfloatpos(int pos, char pCh, int size, char sCh,
                         int min_p, int max_s, int cp, int cs, int cbw,
                         int defgrid, int *out_p, int *out_s);
-static void getgaps(
-                Monitor *m, int *oh, int *ov,
-                int *ih, int *iv, unsigned int *nc);
+static void getgaps(Monitor *m, int *oh, int *ov,
+                        int *ih, int *iv, unsigned int *nc);
 static pid_t getparentprocess(pid_t p);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
@@ -512,9 +509,8 @@ applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact)
 	if (*w < bh)
 		*w = bh;
 	if (!c->ignoresizehints
-                && (resizehints || c->isfloating
-                        || !c->mon->lt[c->mon->sellt]->arrange)) {
-		/* see last two sentences in ICCCM 4.1.2.3 */
+        && (resizehints || c->isfloating || !c->mon->lt[c->mon->sellt]->arrange))
+        { /* see last two sentences in ICCCM 4.1.2.3 */
 		baseismin = c->basew == c->minw && c->baseh == c->minh;
 		if (!baseismin) { /* temporarily remove base dimensions */
 			*w -= c->basew;
@@ -642,13 +638,13 @@ bstack(Monitor *m)
 
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
 		if (i < m->nmaster) {
-			resize(c, mx, my,
+			resize( c, mx, my,
                                 mw * (c->cfact / mfacts)
                                 + (i < mrest ? 1 : 0) - (2*c->bw),
                                 mh - (2*c->bw), 0);
 			mx += WIDTH(c) + iv;
 		} else {
-			resize(c, sx, sy,
+			resize( c, sx, sy,
                                 sw * (c->cfact / sfacts)
                                 + ((i - m->nmaster) < srest ? 1 : 0)
                                 - (2*c->bw), sh - (2*c->bw), 0);
@@ -675,24 +671,18 @@ buttonpress(XEvent *e)
 	}
 	if (ev->window == selmon->barwin) {
                 if (ev->x < ble - blw) {
-                        for (
-                                c = m->clients;
-                                !selmon->showvacanttags && c;
-                                c = c->next
-                        )
+                        for (c = m->clients;
+                        !selmon->showvacanttags && c;
+                        c = c->next)
                                 occ |= c->tags == 255 ? 0 : c->tags;
                         i = x = 0;
                         do {
                                 /* do not reserve space for vacant tags */
-                                if (
-                                        !selmon->showvacanttags
-                                        && !(
-                                                occ & 1 << i
-                                                ||
-                                                m->tagset[m->seltags] & 1 << i
-                                        )
-                                )
-                                        continue;
+                                if (!selmon->showvacanttags) {
+                                        if(occ & 1 << i
+                                        || m->tagset[m->seltags] & 1 << i)
+                                                continue;
+                                }
                                 x += TEXTW(tags[i]);
                         } while (ev->x >= x && ++i < LENGTH(tags));
                         if (i < LENGTH(tags)) {
@@ -703,10 +693,8 @@ buttonpress(XEvent *e)
                         click = ClkLtSymbol;
                 } else if (ev->x < selmon->ww - wstext) {
                         click = ClkWinTitle;
-                } else if (
-                                (x = selmon->ww - (2 * sp) - RSPAD - ev->x) > 0
-                                && (x -= wstext - LSPAD - RSPAD) <= 0
-                        ) {
+                } else if ((x = selmon->ww - (2 * sp) - RSPAD - ev->x) > 0
+                        && (x -= wstext - LSPAD - RSPAD) <= 0) {
                         updatedwmblockssig(x);
                         click = ClkStatusText;
                 } else {
@@ -721,17 +709,12 @@ buttonpress(XEvent *e)
                 click = ClkRootWin;
         }
 	for (i = 0; i < LENGTH(buttons); i++)
-		if (
-                        click == buttons[i].click && buttons[i].func
-                        && buttons[i].button == ev->button
-                        && CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state)
-                )
-			buttons[i].func(
-                                click == ClkTagBar
-                                && buttons[i].arg.i == 0
-                                        ? &arg
-                                        : &buttons[i].arg
-                        );
+		if (click == buttons[i].click && buttons[i].func
+                && buttons[i].button == ev->button
+                && CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state))
+			buttons[i].func(click == ClkTagBar
+                                        && buttons[i].arg.i == 0
+                                        ? &arg : &buttons[i].arg);
 }
 
 /*
@@ -784,14 +767,14 @@ centeredfloatingmaster(Monitor *m)
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
 			/* nmaster clients are stacked horizontally, in the center of the screen */
-			resize(c, mx, my,
+			resize( c, mx, my,
                                 mw * (c->cfact / mfacts)
                                 + (i < mrest ? 1 : 0)
                                 - (2*c->bw), mh - (2*c->bw), 0);
 			mx += WIDTH(c) + iv*mivf;
 		} else {
 			/* stack clients are stacked horizontally */
-			resize(c, sx, sy,
+			resize( c, sx, sy,
                                 sw * (c->cfact / sfacts)
                                 + ((i - m->nmaster) < srest ? 1 : 0)
                                 - (2*c->bw), sh - (2*c->bw), 0);
@@ -870,7 +853,7 @@ centeredmaster(Monitor *m)
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
 		if (!m->nmaster || i < m->nmaster) {
 			/* nmaster clients are stacked vertically, in the center of the screen */
-			resize(c, mx, my, mw - (2*c->bw),
+			resize( c, mx, my, mw - (2*c->bw),
                                 mh * (c->cfact / mfacts)
                                 + (i < mrest ? 1 : 0)
                                 - (2*c->bw), 0);
@@ -878,13 +861,13 @@ centeredmaster(Monitor *m)
 		} else {
 			/* stack clients are stacked vertically */
 			if ((i - m->nmaster) % 2 ) {
-				resize(c, lx, ly, lw - (2*c->bw),
+				resize( c, lx, ly, lw - (2*c->bw),
                                         lh * (c->cfact / lfacts)
                                         + ((i - 2*m->nmaster) < 2*lrest ? 1 : 0)
                                         - (2*c->bw), 0);
 				ly += HEIGHT(c) + ih;
 			} else {
-				resize(c, rx, ry, rw - (2*c->bw),
+				resize( c, rx, ry, rw - (2*c->bw),
                                         rh * (c->cfact / rfacts)
                                         + ((i - 2*m->nmaster) < 2*rrest ? 1 : 0)
                                         - (2*c->bw), 0);
@@ -928,7 +911,7 @@ cleanup(void)
         free(scheme);
 	XDestroyWindow(dpy, wmcheckwin);
 	drw_free(drw);
-	XSync(dpy, False);
+	XSync(dpy, 0);
 	XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, CurrentTime);
 	XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
 }
@@ -963,8 +946,8 @@ clientmessage(XEvent *e)
 		if (cme->data.l[1] == netatom[NetWMFullscreen]
 		|| cme->data.l[2] == netatom[NetWMFullscreen])
 			setfullscreen(c, (cme->data.l[0] == 1 /* _NET_WM_STATE_ADD    */
-				|| (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */
-                                && !c->isfullscreen)));
+				        || (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */
+                                                && !c->isfullscreen)));
 	} else if (cme->message_type == netatom[NetActiveWindow]) {
 		for (i = 0; i < LENGTH(tags) && !((1 << i) & c->tags); i++);
 		if (i < LENGTH(tags)) {
@@ -993,8 +976,8 @@ configure(Client *c)
 	ce.height = c->h;
 	ce.border_width = c->bw;
 	ce.above = None;
-	ce.override_redirect = False;
-	XSendEvent(dpy, c->win, False, StructureNotifyMask, (XEvent *)&ce);
+	ce.override_redirect = 0;
+	XSendEvent(dpy, c->win, 0, StructureNotifyMask, (XEvent *)&ce);
 }
 
 void
@@ -1016,17 +999,11 @@ configurenotify(XEvent *e)
 			for (m = mons; m; m = m->next) {
 				for (c = m->clients; c; c = c->next)
 					if (c->isfullscreen)
-						resizeclient(
-                                                        c,
-                                                        m->mx, m->my,
-                                                        m->mw, m->mh
-                                                );
-				XMoveResizeWindow(
-                                        dpy,
-                                        m->barwin,
+						resizeclient(c, m->mx, m->my,
+                                                        m->mw, m->mh);
+				XMoveResizeWindow(dpy, m->barwin,
                                         m->wx + sp, m->by + vp,
-                                        m->ww -  2 * sp, bh
-                                );
+                                        m->ww -  2 * sp, bh);
 			}
 			focus(NULL);
 			arrange(NULL);
@@ -1067,15 +1044,12 @@ configurerequest(XEvent *e)
 				c->x = m->mx + (m->mw / 2 - WIDTH(c) / 2); /* center in x direction */
 			if ((c->y + c->h) > m->my + m->mh && c->isfloating)
 				c->y = m->my + (m->mh / 2 - HEIGHT(c) / 2); /* center in y direction */
-			if (
-                                (ev->value_mask & (CWX|CWY))
-                                && !(ev->value_mask & (CWWidth|CWHeight))
-                        )
+			if ((ev->value_mask & (CWX|CWY))
+                        && !(ev->value_mask & (CWWidth|CWHeight)))
 				configure(c);
 			if (ISVISIBLE(c))
-				XMoveResizeWindow(
-                                        dpy, c->win, c->x, c->y, c->w, c->h
-                                );
+				XMoveResizeWindow(dpy, c->win, c->x,
+                                        c->y, c->w, c->h);
 		} else
 			configure(c);
 	} else {
@@ -1088,7 +1062,7 @@ configurerequest(XEvent *e)
 		wc.stack_mode = ev->detail;
 		XConfigureWindow(dpy, ev->window, ev->value_mask, &wc);
 	}
-	XSync(dpy, False);
+	XSync(dpy, 0);
 }
 
 Monitor *
@@ -1253,16 +1227,14 @@ drawbar(Monitor *m)
                         tmp = *stc;
                         if (stp != stc) {
                                 *stc = '\0';
-                                x = drw_text(
-                                        drw, x, y, TTEXTW(stp), h, 0, stp, 0
-                                );
+                                x = drw_text(drw, x, y,
+                                        TTEXTW(stp), h, 0, stp, 0);
                         }
                         if (tmp == '\0')
                                 break;
                         if (tmp - DELIMITERENDCHAR - 1 < LENGTH(colors))
-                                drw_setscheme(
-                                        drw, scheme[tmp - DELIMITERENDCHAR - 1]
-                                );
+                                drw_setscheme(drw,
+                                        scheme[tmp - DELIMITERENDCHAR - 1]);
                         *stc = tmp;
                         stp = ++stc;
                 }
@@ -1279,10 +1251,8 @@ drawbar(Monitor *m)
         for (i = 0; i < LENGTH(tags); i++) {
                 tagscheme = SchemeTag;
                 /* do not draw vacant tags on current monitor */
-                if (
-                        !m->showvacanttags
-                        && !(occ & 1 << i || m->tagset[m->seltags] & 1 << i)
-                )
+                if (!m->showvacanttags
+                && !(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
                         continue;
                 w = TEXTW(tags[i]);
                 wdelta = m->alttag ? (TEXTW(tagsalt[i]) - w) / 2 : 0;
@@ -1297,46 +1267,35 @@ drawbar(Monitor *m)
                                 tagscheme = SchemeTag;
                 }
                 drw_setscheme(drw, scheme[tagscheme]);
-                drw_text(
-                        drw, x, y,
-                        w + y, h, wdelta + lrpad / 2,
-                        (m->alttag ? tagsalt[i] : tags[i]),
-                        urg & 1 << i
-                );
+                drw_text(drw, x, y, w + y, h, wdelta + lrpad / 2,
+                        m->alttag ? tagsalt[i] : tags[i], urg & 1 << i);
                 /* draw bar indicator for selected tag */
                 /* check if the tag not a vacant tag*/
                 if (occ & 1 << i) {
                         /* draw for current monitor and selected tag */
                         if (m == selmon && m->tagset[m->seltags] & 1 << i) {
-                                if (m->sel && m->sel->tags & 1 << i)
+                                if (m->sel->tags & 1 << i)
                                 /* draw full line at the top of selected tag
                                 * that have clients */
-                                        drw_rect(
-                                                m->showindicator ? drw : NULL,
+                                        drw_rect(m->showindicator ? drw : NULL,
                                                 x, y, w, boxw - 2,
-                                                1, urg & 1 << 1
-                                        );
-                                else if (m->sel && !m->showvacanttags)
+                                                1, urg & 1 << 1);
+                                else if (!m->showvacanttags)
                                 /* if more than one tag selected, draw smaller
                                  * line at the bottom of another selected non
                                  * vacant tag */
-                                        drw_rect(
-                                                drw,
+                                        drw_rect(drw,
                                                 x + (3 * boxw + 1),
                                                 h - (boxw - 2),
                                                 w - (6 * boxw + 1), boxw - 2,
-                                                1, urg & 1 << 1
-                                        );
+                                                1, urg & 1 << 1);
                         } else {
-                                /* draw small line at the bottom of every non
+                                /* draw half line at the bottom of every non
                                  * vacant tag */
-                                drw_rect(
-                                        m->showvacanttags ? drw : NULL,
-                                        x + (3 * boxw + 1),
-                                        h - (boxw - 2),
+                                drw_rect(m->showvacanttags ? drw : NULL,
+                                        x + (3 * boxw + 1), h - (boxw - 2),
                                         w - (6 * boxw + 1), boxw - 2,
-                                        1, urg & 1 << 1
-                                );
+                                        1, urg & 1 << 1);
                         }
                 }
                 x += w;
@@ -1355,17 +1314,13 @@ drawbar(Monitor *m)
 		if (m->sel && m->showtitle) {
                         if (m->colorfultitle)
                                 for (i = 0; i < LENGTH(tags); i++)
-                                        drw_setscheme(
-                                                m->sel->tags & 1 << i
+                                        drw_setscheme(m->sel->tags & 1 << i
                                                 && m == selmon ? drw : NULL,
-                                                scheme[titleschemes[i]]
-                                        );
+                                                scheme[titleschemes[i]]);
                         else
-                                drw_setscheme(
-                                        m == selmon ? drw : NULL,
+                                drw_setscheme(m == selmon ? drw : NULL,
                                         scheme[m->sel->isfloating ?
-                                        SchemeTitleFloat : SchemeTitle]
-                                );
+                                        SchemeTitleFloat : SchemeTitle]);
                         if (m->centertitle) {
                                 int width = w - 2 * sp;
                                 int txtwidth = (int)(TEXTW(m->sel->name))
@@ -1375,18 +1330,11 @@ drawbar(Monitor *m)
                                                 ? centerpad - sp
                                                 : (lrpad / 2) + ((2 * sp) / 2);
                         }
-			drw_text(
-                                drw,
-                                x, y,
-                                w - 2 * sp, h, titlepad,
-                                m->sel->name, 0
-                        );
-                        drw_rect(
-                                m->sel->isfloating ? drw : NULL,
+			drw_text(drw, x, y, w - 2 * sp, h,
+                                titlepad, m->sel->name, 0);
+                        drw_rect(m->sel->isfloating ? drw : NULL,
                                 x + boxs + titlepad - lrpad / 2, boxs + y,
-                                boxw, boxw,
-                                m->sel->isfixed, 0
-                        );
+                                boxw, boxw, m->sel->isfixed, 0);
 		} else {
 			drw_setscheme(drw, scheme[SchemeBar]);
 			drw_rect(drw, x, y, w - 2 * sp, h, 1, 1);
@@ -1425,9 +1373,8 @@ dwindle(Monitor *m)
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next)) {
 		if (r) {
 			if ((i % 2 && (nh - ih) / 2 <= (bh + 2*c->bw))
-			   || (!(i % 2) && (nw - iv) / 2 <= (bh + 2*c->bw))) {
+			|| (!(i % 2) && (nw - iv) / 2 <= (bh + 2*c->bw)))
 				r = 0;
-			}
 			if (r && i < n - 1) {
 				if (i % 2) {
 					nv = (nh - ih) / 2;
@@ -1472,7 +1419,7 @@ dwindle(Monitor *m)
 			i++;
 		}
 
-		resize(c, nx, ny, nw - (2*c->bw), nh - (2*c->bw), False);
+		resize(c, nx, ny, nw - (2*c->bw), nh - (2*c->bw), 0);
 	}
 }
 
@@ -1483,11 +1430,8 @@ enternotify(XEvent *e)
 	Monitor *m;
 	XCrossingEvent *ev = &e->xcrossing;
 
-	if (
-                (ev->mode != NotifyNormal
-                || ev->detail == NotifyInferior)
-                && ev->window != root
-        )
+	if ((ev->mode != NotifyNormal || ev->detail == NotifyInferior)
+        && ev->window != root)
 		return;
 	c = wintoclient(ev->window);
 	m = c ? c->mon : wintomon(ev->window);
@@ -1554,10 +1498,8 @@ focus(Client *c)
                                         scheme[c->mon->showtitle ? SchemeSel
                                         : SchemeFloat][ColBorder].pixel);
 		else
-			XSetWindowBorder(
-                                dpy, c->win,
-                                scheme[SchemeSel][ColBorder].pixel
-                        );
+			XSetWindowBorder(dpy, c->win,
+                                scheme[SchemeSel][ColBorder].pixel);
 		setfocus(c);
 	} else {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
@@ -1582,13 +1524,11 @@ focusmaster(const Arg *arg)
 {
 	Client *c;
 
-	if (selmon->nmaster < 1)
-		return;
+	if (selmon->nmaster < 1) return;
 
 	c = nexttiled(selmon->clients);
 
-	if (c)
-		focus(c);
+	if (c) focus(c);
 }
 
 void
@@ -1596,10 +1536,8 @@ focusmon(const Arg *arg)
 {
 	Monitor *m;
 
-	if (!mons->next)
-		return;
-	if ((m = dirtomon(arg->i)) == selmon)
-		return;
+	if (!mons->next) return;
+	if ((m = dirtomon(arg->i)) == selmon) return;
 	unfocus(selmon->sel, 0);
 	selmon = m;
 	focus(NULL);
@@ -1615,19 +1553,15 @@ focusstack(const Arg *arg)
 	if (arg->i > 0) {
 		for (c = selmon->sel->next; c && !ISVISIBLE(c); c = c->next);
 		if (!c)
-			for (
-                                c = selmon->clients;
+			for (c = selmon->clients;
                                 c && !ISVISIBLE(c);
-                                c = c->next
-                        );
+                                c = c->next);
 	} else {
 		for (i = selmon->clients; i != selmon->sel; i = i->next)
-			if (ISVISIBLE(i))
-				c = i;
+			if (ISVISIBLE(i)) c = i;
 		if (!c)
 			for (; i; i = i->next)
-				if (ISVISIBLE(i))
-					c = i;
+				if (ISVISIBLE(i)) c = i;
 	}
 	if (c) {
 		focus(c);
@@ -1648,15 +1582,13 @@ gaplessgrid(Monitor *m)
 	Client *c;
 
 	getgaps(m, &oh, &ov, &ih, &iv, &n);
-	if (n == 0)
-		return;
+	if (n == 0) return;
 
 	/* grid dimensions */
 	for (cols = 0; cols <= n/2; cols++)
-		if (cols*cols >= n)
-			break;
-	if (n == 5) /* set layout against the general calculation: not 1:2:2, but 2:3 */
-		cols = 2;
+		if (cols*cols >= n) break;
+        /* set layout against the general calculation: not 1:2:2, but 2:3 */
+	if (n == 5) cols = 2;
 	rows = n/cols;
 	cn = rn = 0; // reset column no, row no, client count
 
@@ -1673,12 +1605,9 @@ gaplessgrid(Monitor *m)
 			ch = (m->wh - 2*oh - ih * (rows - 1)) / rows;
 			rrest = (m->wh - 2*oh - ih * (rows - 1)) - ch * rows;
 		}
-		resize(c,
-			x,
-			y + rn*(ch + ih) + MIN(rn, rrest),
+		resize( c, x, y + rn*(ch + ih) + MIN(rn, rrest),
 			cw + (cn < crest ? 1 : 0) - 2*c->bw,
-			ch + (rn < rrest ? 1 : 0) - 2*c->bw,
-			0);
+			ch + (rn < rrest ? 1 : 0) - 2*c->bw, 0);
 		rn++;
 		if (rn >= rows) {
 			rn = 0;
@@ -1696,12 +1625,9 @@ getatomprop(Client *c, Atom prop)
 	unsigned char *p = NULL;
 	Atom da, atom = None;
 
-	if (
-                XGetWindowProperty(
-                        dpy, c->win, prop, 0L, sizeof atom, False, XA_ATOM,
-		        &da, &di, &dl, &dl, &p
-                ) == Success && p
-        ) {
+	if (XGetWindowProperty(dpy, c->win, prop, 0L, sizeof atom, 0, XA_ATOM,
+		        &da, &di, &dl, &dl, &p)
+        == Success && p) {
 		atom = *(Atom *)p;
 		XFree(p);
 	}
@@ -1709,10 +1635,8 @@ getatomprop(Client *c, Atom prop)
 }
 
 void
-getfacts(
-        Monitor *m, int msize, int ssize,
-        float *mf, float *sf, int *mr, int *sr
-)
+getfacts(Monitor *m, int msize, int ssize,
+        float *mf, float *sf, int *mr, int *sr)
 {
 	unsigned int n;
 	float mfacts = 0, sfacts = 0;
@@ -1720,16 +1644,12 @@ getfacts(
 	Client *c;
 
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++)
-		if (n < m->nmaster)
-			mfacts += c->cfact;
-		else
-			sfacts += c->cfact;
+		if (n < m->nmaster) mfacts += c->cfact;
+		else sfacts += c->cfact;
 
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++)
-		if (n < m->nmaster)
-			mtotal += msize * (c->cfact / mfacts);
-		else
-			stotal += ssize * (c->cfact / sfacts);
+		if (n < m->nmaster) mtotal += msize * (c->cfact / mfacts);
+		else stotal += ssize * (c->cfact / sfacts);
 
 	*mf = mfacts; // total factor of master area
 	*sf = sfacts; // total factor of stack area
@@ -1739,8 +1659,8 @@ getfacts(
 
 void
 getfloatpos(int pos, char pCh, int size, char sCh,
-                int min_p, int max_s, int cp, int cs, int cbw,
-                int defgrid, int *out_p, int *out_s)
+        int min_p, int max_s, int cp, int cs, int cbw,
+        int defgrid, int *out_p, int *out_s)
 {
 	int abs_p, abs_s, i, delta, rest;
 
@@ -1767,36 +1687,27 @@ getfloatpos(int pos, char pCh, int size, char sCh,
 	case 'S': // fixed client position (sticky)
 	case 'C': // fixed client position (center)
 	case 'Z': // fixed client right-hand position (position + size)
-		if (pos == -1)
-			break;
+		if (pos == -1) break;
 		pos = MAX(MIN(pos, max_s), 0);
-		if (pCh == 'Z')
-			cs = abs((cp + cs) - (min_p + pos));
-		else if (pCh == 'C')
-			cs = abs((cp + cs / 2) - (min_p + pos));
-		else
-			cs = abs(cp - (min_p + pos));
+		if (pCh == 'Z') cs = abs((cp + cs) - (min_p + pos));
+		else if (pCh == 'C') cs = abs((cp + cs / 2) - (min_p + pos));
+		else cs = abs(cp - (min_p + pos));
 		cp = min_p + pos;
 		sCh = 0; // size determined by position, override defined size
 		break;
 	case 'G': // grid
-		if (pos <= 0)
-			pos = defgrid; // default configurable
-		if (size == 0 || pos < 2 || (sCh != 'p' && sCh != 'P'))
-			break;
+		if (pos <= 0) pos = defgrid; // default configurable
+		if (size == 0 || pos < 2 || (sCh != 'p' && sCh != 'P')) break;
 		delta = (max_s - cs) / (pos - 1);
 		rest = max_s - cs - delta * (pos - 1);
 		if (sCh == 'P') {
-			if (size < 1 || size > pos)
-				break;
+			if (size < 1 || size > pos) break;
 			cp = min_p + delta * (size - 1);
 		} else {
-			for (
-                                i = 0;
+			for (i = 0;
                                 i < pos && cp >= min_p + delta * i
                                 + (i > pos - rest ? i + rest - pos + 1 : 0);
-                                i++
-                        );
+                                i++);
 			cp = min_p + delta * (MAX(MIN(i + size, pos), 1) - 1)
                                 + (i > pos - rest ? i + rest - pos + 1 : 0);
 		}
@@ -1811,15 +1722,13 @@ getfloatpos(int pos, char pCh, int size, char sCh,
 		cs = MAX(1, cs + size);
 		break;
 	case '%': // client size percentage in relation to monitor window area size
-		if (size <= 0)
-			break;
+		if (size <= 0) break;
 		size = max_s * MIN(size, 100) / 100;
 		/* falls through */
 	case 'h':
 	case 'w': // size relative to client
 		if (sCh == 'w' || sCh == 'h') {
-			if (size == 0)
-				break;
+			if (size == 0) break;
 			size += cs;
 		}
 		/* falls through */
@@ -1832,18 +1741,12 @@ getfloatpos(int pos, char pCh, int size, char sCh,
 
 		if (pCh == 'C') { // fixed client center, expand or contract client
 			delta = size - cs;
-			if (
-                                delta < 0
-                                || (cp - delta / 2 + size <= min_p + max_s)
-                        )
+			if (delta < 0
+                        || (cp - delta / 2 + size <= min_p + max_s))
 				cp -= delta / 2;
-			else if (cp - delta / 2 < min_p)
-				cp = min_p;
-			else if (delta)
-				cp = min_p + max_s;
-		} else if (pCh == 'Z') {
-                        cp -= size - cs;
-		}
+			else if (cp - delta / 2 < min_p) cp = min_p;
+			else if (delta) cp = min_p + max_s;
+		} else if (pCh == 'Z') cp -= size - cs;
 
 		cs = size;
 		break;
@@ -1852,13 +1755,10 @@ getfloatpos(int pos, char pCh, int size, char sCh,
 	if (pCh == '%') // client mid-point position in relation to monitor window area size
 		cp = min_p + max_s * MAX(MIN(pos, 100), 0) / 100 - (cs) / 2;
 
-	if (!abs_p && cp < min_p)
-		cp = min_p;
+	if (!abs_p && cp < min_p) cp = min_p;
 	if (cp + cs > min_p + max_s && !(abs_p && abs_s)) {
-		if (abs_p || cp == min_p)
-			cs = min_p + max_s - cp;
-		else
-			cp = min_p + max_s - cs;
+		if (abs_p || cp == min_p) cs = min_p + max_s - cp;
+		else cp = min_p + max_s - cs;
 	}
 
 	*out_p = cp;
@@ -1873,9 +1773,7 @@ getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc)
 	Client *c;
 
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
-	if (smartgaps && n == 1) {
-		oe = 0; // outer gaps disabled when only one client
-	}
+	if (smartgaps && n == 1) oe = 0; // outer gaps disabled when only one client
 
 	*oh = m->gappoh*oe; // outer horizontal gap
 	*ov = m->gappov*oe; // outer vertical gap
@@ -1892,8 +1790,7 @@ getparentprocess(pid_t p)
 	char buf[256];
 	snprintf(buf, sizeof(buf) - 1, "/proc/%u/stat", (unsigned)p);
 
-	if (!(f = fopen(buf, "r")))
-		return 0;
+	if (!(f = fopen(buf, "r"))) return 0;
 
 	fscanf(f, "%*u %*s %*c %u", &v);
 	fclose(f);
@@ -1919,15 +1816,12 @@ getstate(Window w)
 	unsigned long n, extra;
 	Atom real;
 
-	if (
-                XGetWindowProperty(
+	if (XGetWindowProperty(
                         dpy, w, wmatom[WMState], 0L, 2L, False, wmatom[WMState],
-		        &real, &format, &n, &extra, (unsigned char **)&p
-                ) != Success
-        )
+		        &real, &format, &n, &extra, (unsigned char **)&p)
+        != Success)
 		return -1;
-	if (n != 0)
-		result = *p;
+	if (n != 0) result = *p;
 	XFree(p);
 	return result;
 }
@@ -1939,18 +1833,15 @@ gettextprop(Window w, Atom atom, char *text, unsigned int size)
 	int n;
 	XTextProperty name;
 
-	if (!text || size == 0)
-		return 0;
+	if (!text || size == 0) return 0;
 	text[0] = '\0';
 	if (!XGetTextProperty(dpy, w, &name, atom) || !name.nitems)
 		return 0;
 	if (name.encoding == XA_STRING)
 		strncpy(text, (char *)name.value, size - 1);
 	else {
-		if (
-                        XmbTextPropertyToTextList(dpy, &name, &list, &n)
-                        >= Success && n > 0 && *list
-                ) {
+		if (XmbTextPropertyToTextList(dpy, &name, &list, &n)
+                >= Success && n > 0 && *list) {
 			strncpy(text, *list, size - 1);
 			XFreeStringList(list);
 		}
@@ -1971,21 +1862,17 @@ grabbuttons(Client *c, int focused)
                 };
 		XUngrabButton(dpy, AnyButton, AnyModifier, c->win);
 		if (!focused)
-			XGrabButton(
-                                dpy, AnyButton, AnyModifier, c->win, False,
+			XGrabButton(dpy, AnyButton, AnyModifier, c->win, 0,
 				BUTTONMASK, GrabModeSync, GrabModeSync,
-                                None, None
-                        );
+                                None, None);
 		for (i = 0; i < LENGTH(buttons); i++)
 			if (buttons[i].click == ClkClientWin)
 				for (j = 0; j < LENGTH(modifiers); j++)
-					XGrabButton(
-                                                dpy, buttons[i].button,
+					XGrabButton(dpy, buttons[i].button,
 						buttons[i].mask | modifiers[j],
-						c->win, False, BUTTONMASK,
+						c->win, 0, BUTTONMASK,
 						GrabModeAsync, GrabModeSync,
-                                                None, None
-                                        );
+                                                None, None);
 	}
 }
 
@@ -2004,12 +1891,10 @@ grabkeys(void)
 		for (i = 0; i < LENGTH(keys); i++)
 			if ((code = XKeysymToKeycode(dpy, keys[i].keysym)))
 				for (j = 0; j < LENGTH(modifiers); j++)
-					XGrabKey(
-                                                dpy, code,
+					XGrabKey(dpy, code,
                                                 keys[i].mod | modifiers[j],
                                                 root, True,
-                                                GrabModeAsync, GrabModeAsync
-                                        );
+                                                GrabModeAsync, GrabModeAsync);
 	}
 }
 
@@ -2025,78 +1910,52 @@ incnmaster(const Arg *arg)
 void
 incrgaps(const Arg *arg)
 {
-	setgaps(
-		selmon->gappoh + arg->i,
+	setgaps(selmon->gappoh + arg->i,
 		selmon->gappov + arg->i,
 		selmon->gappih + arg->i,
-		selmon->gappiv + arg->i
-	);
+		selmon->gappiv + arg->i);
 }
 
 void
 incrigaps(const Arg *arg)
 {
-	setgaps(
-		selmon->gappoh,
-		selmon->gappov,
-		selmon->gappih + arg->i,
-		selmon->gappiv + arg->i
-	);
+	setgaps(selmon->gappoh, selmon->gappov,
+		selmon->gappih + arg->i, selmon->gappiv + arg->i);
 }
 
 void
 incrihgaps(const Arg *arg)
 {
-	setgaps(
-		selmon->gappoh,
-		selmon->gappov,
-		selmon->gappih + arg->i,
-		selmon->gappiv
-	);
+	setgaps(selmon->gappoh, selmon->gappov,
+		selmon->gappih + arg->i, selmon->gappiv);
 }
 
 void
 incrivgaps(const Arg *arg)
 {
-	setgaps(
-		selmon->gappoh,
-		selmon->gappov,
-		selmon->gappih,
-		selmon->gappiv + arg->i
-	);
+	setgaps(selmon->gappoh, selmon->gappov,
+		selmon->gappih, selmon->gappiv + arg->i);
 }
 
 void
 incrogaps(const Arg *arg)
 {
-	setgaps(
-		selmon->gappoh + arg->i,
-		selmon->gappov + arg->i,
-		selmon->gappih,
-		selmon->gappiv
-	);
+	setgaps(selmon->gappoh + arg->i, selmon->gappov + arg->i,
+		selmon->gappih, selmon->gappiv);
 }
 
 void
 incrohgaps(const Arg *arg)
 {
-	setgaps(
-		selmon->gappoh + arg->i,
-		selmon->gappov,
-		selmon->gappih,
-		selmon->gappiv
-	);
+	setgaps(selmon->gappoh + arg->i, selmon->gappov,
+		selmon->gappih, selmon->gappiv);
 }
 
 void
 incrovgaps(const Arg *arg)
 {
-	setgaps(
-		selmon->gappoh,
-		selmon->gappov + arg->i,
-		selmon->gappih,
-		selmon->gappiv
-	);
+	setgaps(selmon->gappoh, selmon->gappov + arg->i,
+		selmon->gappih, selmon->gappiv);
 }
 
 void
@@ -2112,14 +1971,10 @@ inplacerotate(const Arg *arg)
 	/* Determine positionings for insertclient */
 	for (c = selmon->clients; c; c = c->next) {
 		if (ISVISIBLE(c) && !(c->isfloating)) {
-		        if (selmon->sel == c)
-                                selidx = i;
-                        if (i == selmon->nmaster - 1)
-                                mtail = c;
-                        if (i == selmon->nmaster)
-                                shead = c;
-                        if (mhead == NULL)
-                                mhead = c;
+		        if (selmon->sel == c) selidx = i;
+                        if (i == selmon->nmaster - 1) mtail = c;
+                        if (i == selmon->nmaster) shead = c;
+                        if (mhead == NULL) mhead = c;
                         stail = c;
                         i++;
 		}
@@ -2168,8 +2023,7 @@ insertclient(Client *item, Client *insertItem, int after)
 int
 isdescprocess(pid_t p, pid_t c)
 {
-        while (p != c && c != 0)
-		c = getparentprocess(c);
+        while (p != c && c != 0) c = getparentprocess(c);
 
 	return (int)c;
 }
@@ -2179,12 +2033,10 @@ static int
 isuniquegeom(XineramaScreenInfo *unique, size_t n, XineramaScreenInfo *info)
 {
 	while (n--)
-		if (
-                        unique[n].x_org == info->x_org
-                        && unique[n].y_org == info->y_org
-                        && unique[n].width == info->width
-                        && unique[n].height == info->height
-                )
+		if (unique[n].x_org == info->x_org
+                && unique[n].y_org == info->y_org
+                && unique[n].width == info->width
+                && unique[n].height == info->height)
 			return 0;
 	return 1;
 }
@@ -2209,14 +2061,13 @@ keypress(XEvent *e)
 void
 killclient(const Arg *arg)
 {
-	if (!selmon->sel)
-		return;
+	if (!selmon->sel) return;
 	if (!sendevent(selmon->sel, wmatom[WMDelete])) {
 		XGrabServer(dpy);
 		XSetErrorHandler(xerrordummy);
 		XSetCloseDownMode(dpy, DestroyAll);
 		XKillClient(dpy, selmon->sel->win);
-		XSync(dpy, False);
+		XSync(dpy, 0);
 		XSetErrorHandler(xerror);
 		XUngrabServer(dpy);
 	}
@@ -2278,13 +2129,11 @@ manage(Window w, XWindowAttributes *wa)
 	c->sfy = c->y;
 	c->sfw = c->w;
 	c->sfh = c->h;
-	XSelectInput(
-                dpy, w,
+	XSelectInput(dpy, w,
                 EnterWindowMask
                 |FocusChangeMask
                 |PropertyChangeMask
-                |StructureNotifyMask
-        );
+                |StructureNotifyMask);
 	grabbuttons(c, 0);
 	if (!c->isfloating)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
@@ -2295,11 +2144,9 @@ manage(Window w, XWindowAttributes *wa)
         }
 	attachbelow(c);
 	attachstack(c);
-	XChangeProperty(
-                dpy, root, netatom[NetClientList],
+	XChangeProperty(dpy, root, netatom[NetClientList],
                 XA_WINDOW, 32, PropModeAppend,
-		(unsigned char *) &(c->win), 1
-        );
+		(unsigned char *) &(c->win), 1);
 	XChangeProperty(dpy, root, netatom[NetClientListStacking],
                         XA_WINDOW, 32, PropModePrepend,
                         (unsigned char *) &(c->win), 1);
@@ -2356,7 +2203,7 @@ monocle(Monitor *m)
 	if (n > 0) /* override layout symbol */
 		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
         for (c = nexttiled(m->clients); c; c = nexttiled(c->next)) {
-		resize(c, m->wx + ov, m->wy + oh,
+		resize( c, m->wx + ov, m->wy + oh,
                         m->ww - 2 * c->bw - 2 * ov,
                         m->wh - 2 * c->bw - 2 * oh, 0);
         }
@@ -2371,18 +2218,16 @@ motionnotify(XEvent *e)
 	XMotionEvent *ev = &e->xmotion;
 
         if (ev->window == root) {
-                if (
-                        (m = recttomon(ev->x_root, ev->y_root, 1, 1)) != mon
-                        && mon
-                ) {
+                if ((m = recttomon(ev->x_root, ev->y_root, 1, 1)) != mon
+                && mon) {
                         unfocus(selmon->sel, 1);
                         selmon = m;
                         focus(NULL);
                 }
                 mon = m;
         } else if (ev->window == selmon->barwin
-                        && (x = selmon->ww - (2 * sp) - RSPAD - ev->x) > 0
-                        && (x -= wstext - LSPAD - RSPAD) <= 0) {
+        && (x = selmon->ww - (2 * sp) - RSPAD - ev->x) > 0
+        && (x -= wstext - LSPAD - RSPAD) <= 0) {
                 updatedwmblockssig(x);
         } else if (selmon->statushandcursor) {
                 selmon->statushandcursor = 0;
@@ -2406,19 +2251,15 @@ movemouse(const Arg *arg)
 	restack(selmon);
 	ocx = c->x;
 	ocy = c->y;
-	if (XGrabPointer(
-                dpy, root, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
-		None, cursor[CurMove]->cursor, CurrentTime) != GrabSuccess
-        )
+	if (XGrabPointer(dpy, root, 0, MOUSEMASK, GrabModeAsync, GrabModeAsync,
+	                None, cursor[CurMove]->cursor, CurrentTime)
+        != GrabSuccess)
 		return;
 	if (!getrootptr(&x, &y))
 		return;
 	do {
-		XMaskEvent(
-                        dpy,
-                        MOUSEMASK|ExposureMask|SubstructureRedirectMask,
-                        &ev
-                );
+		XMaskEvent(dpy,
+                        MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
 		switch(ev.type) {
 		case ConfigureRequest:
 		case Expose:
@@ -2434,25 +2275,19 @@ movemouse(const Arg *arg)
 			ny = ocy + (ev.xmotion.y - y);
 			if (abs(selmon->wx - nx) < snap)
 				nx = selmon->wx;
-			else if (
-                                abs((selmon->wx + selmon->ww)
-                                - (nx + WIDTH(c))) < snap
-                        )
+			else if (abs((selmon->wx + selmon->ww) - (nx + WIDTH(c)))
+                        < snap)
 				nx = selmon->wx + selmon->ww - WIDTH(c);
 			if (abs(selmon->wy - ny) < snap)
 				ny = selmon->wy;
-			else if (
-                                abs((selmon->wy + selmon->wh)
-                                - (ny + HEIGHT(c))) < snap
-                        )
+			else if (abs((selmon->wy + selmon->wh)
+                                        - (ny + HEIGHT(c)))
+                        < snap)
 				ny = selmon->wy + selmon->wh - HEIGHT(c);
 			if (!c->isfloating && selmon->lt[selmon->sellt]->arrange
 			&& (abs(nx - c->x) > snap || abs(ny - c->y) > snap))
 				togglefloating(NULL);
-			if (
-                                !selmon->lt[selmon->sellt]->arrange
-                                || c->isfloating
-                        )
+			if (!selmon->lt[selmon->sellt]->arrange || c->isfloating)
 				resize(c, nx, ny, c->w, c->h, 1);
 			break;
 		}
@@ -2468,11 +2303,8 @@ movemouse(const Arg *arg)
 Client *
 nexttagged(Client *c) {
 	Client *walked = c->mon->clients;
-	for(;
-		walked && (walked->isfloating
-                                || !ISVISIBLEONTAG(walked, c->tags));
-		walked = walked->next
-	);
+	for(; walked && (walked->isfloating || !ISVISIBLEONTAG(walked, c->tags));
+		walked = walked->next);
 	return walked;
 }
 
@@ -2507,14 +2339,9 @@ propertynotify(XEvent *e)
 		switch(ev->atom) {
 		default: break;
 		case XA_WM_TRANSIENT_FOR:
-			if (
-                                !c->isfloating
-                                && (XGetTransientForHint(dpy, c->win, &trans))
-                                && (
-                                        c->isfloating = (wintoclient(trans))
-                                        != NULL
-                                )
-                        )
+			if (!c->isfloating
+                        && (XGetTransientForHint(dpy, c->win, &trans))
+                        && (c->isfloating = (wintoclient(trans)) != NULL))
 				arrange(c->mon);
 			break;
 		case XA_WM_NORMAL_HINTS:
@@ -2587,11 +2414,10 @@ resizeclient(Client *c, int x, int y, int w, int h)
 	c->oldw = c->w; c->w = wc.width = w;
 	c->oldh = c->h; c->h = wc.height = h;
 	wc.border_width = c->bw;
-	XConfigureWindow(
-                dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc
-        );
+	XConfigureWindow(dpy, c->win,
+                        CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
 	configure(c);
-	XSync(dpy, False);
+	XSync(dpy, 0);
 }
 
 void
@@ -2603,7 +2429,7 @@ resizemouse(const Arg *arg)
 	XEvent ev;
 	int horizcorner, vertcorner;
 	unsigned int dui;
-	Window dummy;
+	Window w;
 	Time lasttime = 0;
 
 	if (!(c = selmon->sel))
@@ -2615,29 +2441,19 @@ resizemouse(const Arg *arg)
 	ocy = c->y;
 	och = c->h;
 	ocw = c->w;
-	if (
-                !XQueryPointer(
-                        dpy, c->win, &dummy, &dummy, &opx, &opy, &nx, &ny, &dui
-                )
-        )
+	if (!XQueryPointer(dpy, c->win, &w, &w, &opx, &opy, &nx, &ny, &dui))
 		return;
 	horizcorner = nx < c->w / 2;
 	vertcorner  = ny < c->h / 2;
-	if (
-                XGrabPointer(
-                        dpy, root, False,
+	if (XGrabPointer(dpy, root, 0,
                         MOUSEMASK, GrabModeAsync, GrabModeAsync,
                         None, cursor[horizcorner | (vertcorner << 1)]->cursor,
-                        CurrentTime
-                ) != GrabSuccess
-        )
+                        CurrentTime)
+        != GrabSuccess)
 		return;
 	do {
-		XMaskEvent(
-                        dpy,
-                        MOUSEMASK|ExposureMask|SubstructureRedirectMask,
-                        &ev
-                );
+		XMaskEvent(dpy,
+                        MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
 		switch(ev.type) {
 		case ConfigureRequest:
 		case Expose:
@@ -2651,35 +2467,24 @@ resizemouse(const Arg *arg)
 
 			nx = horizcorner ? (ocx + ev.xmotion.x - opx) : c->x;
 			ny = vertcorner ? (ocy + ev.xmotion.y - opy) : c->y;
-			nw = MAX(
-                                horizcorner
+			nw = MAX( horizcorner
                                 ? (ocx + ocw - nx)
-                                : (ocw + (ev.xmotion.x - opx)), 1
-                        );
-			nh = MAX(
-                                vertcorner
+                                : (ocw + (ev.xmotion.x - opx)), 1);
+			nh = MAX( vertcorner
                                 ? (ocy + och - ny)
-                                : (och + (ev.xmotion.y - opy)), 1
-                        );
-			if (
-                                c->mon->wx + nw >= selmon->wx
-                                && c->mon->wx + nw <= selmon->wx + selmon->ww
-			        && c->mon->wy + nh >= selmon->wy
-                                && c->mon->wy + nh <= selmon->wy + selmon->wh
-                        )
+                                : (och + (ev.xmotion.y - opy)), 1);
+			if (c->mon->wx + nw >= selmon->wx
+                        && c->mon->wx + nw <= selmon->wx + selmon->ww
+			&& c->mon->wy + nh >= selmon->wy
+                        && c->mon->wy + nh <= selmon->wy + selmon->wh)
 			{
-				if (
-                                        !c->isfloating
-                                        && selmon->lt[selmon->sellt]->arrange
-                                        && (abs(nw - c->w) > snap
-                                        || abs(nh - c->h) > snap)
-                                )
+				if (!c->isfloating
+                                && selmon->lt[selmon->sellt]->arrange
+                                && (abs(nw - c->w) > snap
+                                || abs(nh - c->h) > snap))
 					togglefloating(NULL);
 			}
-			if (
-                                !selmon->lt[selmon->sellt]->arrange
-                                || c->isfloating
-                        )
+			if (!selmon->lt[selmon->sellt]->arrange || c->isfloating)
 				resizeclient(c, nx, ny, nw, nh);
 			break;
 		}
@@ -2701,8 +2506,7 @@ restack(Monitor *m)
 	XWindowChanges wc;
 
 	drawbar(m);
-	if (!m->sel)
-		return;
+	if (!m->sel) return;
 	if (m->sel->isfloating || !m->lt[m->sellt]->arrange)
 		XRaiseWindow(dpy, m->sel->win);
 	if (m->lt[m->sellt]->arrange) {
@@ -2710,13 +2514,12 @@ restack(Monitor *m)
 		wc.sibling = m->barwin;
 		for (c = m->stack; c; c = c->snext)
 			if (!c->isfloating && ISVISIBLE(c)) {
-				XConfigureWindow(
-                                        dpy, c->win, CWSibling|CWStackMode, &wc
-                                );
+				XConfigureWindow(dpy, c->win,
+                                        CWSibling|CWStackMode, &wc);
 				wc.sibling = c->win;
 			}
 	}
-	XSync(dpy, False);
+	XSync(dpy, 0);
 	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
 }
 
@@ -2725,7 +2528,7 @@ run(void)
 {
 	XEvent ev;
 	/* main event loop */
-	XSync(dpy, False);
+	XSync(dpy, 0);
 	while (running && !XNextEvent(dpy, &ev))
 		if (handler[ev.type])
 			handler[ev.type](&ev); /* call handler */
@@ -2740,27 +2543,20 @@ scan(void)
 
 	if (XQueryTree(dpy, root, &d1, &d2, &wins, &num)) {
 		for (i = 0; i < num; i++) {
-			if (
-                                !XGetWindowAttributes(dpy, wins[i], &wa)
-			        || wa.override_redirect
-                                || XGetTransientForHint(dpy, wins[i], &d1)
-                        )
+			if (!XGetWindowAttributes(dpy, wins[i], &wa)
+			|| wa.override_redirect
+                        || XGetTransientForHint(dpy, wins[i], &d1))
 				continue;
-			if (
-                                wa.map_state == IsViewable
-                                || getstate(wins[i]) == IconicState
-                        )
+			if (wa.map_state == IsViewable
+                        || getstate(wins[i]) == IconicState)
 				manage(wins[i], &wa);
 		}
 		for (i = 0; i < num; i++) { /* now the transients */
 			if (!XGetWindowAttributes(dpy, wins[i], &wa))
 				continue;
-			if (
-                                XGetTransientForHint(dpy, wins[i], &d1)
-			        && (wa.map_state == IsViewable
-                                        || getstate(wins[i])
-                                        == IconicState)
-                        )
+			if (XGetTransientForHint(dpy, wins[i], &d1)
+			&& (wa.map_state == IsViewable
+                        || getstate(wins[i]) == IconicState))
 				manage(wins[i], &wa);
 		}
 		if (wins)
@@ -2771,8 +2567,7 @@ scan(void)
 void
 sendmon(Client *c, Monitor *m)
 {
-	if (c->mon == m)
-		return;
+	if (c->mon == m) return;
 	unfocus(c, 1);
 	detach(c);
 	detachstack(c);
@@ -2800,13 +2595,8 @@ setcfact(const Arg *arg)
                 return;
 	f = arg->f + c->cfact;
 	if(arg->f == 1.0) {
-                for (
-                        c = nexttiled(selmon->clients);
-                        c;
-                        c = nexttiled(c->next)
-                ) {
+                for (c = nexttiled(selmon->clients); c; c = nexttiled(c->next))
                         c->cfact = 1.0;
-                }
                 arrange(selmon);
 		return;
         } else if(arg->f == 0.0) {
@@ -2826,13 +2616,10 @@ setfloatpos(Client *c, const char *floatpos)
         int oh, ov, ih, iv;
         unsigned int n;
 
-	if (!c || !floatpos)
-		return;
+	if (!c || !floatpos) return;
 	if (selmon->lt[selmon->sellt]->arrange && !c->isfloating)
 		return;
-	switch(
-                sscanf(floatpos,
-                        "%d%c %d%c %d%c %d%c",
+	switch(sscanf(floatpos, "%d%c %d%c %d%c %d%c",
                         &x, &xCh, &y, &yCh, &w, &wCh, &h, &hCh)
         ) {
 		case 4:
@@ -2947,11 +2734,9 @@ void
 setfullscreen(Client *c, int fullscreen)
 {
 	if (fullscreen && !c->isfullscreen) {
-		XChangeProperty(
-                        dpy, c->win, netatom[NetWMState], XA_ATOM, 32,
+		XChangeProperty(dpy, c->win, netatom[NetWMState], XA_ATOM, 32,
 			PropModeReplace,
-                        (unsigned char*)&netatom[NetWMFullscreen], 1
-                );
+                        (unsigned char*)&netatom[NetWMFullscreen], 1);
 		c->isfullscreen = 1;
 		c->oldstate = c->isfloating;
 		c->oldbw = c->bw;
@@ -3006,15 +2791,10 @@ setlayout(const Arg *arg)
                 selmon->pertag->ltidxs[curtag][sellt] = (Layout *)arg->v;
 		selmon->lt[sellt] = selmon->pertag->ltidxs[curtag][sellt];
         }
-	strncpy(
-                selmon->ltsymbol,
-                selmon->lt[selmon->sellt]->symbol,
-                sizeof selmon->ltsymbol
-        );
-	if (selmon->sel)
-		arrange(selmon);
-	else
-		drawbar(selmon);
+	strncpy(selmon->ltsymbol, selmon->lt[selmon->sellt]->symbol,
+                sizeof selmon->ltsymbol);
+	if (selmon->sel) arrange(selmon);
+	else drawbar(selmon);
 }
 
 /* arg > 1.0 will set mfact absolutely */
@@ -3027,9 +2807,8 @@ setmfact(const Arg *arg)
 		return;
 	f = arg->f == mfact
                 ? mfact : arg->f < 1.0
-                ? arg->f + selmon->mfact : arg->f - 1.0;
-        if (f < 0.05 || f > 0.95)
-                return;
+                        ? arg->f + selmon->mfact : arg->f - 1.0;
+        if (f < 0.05 || f > 0.95) return;
 	selmon->pertag->mfacts[selmon->pertag->curtag] = f;
 	selmon->mfact = selmon->pertag->mfacts[selmon->pertag->curtag];
 	arrange(selmon);
@@ -3070,42 +2849,32 @@ setup(void)
 	vp = (topbar == 1) ? vertpad : - vertpad;
 	updategeom();
 	/* init atoms */
-	utf8string = XInternAtom(dpy, "UTF8_STRING", False);
-	wmatom[WMProtocols] = XInternAtom(dpy, "WM_PROTOCOLS", False);
-	wmatom[WMDelete] = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
-	wmatom[WMState] = XInternAtom(dpy, "WM_STATE", False);
-	wmatom[WMTakeFocus] = XInternAtom(dpy, "WM_TAKE_FOCUS", False);
-	wmatom[WMWindowRole] = XInternAtom(dpy, "WM_WINDOW_ROLE", False);
-	netatom[NetActiveWindow] = XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False);
-	netatom[NetSupported] = XInternAtom(dpy, "_NET_SUPPORTED", False);
-	netatom[NetWMName] = XInternAtom(dpy, "_NET_WM_NAME", False);
-	netatom[NetWMState] = XInternAtom(dpy, "_NET_WM_STATE", False);
-	netatom[NetWMCheck] = XInternAtom(
-                                dpy, "_NET_SUPPORTING_WM_CHECK", False);
-	netatom[NetWMFullscreen] = XInternAtom(
-                                        dpy, "_NET_WM_STATE_FULLSCREEN", False);
-	netatom[NetWMWindowType] = XInternAtom(
-                                        dpy, "_NET_WM_WINDOW_TYPE", False);
-	netatom[NetWMWindowTypeDialog] = XInternAtom(
-                                                dpy,
-                                                "_NET_WM_WINDOW_TYPE_DIALOG",
-                                                False
-                                        );
-	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
-	netatom[NetClientListStacking] = XInternAtom(
-                                                dpy,
-                                                "_NET_CLIENT_LIST_STACKING",
-                                                False
-                                        );
-	netatom[NetDesktopViewport] = XInternAtom(
-                                        dpy, "_NET_DESKTOP_VIEWPORT", False);
-	netatom[NetNumberOfDesktops] = XInternAtom(
-                                        dpy, "_NET_NUMBER_OF_DESKTOPS", False);
-	netatom[NetCurrentDesktop] = XInternAtom(
-                                        dpy, "_NET_CURRENT_DESKTOP", False);
-	netatom[NetDesktopNames] = XInternAtom(
-                                        dpy, "_NET_DESKTOP_NAMES", False);
-	motifatom = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
+	utf8string = XInternAtom(dpy, "UTF8_STRING", 0);
+	wmatom[WMProtocols] = XInternAtom(dpy, "WM_PROTOCOLS", 0);
+	wmatom[WMDelete] = XInternAtom(dpy, "WM_DELETE_WINDOW", 0);
+	wmatom[WMState] = XInternAtom(dpy, "WM_STATE", 0);
+	wmatom[WMTakeFocus] = XInternAtom(dpy, "WM_TAKE_FOCUS", 0);
+	wmatom[WMWindowRole] = XInternAtom(dpy, "WM_WINDOW_ROLE", 0);
+	netatom[NetActiveWindow] = XInternAtom(dpy, "_NET_ACTIVE_WINDOW", 0);
+	netatom[NetSupported] = XInternAtom(dpy, "_NET_SUPPORTED", 0);
+	netatom[NetWMName] = XInternAtom(dpy, "_NET_WM_NAME", 0);
+	netatom[NetWMState] = XInternAtom(dpy, "_NET_WM_STATE", 0);
+	netatom[NetWMCheck] = XInternAtom(dpy, "_NET_SUPPORTING_WM_CHECK", 0);
+	netatom[NetWMFullscreen] = XInternAtom(dpy,
+                                        "_NET_WM_STATE_FULLSCREEN", 0);
+	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", 0);
+	netatom[NetWMWindowTypeDialog] = XInternAtom( dpy,
+                                                "_NET_WM_WINDOW_TYPE_DIALOG", 0);
+	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", 0);
+	netatom[NetClientListStacking] = XInternAtom( dpy,
+                                                "_NET_CLIENT_LIST_STACKING", 0);
+	netatom[NetDesktopViewport] = XInternAtom(dpy,
+                                        "_NET_DESKTOP_VIEWPORT", 0);
+	netatom[NetNumberOfDesktops] = XInternAtom(dpy,
+                                        "_NET_NUMBER_OF_DESKTOPS", 0);
+	netatom[NetCurrentDesktop] = XInternAtom(dpy, "_NET_CURRENT_DESKTOP", 0);
+	netatom[NetDesktopNames] = XInternAtom(dpy, "_NET_DESKTOP_NAMES", 0);
+	motifatom = XInternAtom(dpy, "_MOTIF_WM_HINTS", 0);
 	/* init cursors */
 	cursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
         cursor[CurHand] = drw_cur_create(drw, XC_hand2);
@@ -3162,16 +2931,14 @@ setviewport(void)
 void
 seturgent(Client *c, int urg)
 {
-	XWMHints *wmh;
+	XWMHints *h;
 
 	c->isurgent = urg;
-	if (!(wmh = XGetWMHints(dpy, c->win)))
+	if (!(h = XGetWMHints(dpy, c->win)))
 		return;
-	wmh->flags = urg
-                        ? (wmh->flags | XUrgencyHint)
-                        : (wmh->flags & ~XUrgencyHint);
-	XSetWMHints(dpy, c->win, wmh);
-	XFree(wmh);
+	h->flags = urg ? (h->flags | XUrgencyHint) : (h->flags & ~XUrgencyHint);
+	XSetWMHints(dpy, c->win, h);
+	XFree(h);
 }
 
 void
@@ -3202,18 +2969,15 @@ shiftview(const Arg *arg)
         Client *client;
         unsigned int tagmask = 0;
 
-        for (client = selmon->clients; client; client = client->next) {
+        for (client = selmon->clients; client; client = client->next)
                 tagmask = tagmask | client->tags;
-        }
 
         shifted.ui = selmon->tagset[selmon->seltags];
 
         if (arg->i > 0) // left circular shift
                 do {
-                        shifted.ui = (
-                                        shifted.ui << arg->i)
-                                        | (shifted.ui >> (LENGTH(tags) - arg->i)
-                                );
+                        shifted.ui = (shifted.ui << arg->i)
+                                        | (shifted.ui >> (LENGTH(tags) - arg->i));
                 } while (tagmask && !(shifted.ui & tagmask));
 
         else // right circular shift
@@ -3228,15 +2992,12 @@ shiftview(const Arg *arg)
 void
 showhide(Client *c)
 {
-	if (!c)
-		return;
+	if (!c) return;
 	if (ISVISIBLE(c)) {
 		/* show clients top down */
 		XMoveWindow(dpy, c->win, c->x, c->y);
-		if (
-                        (!c->mon->lt[c->mon->sellt]->arrange || c->isfloating)
-                        && !c->isfullscreen
-                )
+		if ((!c->mon->lt[c->mon->sellt]->arrange || c->isfloating)
+                && !c->isfullscreen)
 			resize(c, c->x, c->y, c->w, c->h, 0);
 		showhide(c->snext);
 	} else {
@@ -3261,8 +3022,7 @@ sigdwmblocks(const Arg *arg)
         struct flock fl;
         union sigval sv;
 
-        if (!dwmblockssig)
-                return;
+        if (!dwmblockssig) return;
         fl.l_type = F_WRLCK;
         fl.l_whence = SEEK_SET;
         fl.l_start = 0;
@@ -3273,17 +3033,14 @@ sigdwmblocks(const Arg *arg)
                 if (fcntl(fd, F_GETLK, &fl) == -1 || fl.l_type == F_UNLCK)
                         return;
         } else {
-                if (fcntl(fd, F_GETLK, &fl) == -1)
-                        return;
+                if (fcntl(fd, F_GETLK, &fl) == -1) return;
                 if (fl.l_type == F_UNLCK) {
                         close(fd);
                         if ((fd = open(DWMBLOCKSLOCKFILE, O_RDONLY)) == -1)
                                 return;
                         fl.l_type = F_WRLCK;
-                        if (
-                                fcntl(fd, F_GETLK, &fl) == -1
-                                || fl.l_type == F_UNLCK
-                        )
+                        if (fcntl(fd, F_GETLK, &fl) == -1
+                        || fl.l_type == F_UNLCK)
                                 return;
                 }
         }
@@ -3294,11 +3051,9 @@ sigdwmblocks(const Arg *arg)
 void
 spawn(const Arg *arg)
 {
-	if (arg->v == dmenucmd)
-		dmenumon[0] = '0' + selmon->num;
+	if (arg->v == dmenucmd) dmenumon[0] = '0' + selmon->num;
 	if (fork() == 0) {
-		if (dpy)
-			close(ConnectionNumber(dpy));
+		if (dpy) close(ConnectionNumber(dpy));
 		setsid();
 		execvp(((char **)arg->v)[0], (char **)arg->v);
 		fprintf(stderr, "dwm: execvp %s", ((char **)arg->v)[0]);
@@ -3311,8 +3066,7 @@ void
 swallow(Client *p, Client *c)
 {
 
-	if (c->noswallow || c->isterminal)
-		return;
+	if (c->noswallow || c->isterminal) return;
 	if (c->noswallow && !swallowfloating && c->isfloating)
 		return;
 
@@ -3364,8 +3118,7 @@ tag(const Arg *arg)
 void
 tagmon(const Arg *arg)
 {
-	if (!selmon->sel || !mons->next)
-		return;
+	if (!selmon->sel || !mons->next) return;
 	sendmon(selmon->sel, dirtomon(arg->i));
 }
 
@@ -3386,13 +3139,12 @@ termforwin(const Client *w)
 	Client *c;
 	Monitor *m;
 
-	if (!w->pid || w->isterminal)
-		return NULL;
+	if (!w->pid || w->isterminal) return NULL;
 
 	for (m = mons; m; m = m->next) {
 		for (c = m->clients; c; c = c->next) {
 			if (c->isterminal && !c->swallowing
-                                && c->pid && isdescprocess(c->pid, w->pid))
+                        && c->pid && isdescprocess(c->pid, w->pid))
 				return c;
 		}
 	}
@@ -3412,8 +3164,7 @@ tile(Monitor *m)
 	Client *c;
 
 	getgaps(m, &oh, &ov, &ih, &iv, &n);
-	if (n == 0)
-		return;
+	if (n == 0) return;
 
 	sx = mx = m->wx + ov;
 	sy = my = m->wy + oh;
@@ -3431,12 +3182,12 @@ tile(Monitor *m)
 
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
 		if (i < m->nmaster) {
-			resize(c, mx, my, mw - (2*c->bw),
+			resize( c, mx, my, mw - (2*c->bw),
                                 mh * (c->cfact / mfacts)
                                 + (i < mrest ? 1 : 0) - (2*c->bw), 0);
 			my += HEIGHT(c) + ih;
 		} else {
-			resize(c, sx, sy, sw - (2*c->bw),
+			resize( c, sx, sy, sw - (2*c->bw),
                                 sh * (c->cfact / sfacts)
                                 + ((i - m->nmaster) < srest ? 1 : 0)
                                 - (2*c->bw), 0);
@@ -3461,16 +3212,12 @@ togglebar(const Arg *arg)
 	updatebarpos(selmon);
         for (c = selmon->clients; c; c = c->next) {
                 if ((c->isfloating && !c->isfullscreen)
-                        || !c->mon->lt[c->mon->sellt]->arrange)
-                {
+                || !c->mon->lt[c->mon->sellt]->arrange)
                         setfloatpos(c, "0x 50%");
-                }
         }
-	XMoveResizeWindow(
-                dpy, selmon->barwin,
+	XMoveResizeWindow(dpy, selmon->barwin,
                 selmon->wx + sp, selmon->by + vp,
-                selmon->ww - 2 * sp, bh
-        );
+                selmon->ww - 2 * sp, bh);
 	arrange(selmon);
 }
 
@@ -3491,10 +3238,8 @@ togglebargap(const Arg *arg)
                         m->by + vp, m->ww - 2 * sp, bh);
                 for (c = m->clients; c; c = c->next) {
                         if ((c->isfloating && !c->isfullscreen)
-                                || !c->mon->lt[c->mon->sellt]->arrange)
-                        {
+                        || !c->mon->lt[c->mon->sellt]->arrange)
                                 setfloatpos(c, "0x 50%");
-                        }
                 }
                 if (m->bargap && m == selmon) {
                         unsigned int curtag = selmon->pertag->curtag;
@@ -3508,13 +3253,10 @@ togglebargap(const Arg *arg)
 void
 togglefloating(const Arg *arg)
 {
-	if (!selmon->sel)
-		return;
+	if (!selmon->sel) return;
 	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
 		return;
-	selmon->sel->isfloating = !selmon->sel->isfloating
-                                        || selmon->sel->isfixed;
-	if (selmon->sel->isfloating) {
+	if (!selmon->sel->isfloating || selmon->sel->isfixed) {
 		XSetWindowBorder(dpy, selmon->sel->win,
                                 scheme[selmon->showtitle
                                         ? SchemeSel
@@ -3562,8 +3304,7 @@ toggletag(const Arg *arg)
 {
 	unsigned int newtags;
 
-	if (!selmon->sel)
-		return;
+	if (!selmon->sel) return;
 	newtags = selmon->sel->tags ^ (arg->ui & TAGMASK);
 	if (newtags) {
 		selmon->sel->tags = newtags;
@@ -3658,10 +3399,8 @@ toggleview(const Arg *arg)
                                                 [selmon->pertag->curtag]
                                                 [selmon->sellt^1];
 
-		if (
-                        selmon->showbar
-                        != selmon->pertag->showbars[selmon->pertag->curtag]
-                )
+		if (selmon->showbar
+                != selmon->pertag->showbars[selmon->pertag->curtag])
 			togglebar(NULL);
 
 		selmon->tagset[selmon->seltags] = newtagset;
@@ -3674,8 +3413,7 @@ toggleview(const Arg *arg)
 void
 unfocus(Client *c, int setfocus)
 {
-	if (!c)
-		return;
+	if (!c) return;
 	grabbuttons(c, 0);
 	XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
 	if (setfocus) {
@@ -3713,7 +3451,7 @@ unmanage(Client *c, int destroyed)
 		XConfigureWindow(dpy, c->win, CWBorderWidth, &wc); /* restore border */
 		XUngrabButton(dpy, AnyButton, AnyModifier, c->win);
 		setclientstate(c, WithdrawnState);
-		XSync(dpy, False);
+		XSync(dpy, 0);
 		XSetErrorHandler(xerror);
 		XUngrabServer(dpy);
 	}
@@ -3732,10 +3470,8 @@ unmapnotify(XEvent *e)
 	XUnmapEvent *ev = &e->xunmap;
 
 	if ((c = wintoclient(ev->window))) {
-		if (ev->send_event)
-			setclientstate(c, WithdrawnState);
-		else
-			unmanage(c, 0);
+		if (ev->send_event) setclientstate(c, WithdrawnState);
+		else unmanage(c, 0);
 	}
 }
 
@@ -3769,16 +3505,11 @@ updatebars(void)
 	};
 	XClassHint ch = {"dwm", "dwm"};
 	for (m = mons; m; m = m->next) {
-		if (m->barwin)
-			continue;
-		m->barwin = XCreateWindow(
-                                dpy, root,
-                                m->wx + sp, m->by + vp,
-                                m->ww - 2 * sp, bh,
-                                0, DefaultDepth(dpy, screen),
+		if (m->barwin) continue;
+		m->barwin = XCreateWindow(dpy, root, m->wx + sp, m->by + vp,
+                                m->ww - 2 * sp, bh, 0, DefaultDepth(dpy, screen),
 				CopyFromParent, DefaultVisual(dpy, screen),
-				CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa
-                );
+				CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
 		XDefineCursor(dpy, m->barwin, cursor[CurNormal]->cursor);
 		XMapRaised(dpy, m->barwin);
 		XSetClassHint(dpy, m->barwin, &ch);
@@ -3824,9 +3555,7 @@ void updatecurrentdesktop(void)
 {
 	long rawdata[] = { selmon->tagset[selmon->seltags] };
 	int i=0;
-	while(*rawdata >> (i+1)){
-		i++;
-	}
+	while(*rawdata >> (i+1)) i++;
 	long data[] = { i };
 	XChangeProperty(dpy, root, netatom[NetCurrentDesktop],
                         XA_CARDINAL, 32, PropModeReplace,
@@ -3850,15 +3579,11 @@ updatedwmblockssig(int x)
                 x += TTEXTW(stp);
                 *sts = tmp;
                 if (x > 0) {
-                        if (tmp == DELIMITERENDCHAR)
-                                break;
+                        if (tmp == DELIMITERENDCHAR) break;
                         if (!selmon->statushandcursor) {
                                 selmon->statushandcursor = 1;
-                                XDefineCursor(
-                                        dpy,
-                                        selmon->barwin,
-                                        cursor[CurHand]->cursor
-                                );
+                                XDefineCursor(dpy, selmon->barwin,
+                                        cursor[CurHand]->cursor);
                         }
                         dwmblockssig = tmp;
                         return;
@@ -3890,19 +3615,15 @@ updategeom(void)
 		unique = ecalloc(nn, sizeof(XineramaScreenInfo));
 		for (i = 0, j = 0; i < nn; i++)
 			if (isuniquegeom(unique, j, &info[i]))
-				memcpy(
-                                        &unique[j++], &info[i],
-                                        sizeof(XineramaScreenInfo)
-                                );
+				memcpy(&unique[j++], &info[i],
+                                        sizeof(XineramaScreenInfo));
 		XFree(info);
 		nn = j;
 		if (n <= nn) { /* new monitors available */
 			for (i = 0; i < (nn - n); i++) {
 				for (m = mons; m && m->next; m = m->next);
-				if (m)
-					m->next = createmon();
-				else
-					mons = createmon();
+				if (m) m->next = createmon();
+				else mons = createmon();
 			}
 			for (i = 0, m = mons; i < nn && m; m = m->next, i++)
 				if (i >= n
@@ -3930,8 +3651,7 @@ updategeom(void)
 					attachbelow(c);
 					attachstack(c);
 				}
-				if (m == selmon)
-					selmon = mons;
+				if (m == selmon) selmon = mons;
 				cleanupmon(m);
 			}
 		}
@@ -3939,8 +3659,7 @@ updategeom(void)
 	} else
 #endif /* XINERAMA */
 	{ /* default monitor setup */
-		if (!mons)
-			mons = createmon();
+		if (!mons) mons = createmon();
 		if (mons->mw != sw || mons->mh != sh) {
 			dirty = 1;
 			mons->mw = mons->ww = sw;
@@ -3965,36 +3684,25 @@ updatemotifhints(Client *c)
 	unsigned long *motif;
 	int width, height;
 
-	if (!decorhints)
-		return;
+	if (!decorhints) return;
 
-	if (
-                XGetWindowProperty(
-                        dpy, c->win, motifatom, 0L, 5L, False, motifatom,
-	                &real, &format, &n, &extra, &p
-                ) == Success && p != NULL
-        ) {
+	if (XGetWindowProperty(dpy, c->win, motifatom, 0L, 5L, 0, motifatom,
+	                &real, &format, &n, &extra, &p)
+        == Success && p != NULL) {
 		motif = (unsigned long*)p;
 		if (motif[MWM_HINTS_FLAGS_FIELD] & MWM_HINTS_DECORATIONS) {
 			width = WIDTH(c);
 			height = HEIGHT(c);
 
-			if (
-                                motif[MWM_HINTS_DECORATIONS_FIELD]
-                                        & MWM_DECOR_ALL
-                                || motif[MWM_HINTS_DECORATIONS_FIELD]
-                                        & MWM_DECOR_BORDER
-                                || motif[MWM_HINTS_DECORATIONS_FIELD]
-                                        & MWM_DECOR_TITLE
-                        )
+			if (motif[MWM_HINTS_DECORATIONS_FIELD] & MWM_DECOR_ALL
+                        || motif[MWM_HINTS_DECORATIONS_FIELD] & MWM_DECOR_BORDER
+                        || motif[MWM_HINTS_DECORATIONS_FIELD] & MWM_DECOR_TITLE)
 				c->bw = c->oldbw = borderpx;
 			else
 				c->bw = c->oldbw = 0;
 
-			resize(
-                                c, c->x, c->y,
-                                width - (2*c->bw), height - (2*c->bw), 0
-                        );
+			resize( c, c->x, c->y,
+                                width - (2*c->bw), height - (2*c->bw), 0);
 		}
 		XFree(p);
 	}
@@ -4011,7 +3719,7 @@ updatenumlockmask(void)
 	for (i = 0; i < 8; i++)
 		for (j = 0; j < modmap->max_keypermod; j++)
 			if (modmap->modifiermap[i * modmap->max_keypermod + j]
-				== XKeysymToKeycode(dpy, XK_Num_Lock))
+			== XKeysymToKeycode(dpy, XK_Num_Lock))
 				numlockmask = (1 << i);
 	XFreeModifiermap(modmap);
 }
@@ -4056,11 +3764,9 @@ updatesizehints(Client *c)
 		c->maxa = (float)size.max_aspect.x / size.max_aspect.y;
 	} else
 		c->maxa = c->mina = 0.0;
-	c->isfixed = (
-                        c->maxw && c->maxh
+	c->isfixed = (c->maxw && c->maxh
                         && c->maxw == c->minw
-                        && c->maxh == c->minh
-        );
+                        && c->maxh == c->minh);
 }
 
 void
@@ -4165,10 +3871,8 @@ view(const Arg *arg)
         if (selmon->pertaggap) {
                 selmon->gappoh = (selmon->pertag->gaps[curtag] & 0xff) >> 0;
                 selmon->gappov = (selmon->pertag->gaps[curtag] & 0xff00) >> 8;
-                selmon->gappih =
-                        (selmon->pertag->gaps[curtag] & 0xff0000) >> 16;
-                selmon->gappiv =
-                        (selmon->pertag->gaps[curtag] & 0xff000000) >> 24;
+                selmon->gappih = (selmon->pertag->gaps[curtag] & 0xff0000) >> 16;
+                selmon->gappiv = (selmon->pertag->gaps[curtag] & 0xff000000) >> 24;
         }
 
 	if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
@@ -4189,14 +3893,11 @@ winpid(Window w)
 
 	xcb_generic_error_t *e = NULL;
 	xcb_res_query_client_ids_cookie_t c = xcb_res_query_client_ids(
-                                                        xcon, 1, &spec
-                                                );
+                                                        xcon, 1, &spec);
 	xcb_res_query_client_ids_reply_t *r = xcb_res_query_client_ids_reply(
-                                                        xcon, c, &e
-                                                );
+                                                        xcon, c, &e);
 
-	if (!r)
-		return (pid_t)0;
+	if (!r) return (pid_t)0;
 
 	xcb_res_client_id_value_iterator_t i =
                 xcb_res_query_client_ids_ids_iterator(r);
@@ -4211,8 +3912,7 @@ winpid(Window w)
 
 	free(r);
 
-	if (result == (pid_t)-1)
-		result = 0;
+	if (result == (pid_t)-1) result = 0;
 
 	return result;
 }
@@ -4251,24 +3951,22 @@ wintomon(Window w)
  * ignored (especially on UnmapNotify's). Other types of errors call Xlibs
  * default error handler, which may call exit. */
 int
-xerror(Display *dpy, XErrorEvent *ee)
+xerror(Display *dpy, XErrorEvent *e)
 {
-	if (ee->error_code == BadWindow
-	|| (ee->request_code == X_SetInputFocus && ee->error_code == BadMatch)
-	|| (ee->request_code == X_PolyText8 && ee->error_code == BadDrawable)
-	|| (
-                ee->request_code == X_PolyFillRectangle
-                && ee->error_code == BadDrawable
-        )
-	|| (ee->request_code == X_PolySegment && ee->error_code == BadDrawable)
-	|| (ee->request_code == X_ConfigureWindow && ee->error_code == BadMatch)
-	|| (ee->request_code == X_GrabButton && ee->error_code == BadAccess)
-	|| (ee->request_code == X_GrabKey && ee->error_code == BadAccess)
-	|| (ee->request_code == X_CopyArea && ee->error_code == BadDrawable))
+	if (e->error_code == BadWindow
+	|| (e->request_code == X_SetInputFocus && e->error_code == BadMatch)
+	|| (e->request_code == X_PolyText8 && e->error_code == BadDrawable)
+	|| (e->request_code == X_PolyFillRectangle
+                && e->error_code == BadDrawable)
+	|| (e->request_code == X_PolySegment && e->error_code == BadDrawable)
+	|| (e->request_code == X_ConfigureWindow && e->error_code == BadMatch)
+	|| (e->request_code == X_GrabButton && e->error_code == BadAccess)
+	|| (e->request_code == X_GrabKey && e->error_code == BadAccess)
+	|| (e->request_code == X_CopyArea && e->error_code == BadDrawable))
 		return 0;
 	fprintf(stderr, "dwm: fatal error: request code=%d, error code=%d\n",
-		ee->request_code, ee->error_code);
-	return xerrorxlib(dpy, ee); /* may call exit */
+		e->request_code, e->error_code);
+	return xerrorxlib(dpy, e); /* may call exit */
 }
 
 int

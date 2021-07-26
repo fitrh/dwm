@@ -2844,8 +2844,10 @@ setup(void)
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
 	bh = (barheight ? barheight : drw->fonts->h + 2) + barborder * 2;
-	sp = sidepad;
+	bh = bargap ? bh : (bh - barborder * 2);
+	sp = bargap ? sidepad : 0;
 	vp = (topbar == 1) ? vertpad : - vertpad;
+	vp = bargap ? vp : 0;
 	updategeom();
 	/* init atoms */
 	utf8string = XInternAtom(dpy, "UTF8_STRING", 0);

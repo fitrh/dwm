@@ -163,6 +163,7 @@ static const Rule rules[] = {
         RULE(.class = "Notify Term", .floatpos = "100% 0y")
         RULE(.class = "qutebrowser", .tags = 1 << 2, .noswallow = 1)
         RULE(.class = "scrcpy", .isfloating = 1, .noswallow = 1)
+        RULE(.class = "SimpleScreenRecorder", .tags = 1 << 8, .isfloating = 1)
         RULE(.class = "Spotify", .tags = 1 << 5, .noswallow = 1)
         RULE(.class = "st", .isterminal = 1, .noswallow = 1)
         RULE(.class = "svkbd", .floatpos = "50% 100% 50% 50%")
@@ -229,7 +230,7 @@ static Key keys[] = {
          *      function, argument
          * }
          */
-	{ A,      XK_space,        spawn,            {.v = dmenucmd } },
+	{ M,      XK_p,            spawn,            {.v = dmenucmd } },
 	{ M,      XK_space,        spawn,            {.v = termcmd } },
 	{ M,      XK_b,            togglebar,        {0} },
         { M|C,    XK_b,            togglebargap,     {0} },

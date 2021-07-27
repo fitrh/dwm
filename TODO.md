@@ -22,7 +22,7 @@
 - [ ] glitch when open client that have specific tag
 - [x] centering client in floating layout
 - [ ] remove loop for colorful patch and replace with some get function
-- [ ] rule for LibreOffice
+- [x] [09c2703][4] - rule for LibreOffice
 - [x] remove horizgrid layout
 - [ ] option for bar line indicator
 - [x] state of multi tag view when bar line disabled

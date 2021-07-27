@@ -1,0 +1,1 @@
+Checks: 'bugprone-*,concurrency-*,misc-*,performance-*,portability-*,readability-*'

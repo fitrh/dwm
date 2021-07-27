@@ -159,6 +159,7 @@ static const Rule rules[] = {
         RULE(.class = "Gimp", .isfloating = 1)
         RULE(.class = "jetbrains-idea", .isfloating = 1, .noswallow = 1)
         RULE(.class = "jetbrains-studio", .isfloating = 1, .noswallow = 1)
+        RULE(.title = "LibreOffice", .tags = 1 << 4, .noswallow = 1)
         RULE(.class = "mpv", .isfloating = 1)
         RULE(.class = "Notify Term", .floatpos = "100% 0y")
         RULE(.class = "qutebrowser", .tags = 1 << 2, .noswallow = 1)
@@ -197,7 +198,7 @@ static const Layout layouts[] = {
 /* default layout per tags */
 /* The first element is for all-tag view, following i-th element corresponds to */
 /* tags[i]. Layout is referred using the layouts array index.*/
-static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 1, 0, 2, 0, 6, 4 };
+static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 1, 2, 2, 0, 6, 4 };
 
 /* key definitions */
 #define M Mod4Mask

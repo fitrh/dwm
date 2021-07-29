@@ -4,8 +4,8 @@
 static const unsigned int snap      = 8;  /* snap pixel */
 static const int lockfullscreen     = 1;  /* 1 will force focus on the fullscreen window */
 /* appearance */
-static const unsigned int borderpx  = 1;  /* border pixel of windows */
-static const unsigned int barborder = 1;  /* border pixel of bar */
+static const unsigned int borderpx  = 0;  /* border pixel of windows */
+static const unsigned int barborder = 2;  /* border pixel of bar */
 /* vanitygaps */
 static const unsigned int gappih    = 8;  /* horiz inner gap between windows */
 static const unsigned int gappiv    = 8;  /* vert inner gap between windows */
@@ -15,7 +15,7 @@ static       int smartgaps          = 0;  /* 1 means no outer gap when there is 
 static       int pertaggap          = 1;  /* 0 means all tag have same gap */
 static       int edgegap            = 1;  /* 1 means floating client respect the outer gap */
 /* bar */
-static const unsigned int barheight = 29; /* 0 means default height*/
+static const unsigned int barheight = 27; /* 0 means default height*/
 static const unsigned int vertpad   = 8;  /* vertical padding of bar */
 static const unsigned int sidepad   = 8;  /* horizontal padding of bar */
 static const int showbar            = 1;  /* 0 means no bar */
@@ -25,12 +25,12 @@ static const int centertitle        = 1;  /* 0 means left title */
 static const int colorfultitle      = 1;  /* 0 means title use SchemeTitle and SchemeTitleFloat */
 static const int colorfultag        = 1;  /* 0 means use SchemeSel for selected non vacant tag */
 static const int showindicator      = 0;  /* 0 means no line indicator for selected non vacant tag */
-static const int showtitle          = 1;  /* 0 means no title */
+static const int showtitle          = 0;  /* 0 means no title */
 static const int showvacanttags     = 0;  /* 0 means hide vacant tags */
 /* font and color */
 static const char *fonts[]               = {
-        "SF Mono:style=Medium:size=10",
-        "Material Design Icons Desktop:style=Regular:size=10"
+        "SF Mono:style=Medium:size=9",
+        "Material Design Icons Desktop:style=Regular:size=9"
 };
 static const char dmenufont[]            = "SF Mono:style=Medium:size=10";
 static const char col_bg[]               = "#1a1b26";
@@ -78,7 +78,7 @@ static const char *colors[][3]           = {
         [SchemeBrWhite]    = { col_br_white,   col_bg,         col_black },      /* \x1d */
         [SchemeFloat]      = { col_fg,         col_bg,         col_blue },       /* \x1e */
         [SchemeInactive]   = { col_br_black,   col_bg,         col_black },      /* \x1f */
-        [SchemeBar]        = { col_fg,         col_bg,         col_black },
+        [SchemeBar]        = { col_fg,         col_bg,         col_bg },
         [SchemeTag]        = { col_br_black,   col_bg,         col_black },
         [SchemeTag1]       = { col_fg,         col_dark,       col_black },
 	[SchemeTag2]       = { col_red,        col_dark,       col_black },

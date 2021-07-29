@@ -30,6 +30,7 @@
   - ref: [bakkeby dusk](https://github.com/bakkeby/dusk/commit/cd0eeb8)
 - [x] toggle bar gap on toggle gap
 - [x] [c797410][2] [aa0b056][3] - configurable bar border and create separe color scheme for it
+- [ ] Make use of `occ & 1 << i` for tag state indicator
 
 ---
 

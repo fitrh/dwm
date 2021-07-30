@@ -1198,7 +1198,7 @@ void
 drawbar(Monitor *m)
 {
 	int x, w, wdelta, tagscheme;
-        int y = m->bargap ? barborder : 0;
+        int y = m->bargap || gaplessborder ? barborder : 0;
         int h = bh - y * 2;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
@@ -3230,7 +3230,7 @@ togglebargap(const Arg *arg)
         int h = (barheight ? barheight : drw->fonts->h + 2) + barborder * 2;
 	for (m = mons; m; m = m->next) {
                 m->bargap = !m->bargap;
-                bh = m->bargap ? h : h - barborder * 2;
+                bh = m->bargap || gaplessborder ? h : h - barborder * 2;
                 sp = m->bargap ? sidepad : 0;
                 vp = m->bargap ? (topbar ? vertpad : - vertpad) : 0;
                 updatebarpos(m);

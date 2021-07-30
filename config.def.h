@@ -21,6 +21,7 @@ static const unsigned int sidepad   = 8;  /* horizontal padding of bar */
 static const int showbar            = 1;  /* 0 means no bar */
 static const int topbar             = 1;  /* 0 means bottom bar */
 static const int bargap             = 1;  /* 0 means vertpad & sidepad ignored */
+static const int gaplessborder      = 1;  /* 0 means no border when the gap disabled */
 static const int centertitle        = 1;  /* 0 means left title */
 static const int colorfultitle      = 1;  /* 0 means title use SchemeTitle and SchemeTitleFloat */
 static const int colorfultag        = 1;  /* 0 means use SchemeSel for selected non vacant tag */

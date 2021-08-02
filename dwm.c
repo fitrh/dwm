@@ -95,7 +95,7 @@ enum { SchemeNorm, SchemeSel, SchemeDarker,
        SchemeTitle1, SchemeTitle2, SchemeTitle3,
        SchemeTitle4, SchemeTitle5, SchemeTitle6,
        SchemeTitle7, SchemeTitle8, SchemeTitle9 }; /* color schemes */
-enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
+enum { NetSupported, NetWMName, NetWMState, NetWMStateAbove, NetWMCheck,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetDesktopNames,
        NetDesktopViewport, NetNumberOfDesktops, NetCurrentDesktop,
@@ -132,7 +132,7 @@ struct Client {
 	int bw, oldbw;
 	unsigned int tags;
 	int isfixed, isfloating, isfloatpos, isurgent,  isfullscreen, isterminal;
-        int neverfocus, oldstate, noswallow;
+	int alwaysontop, neverfocus, oldstate, noswallow;
 	int ignoresizehints;
 	pid_t pid;
 	Client *next;
@@ -212,6 +212,7 @@ typedef struct {
 	const char *wintype;
 	unsigned int tags;
 	int isfloating;
+	int alwaysontop;
         int isterminal;
         int noswallow;
         int matchonce;
@@ -433,6 +434,7 @@ applyrules(Client *c)
 
 	/* rule matching */
 	c->isfloating = 0;
+	c->alwaysontop = 0;
         c->isfloatpos = 0;
         c->noswallow = 0;
 	c->tags = 0;
@@ -453,6 +455,7 @@ applyrules(Client *c)
 			c->isterminal = r->isterminal;
 			c->noswallow  = r->noswallow;
 			c->isfloating = r->isfloating;
+			c->alwaysontop = r->alwaysontop;
 			c->tags |= r->tags;
 			for (m = mons; m && m->num != r->monitor; m = m->next);
 			if (m)
@@ -947,6 +950,9 @@ clientmessage(XEvent *e)
 			setfullscreen(c, (cme->data.l[0] == 1 /* _NET_WM_STATE_ADD    */
 				        || (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */
                                                 && !c->isfullscreen)));
+		else if (cme->data.l[1] == netatom[NetWMStateAbove]
+		|| cme->data.l[2] == netatom[NetWMStateAbove])
+			c->alwaysontop = (cme->data.l[0] || cme->data.l[1]);
 	} else if (cme->message_type == netatom[NetActiveWindow]) {
 		for (i = 0; i < LENGTH(tags) && !((1 << i) & c->tags); i++);
 		if (i < LENGTH(tags)) {
@@ -1427,6 +1433,7 @@ enternotify(XEvent *e)
 {
 	Client *c;
 	Monitor *m;
+	XEvent xev;
 	XCrossingEvent *ev = &e->xcrossing;
 
 	if ((ev->mode != NotifyNormal || ev->detail == NotifyInferior)
@@ -1440,6 +1447,7 @@ enternotify(XEvent *e)
 	} else if (!c || c == selmon->sel)
 		return;
 	focus(c);
+	while (XCheckMaskEvent(dpy, EnterWindowMask, &xev));
 }
 
 void
@@ -1480,6 +1488,8 @@ floatpos(const Arg *arg)
 void
 focus(Client *c)
 {
+	Client *f;
+	XWindowChanges wc;
 	if (!c || !ISVISIBLE(c))
 		for (c = selmon->stack; c && !ISVISIBLE(c); c = c->snext);
 	if (selmon->sel && selmon->sel != c)
@@ -1500,6 +1510,36 @@ focus(Client *c)
 			XSetWindowBorder(dpy, c->win,
                                 scheme[SchemeSel][ColBorder].pixel);
 		setfocus(c);
+		if (focusedontop && c->mon->lt[c->mon->sellt]->arrange) {
+
+			/* Move all visible tiled clients that are not marked as on top below the bar window */
+			wc.stack_mode = Below;
+			wc.sibling = c->mon->barwin;
+			for (f = c->mon->stack; f; f = f->snext)
+				if (f != c && !f->isfloating && ISVISIBLE(f)
+                                && !f->alwaysontop) {
+					XConfigureWindow(dpy, f->win,
+                                                CWSibling|CWStackMode, &wc);
+					wc.sibling = f->win;
+				}
+
+			/* Move the currently focused client above the bar window */
+			wc.stack_mode = Above;
+			wc.sibling = c->mon->barwin;
+			XConfigureWindow(dpy, c->win,
+                                CWSibling|CWStackMode, &wc);
+
+			/* Move all visible floating windows that are not marked as on top below the current window */
+			wc.stack_mode = Below;
+			wc.sibling = c->win;
+			for (f = c->mon->stack; f; f = f->snext)
+				if (f != c && f->isfloating && ISVISIBLE(f)
+                                && !f->alwaysontop) {
+					XConfigureWindow(dpy, f->win,
+                                                CWSibling|CWStackMode, &wc);
+					wc.sibling = f->win;
+				}
+		}
 	} else {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
 		XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
@@ -1546,6 +1586,7 @@ void
 focusstack(const Arg *arg)
 {
 	Client *c = NULL, *i;
+	XEvent xev;
 
 	if (!selmon->sel || (selmon->sel->isfullscreen && lockfullscreen))
 		return;
@@ -1564,8 +1605,10 @@ focusstack(const Arg *arg)
 	}
 	if (c) {
 		focus(c);
-		restack(selmon);
+		if (!focusedontop)
+			restack(selmon);
 	}
+	while (XCheckMaskEvent(dpy, EnterWindowMask, &xev));
 }
 
 /*
@@ -2078,6 +2121,7 @@ manage(Window w, XWindowAttributes *wa)
 	Client *c, *t = NULL, *term = NULL;
 	Window trans = None;
 	XWindowChanges wc;
+	XEvent xev;
 
 	c = ecalloc(1, sizeof(Client));
 	c->cfact = 1.0;
@@ -2096,6 +2140,7 @@ manage(Window w, XWindowAttributes *wa)
 	if (XGetTransientForHint(dpy, w, &trans) && (t = wintoclient(trans))) {
 		c->mon = t->mon;
 		c->tags = t->tags;
+		c->alwaysontop = 1;
 	} else {
 		c->mon = selmon;
 		applyrules(c);
@@ -2117,6 +2162,8 @@ manage(Window w, XWindowAttributes *wa)
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
         XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
 	configure(c); /* propagates border_width, if size doesn't change */
+	if (getatomprop(c, netatom[NetWMState]) == netatom[NetWMStateAbove])
+		c->alwaysontop = 1;
 	if (getatomprop(c, netatom[NetWMState]) == netatom[NetWMFullscreen])
 		setfullscreen(c, 1);
 	updatesizehints(c);
@@ -2164,7 +2211,9 @@ manage(Window w, XWindowAttributes *wa)
 	XMapWindow(dpy, c->win);
 	if (term)
 		swallow(term, c);
+
 	focus(NULL);
+	while (XCheckMaskEvent(dpy, EnterWindowMask, &xev));
 }
 
 void
@@ -2857,6 +2906,7 @@ setup(void)
 	netatom[NetSupported] = XInternAtom(dpy, "_NET_SUPPORTED", 0);
 	netatom[NetWMName] = XInternAtom(dpy, "_NET_WM_NAME", 0);
 	netatom[NetWMState] = XInternAtom(dpy, "_NET_WM_STATE", 0);
+	netatom[NetWMStateAbove] = XInternAtom(dpy, "_NET_WM_STATE_ABOVE", 0);
 	netatom[NetWMCheck] = XInternAtom(dpy, "_NET_SUPPORTING_WM_CHECK", 0);
 	netatom[NetWMFullscreen] = XInternAtom(dpy,
                                         "_NET_WM_STATE_FULLSCREEN", 0);

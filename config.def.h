@@ -174,10 +174,10 @@ static const Rule rules[] = {
         RULE(.class = "Tor Browser", .tags = 1 << 2, .isfloating = 1,
                 .noswallow = 1)
         RULE(.class = "zoom", .isfloating = 1)
-	RULE(.wintype = WTYPE "DIALOG", .isfloating = 1)
-	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
-	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
-	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
+	RULE(.wintype = WTYPE "DIALOG", .isfloating = 1, .alwaysontop = 1)
+	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1, .alwaysontop = 1)
+	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1, .alwaysontop = 1)
+	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1, .alwaysontop = 1)
 };
 
 /* layout(s) */

@@ -363,7 +363,6 @@ static void updatenumlockmask(void);
 static void updatesizehints(Client *c);
 static void updatestatus(void);
 static void updatetitle(Client *c);
-static void updatewindowtype(Client *c);
 static void updatewmhints(Client *c);
 static void view(const Arg *arg);
 static pid_t winpid(Window w);
@@ -2118,7 +2117,8 @@ manage(Window w, XWindowAttributes *wa)
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
         XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
 	configure(c); /* propagates border_width, if size doesn't change */
-	updatewindowtype(c);
+	if (getatomprop(c, netatom[NetWMState]) == netatom[NetWMFullscreen])
+		setfullscreen(c, 1);
 	updatesizehints(c);
 	updatewmhints(c);
 	updatemotifhints(c);
@@ -2357,8 +2357,6 @@ propertynotify(XEvent *e)
 			if (c == c->mon->sel)
 				drawbar(c->mon);
 		}
-		if (ev->atom == netatom[NetWMWindowType])
-			updatewindowtype(c);
 		if (ev->atom == motifatom)
 			updatemotifhints(c);
 	}
@@ -2863,8 +2861,6 @@ setup(void)
 	netatom[NetWMFullscreen] = XInternAtom(dpy,
                                         "_NET_WM_STATE_FULLSCREEN", 0);
 	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", 0);
-	netatom[NetWMWindowTypeDialog] = XInternAtom( dpy,
-                                                "_NET_WM_WINDOW_TYPE_DIALOG", 0);
 	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", 0);
 	netatom[NetClientListStacking] = XInternAtom( dpy,
                                                 "_NET_CLIENT_LIST_STACKING", 0);
@@ -3803,18 +3799,6 @@ updatetitle(Client *c)
 		gettextprop(c->win, XA_WM_NAME, c->name, sizeof c->name);
 	if (c->name[0] == '\0') /* hack to mark broken clients */
 		strcpy(c->name, broken);
-}
-
-void
-updatewindowtype(Client *c)
-{
-	Atom state = getatomprop(c, netatom[NetWMState]);
-	Atom wtype = getatomprop(c, netatom[NetWMWindowType]);
-
-	if (state == netatom[NetWMFullscreen])
-		setfullscreen(c, 1);
-	if (wtype == netatom[NetWMWindowTypeDialog])
-		c->isfloating = 1;
 }
 
 void

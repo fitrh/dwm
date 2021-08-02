@@ -5,7 +5,7 @@ static const unsigned int snap      = 8;  /* snap pixel */
 static const int lockfullscreen     = 1;  /* 1 will force focus on the fullscreen window */
 static const int focusedontop       = 0;  /* 1 means focused client is shown on top of floating windows */
 /* appearance */
-static const unsigned int borderpx  = 0;  /* border pixel of windows */
+static const unsigned int borderpx  = 1;  /* border pixel of windows */
 static const unsigned int barborder = 2;  /* border pixel of bar */
 /* vanitygaps */
 static const unsigned int gappih    = 8;  /* horiz inner gap between windows */
@@ -59,8 +59,8 @@ static const char col_cyan[]             = "#449dab";
 static const char col_br_cyan[]          = "#0db9d7";
 static const char *colors[][3]           = {
 	/*                     fg              bg              border   */
-	[SchemeNorm]       = { col_fg,         col_bg,         col_black },      /* \x0b */
-	[SchemeSel]        = { col_blue,       col_dark,       col_br_black },   /* \x0c */
+	[SchemeNorm]       = { col_fg,         col_bg,         col_bg },         /* \x0b */
+	[SchemeSel]        = { col_blue,       col_dark,       col_dark_1 },     /* \x0c */
         [SchemeDarker]     = { col_dark,       col_bg,         col_black },      /* \x0d */
         [SchemeRed]        = { col_red,        col_bg,         col_black },      /* \x0e */
         [SchemeGreen]      = { col_green,      col_bg,         col_black },      /* \x0f */
@@ -78,7 +78,7 @@ static const char *colors[][3]           = {
         [SchemeBrYellow]   = { col_br_yellow,  col_bg,         col_black },      /* \x1b */
         [SchemeBrBlack]    = { col_br_black,   col_bg,         col_black },      /* \x1c */
         [SchemeBrWhite]    = { col_br_white,   col_bg,         col_black },      /* \x1d */
-        [SchemeFloat]      = { col_fg,         col_bg,         col_blue },       /* \x1e */
+        [SchemeFloat]      = { col_fg,         col_bg,         col_dark_2 },     /* \x1e */
         [SchemeInactive]   = { col_br_black,   col_bg,         col_black },      /* \x1f */
         [SchemeBar]        = { col_fg,         col_bg,         col_bg },
         [SchemeTag]        = { col_br_black,   col_bg,         col_black },

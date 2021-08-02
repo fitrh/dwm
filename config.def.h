@@ -3,6 +3,7 @@
 /* behavior */
 static const unsigned int snap      = 8;  /* snap pixel */
 static const int lockfullscreen     = 1;  /* 1 will force focus on the fullscreen window */
+static const int focusedontop       = 0;  /* 1 means focused client is shown on top of floating windows */
 /* appearance */
 static const unsigned int borderpx  = 0;  /* border pixel of windows */
 static const unsigned int barborder = 2;  /* border pixel of bar */
@@ -288,6 +289,7 @@ static Key keys[] = {
 	{ M|A,    XK_c,            setlayout,        {.v = &layouts[7] } /* centeredfloatingmaster */ },
 	{ M|C,    XK_space,        setlayout,        {0} },
 	{ M|S,    XK_space,        togglefloating,   {.v = " 50%  50%" } },
+	{ M|S,    XK_k,            alwaysontop,      {0} },
 	{ M,      XK_0,            view,             {.ui = ~0 } },
 	{ M|S,    XK_0,            tag,              {.ui = ~0 } },
 	{ M,      XK_n,            togglealttag,     {0} },

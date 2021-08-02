@@ -179,6 +179,7 @@ struct Monitor {
 	int showbar;
 	int topbar;
         int statushandcursor;
+	int focusedontop;
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
@@ -221,6 +222,7 @@ typedef struct {
 } Rule;
 
 /* function declarations */
+static void alwaysontop(const Arg *arg);
 static void applyrules(Client *c);
 static int applysizehints(Client *c, int *x, int *y,
                                 int *w, int *h, int interact);
@@ -421,6 +423,13 @@ static xcb_connection_t *xcon;
 struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 
 /* function implementations */
+void
+alwaysontop(const Arg *arg)
+{
+	selmon->focusedontop = !selmon->focusedontop;
+	arrangemon(selmon);
+}
+
 void
 applyrules(Client *c)
 {
@@ -1095,6 +1104,7 @@ createmon(void)
         m->showtitle = showtitle ? showtitle : 0;
         m->showvacanttags = showvacanttags ? showvacanttags : 0;
 	m->topbar = topbar;
+	m->focusedontop = focusedontop;
 	m->lt[0] = &layouts[taglayouts[1] % LENGTH(layouts)];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
 	m->pertag = ecalloc(1, sizeof(Pertag));
@@ -1510,7 +1520,7 @@ focus(Client *c)
 			XSetWindowBorder(dpy, c->win,
                                 scheme[SchemeSel][ColBorder].pixel);
 		setfocus(c);
-		if (focusedontop && c->mon->lt[c->mon->sellt]->arrange) {
+		if (c->mon->focusedontop && c->mon->lt[c->mon->sellt]->arrange) {
 
 			/* Move all visible tiled clients that are not marked as on top below the bar window */
 			wc.stack_mode = Below;
@@ -1605,7 +1615,7 @@ focusstack(const Arg *arg)
 	}
 	if (c) {
 		focus(c);
-		if (!focusedontop)
+		if (!c->mon->focusedontop)
 			restack(selmon);
 	}
 	while (XCheckMaskEvent(dpy, EnterWindowMask, &xev));

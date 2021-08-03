@@ -16,7 +16,7 @@ static       int smartgaps          = 0;  /* 1 means no outer gap when there is 
 static       int pertaggap          = 1;  /* 0 means all tag have same gap */
 static       int edgegap            = 1;  /* 1 means floating client respect the outer gap */
 /* bar */
-static const unsigned int barheight = 27; /* 0 means default height*/
+static const unsigned int barheight = 26; /* 0 means default height*/
 static const unsigned int vertpad   = 8;  /* vertical padding of bar */
 static const unsigned int sidepad   = 8;  /* horizontal padding of bar */
 static const int showbar            = 1;  /* 0 means no bar */
@@ -31,8 +31,8 @@ static const int showtitle          = 0;  /* 0 means no title */
 static const int showvacanttags     = 0;  /* 0 means hide vacant tags */
 /* font and color */
 static const char *fonts[]               = {
-        "SF Mono:style=Medium:size=9",
-        "Material Design Icons Desktop:style=Regular:size=9"
+        "SF Mono:style=Medium:size=8",
+        "Material Design Icons Desktop:style=Regular:size=8"
 };
 static const char dmenufont[]            = "SF Mono:style=Medium:size=10";
 static const char col_bg[]               = "#1a1b26";

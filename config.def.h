@@ -308,10 +308,10 @@ static Key keys[] = {
 	{ M|S,    XK_comma,        tagmon,           {.i = -1 } },
 	{ M|S,    XK_period,       tagmon,           {.i = +1 } },
 	/* Client position is limited to monitor window area */
-        { S|A,    XK_k,            floatpos,         {.v = " 0x -8y" } }, // ↑
-        { S|A,    XK_h,            floatpos,         {.v = "-8x  0y" } }, // ←
-	{ S|A,    XK_l,            floatpos,         {.v = " 8x  0y" } }, // →
-	{ S|A,    XK_j,            floatpos,         {.v = " 0x  8y" } }, // ↓
+	{ M|C,    XK_k,            floatpos,         {.v = " 0x -8y" } }, // ↑
+	{ M|C,    XK_h,            floatpos,         {.v = "-8x  0y" } }, // ←
+	{ M|C,    XK_l,            floatpos,         {.v = " 8x  0y" } }, // →
+	{ M|C,    XK_j,            floatpos,         {.v = " 0x  8y" } }, // ↓
 	/* Client is positioned in the edge or in the middle of the screen. */
         { M|A,    XK_k,            floatpos,         {.v = "  0x   0%" } }, // ↑
         { M|A,    XK_h,            floatpos,         {.v = "  0%   0y" } }, // ←

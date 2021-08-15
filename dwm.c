@@ -2033,10 +2033,14 @@ inplacerotate(const Arg *arg)
 	}
 
 	/* All clients rotate */
-	if (arg->i == 2)
-                insertclient(selmon->clients, stail, 0);
-	if (arg->i == -2)
-                insertclient(stail, selmon->clients, 1);
+	if (!selmon->sel->isfloating) {
+		if (arg->i == 2 && !selmon->sel->isfloating) {
+			insertclient(selmon->clients, stail, 0);
+		}
+		if (arg->i == -2 && !selmon->sel->isfloating) {
+			insertclient(stail, selmon->clients, 1);
+		}
+	}
 	/* Stack xor master rotate */
 	if (arg->i == -1 && selidx >= selmon->nmaster)
                 insertclient(stail, shead, 1);

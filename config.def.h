@@ -134,48 +134,44 @@ static int floatposgrid_y           = 5; /* float grid rows */
 
 static const Rule rules[] = {
 	/* xprop(1):
-	 *	WM_CLASS(STRING) = instance, class
-	 *	WM_NAME(STRING) = title
-	 *      WM_WINDOW_ROLE(STRING) = role
-	 *	_NET_WM_WINDOW_TYPE(ATOM) = wintype
-	 *
-         * RULE(
-         *      .class = "class", .wintype = WTYPE "type", .role = "role",
-         *      .instance = "instance", .title = "title",
-         *      .tags = 0, .isfloating = 0, .isterminal = 0, .noswallow = -1,
-         *      .floatpos = "x y w h", .monitor = -1
-         * )
-         */
-        RULE(.class = "Alacritty", .isterminal = 1, .noswallow = 1)
-        RULE(.class = "codespace", .tags = 1 << 1)
-        RULE(.title = "Discord Updater", .tags = 1 << 6, .matchonce = 1,
-                .floatpos = "50% 50%")
-        RULE(.class = "discord", .tags = 1 << 6, .floatpos = "0% 50% 70% 100%")
-        RULE(.title = "Event Tester", .isfloating = 1, .noswallow = 1)
-        RULE(.class = "File Manager", .tags = 1 << 3, .isfloating = 1,
-                .isterminal = 1)
-        RULE(.class = "firefoxdeveloperedition", .tags = 1 << 2, .noswallow = 1)
-        RULE(.class = "firefoxdeveloperedition", .role = "Organizer",
-                .isfloating = 1)
-        RULE(.class = "Float Term", .isfloating = 1, .isterminal = 1)
-        RULE(.class = "Gimp", .isfloating = 1)
-        RULE(.class = "jetbrains-idea", .isfloating = 1, .noswallow = 1)
-        RULE(.class = "jetbrains-studio", .isfloating = 1, .noswallow = 1)
-        RULE(.title = "LibreOffice", .tags = 1 << 4, .noswallow = 1)
-        RULE(.class = "mpv", .isfloating = 1)
-        RULE(.class = "Notify Term", .floatpos = "100% 0y")
-        RULE(.class = "qutebrowser", .tags = 1 << 2, .noswallow = 1)
-        RULE(.class = "scrcpy", .isfloating = 1, .noswallow = 1)
-        RULE(.class = "SimpleScreenRecorder", .tags = 1 << 8, .isfloating = 1)
-        RULE(.class = "Spotify", .tags = 1 << 5, .noswallow = 1)
-        RULE(.class = "st", .isterminal = 1, .noswallow = 1)
-        RULE(.class = "svkbd", .floatpos = "50% 100% 50% 50%")
+		WM_CLASS(STRING) = instance, class
+		WM_NAME(STRING) = title
+		WM_WINDOW_ROLE(STRING) = role
+		_NET_WM_WINDOW_TYPE(ATOM) = wintype
+	RULE(.class = "class", .wintype = WTYPE "type", .role = "role",
+		.instance = "instance", .title = "title",
+		.tags = 0, .isfloating = 0, .isterminal = 0, .noswallow = -1,
+		.floatpos = "x y w h", .monitor = -1) */
+	RULE(.class = "Alacritty", .isterminal = 1, .noswallow = 1)
+	RULE(.class = "codespace", .tags = 1 << 1)
+	RULE(.title = "Discord Updater", .tags = 1 << 6, .matchonce = 1,
+		.floatpos = "50% 50%")
+	RULE(.class = "discord", .tags = 1 << 6, .floatpos = "0% 50% 70% 100%")
+	RULE(.title = "Event Tester", .isfloating = 1, .noswallow = 1)
+	RULE(.class = "File Manager", .tags = 1 << 3, .isfloating = 1,
+		.isterminal = 1)
+	RULE(.class = "firefoxdeveloperedition", .tags = 1 << 2, .noswallow = 1)
+	RULE(.class = "firefoxdeveloperedition", .role = "Organizer",
+		.isfloating = 1)
+	RULE(.class = "Float Term", .isfloating = 1, .isterminal = 1)
+	RULE(.class = "Gimp", .isfloating = 1)
+	RULE(.class = "jetbrains-idea", .isfloating = 1, .noswallow = 1)
+	RULE(.class = "jetbrains-studio", .isfloating = 1, .noswallow = 1)
+	RULE(.title = "LibreOffice", .tags = 1 << 4, .noswallow = 1)
+	RULE(.class = "mpv", .isfloating = 1)
+	RULE(.class = "Notify Term", .floatpos = "100% 0y")
+	RULE(.class = "qutebrowser", .tags = 1 << 2, .noswallow = 1)
+	RULE(.class = "scrcpy", .isfloating = 1, .noswallow = 1)
+	RULE(.class = "SimpleScreenRecorder", .tags = 1 << 8, .isfloating = 1)
+	RULE(.class = "Spotify", .tags = 1 << 5, .noswallow = 1)
+	RULE(.class = "st", .isterminal = 1, .noswallow = 1)
+	RULE(.class = "svkbd", .floatpos = "50% 100% 50% 50%")
 	RULE(.class = "Sxiv", .isfloating = 1)
-        RULE(.class = "TelegramDesktop", .tags = 1 << 6,
-                .floatpos = "100% 50% 30% 100%")
-        RULE(.class = "Tor Browser", .tags = 1 << 2, .isfloating = 1,
-                .noswallow = 1)
-        RULE(.class = "zoom", .isfloating = 1)
+	RULE(.class = "TelegramDesktop", .tags = 1 << 6,
+		.floatpos = "100% 50% 30% 100%")
+	RULE(.class = "Tor Browser", .tags = 1 << 2, .isfloating = 1,
+		.noswallow = 1)
+	RULE(.class = "zoom", .isfloating = 1)
 	RULE(.wintype = WTYPE "DIALOG", .isfloating = 1, .alwaysontop = 1)
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1, .alwaysontop = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1, .alwaysontop = 1)

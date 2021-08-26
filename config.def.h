@@ -170,6 +170,7 @@ static const Rule rules[] = {
         RULE(.class = "Spotify", .tags = 1 << 5, .noswallow = 1)
         RULE(.class = "st", .isterminal = 1, .noswallow = 1)
         RULE(.class = "svkbd", .floatpos = "50% 100% 50% 50%")
+	RULE(.class = "Sxiv", .isfloating = 1)
         RULE(.class = "TelegramDesktop", .tags = 1 << 6,
                 .floatpos = "100% 50% 30% 100%")
         RULE(.class = "Tor Browser", .tags = 1 << 2, .isfloating = 1,

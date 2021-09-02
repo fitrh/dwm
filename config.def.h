@@ -6,7 +6,7 @@ static const int lockfullscreen     = 1;  /* 1 will force focus on the fullscree
 static const int focusedontop       = 0;  /* 1 means focused client is shown on top of floating windows */
 /* appearance */
 static const unsigned int borderpx  = 1;  /* border pixel of windows */
-static const unsigned int barborder = 2;  /* border pixel of bar */
+static const unsigned int barborder = 3;  /* border pixel of bar */
 /* vanitygaps */
 static const unsigned int gappih    = 8;  /* horiz inner gap between windows */
 static const unsigned int gappiv    = 8;  /* vert inner gap between windows */
@@ -16,7 +16,7 @@ static       int smartgaps          = 0;  /* 1 means no outer gap when there is 
 static       int pertaggap          = 1;  /* 0 means all tag have same gap */
 static       int edgegap            = 1;  /* 1 means floating client respect the outer gap */
 /* bar */
-static const unsigned int barheight = 26; /* 0 means default height*/
+static const unsigned int barheight = 24; /* 0 means default height*/
 static const unsigned int vertpad   = 8;  /* vertical padding of bar */
 static const unsigned int sidepad   = 8;  /* horizontal padding of bar */
 static const int showbar            = 1;  /* 0 means no bar */

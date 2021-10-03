@@ -1,6 +1,7 @@
 # dwm - dynamic window manager
 
+## TODO: A nice README
 
-## todo, a nice readme
+If you have any questions or problems about this build, feel free to open [discussion][1].
 
-If you have a question or problem about this build, feel free to open a [discussion](https://github.com/fitrh/dwm/discussions/new)
+[1]: https://github.com/fitrh/dwm/discussions/new

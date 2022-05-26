@@ -1,24 +1,24 @@
 /* See LICENSE file for copyright and license details. */
 
 /* behavior */
-static const unsigned int snap      = 8;  /* snap pixel */
+static const unsigned int snap      = 6;  /* snap pixel */
 static const int lockfullscreen     = 1;  /* 1 will force focus on the fullscreen window */
 static const int focusedontop       = 0;  /* 1 means focused client is shown on top of floating windows */
 /* appearance */
 static const unsigned int borderpx  = 1;  /* border pixel of windows */
 static const unsigned int barborder = 3;  /* border pixel of bar */
 /* vanitygaps */
-static const unsigned int gappih    = 8;  /* horiz inner gap between windows */
-static const unsigned int gappiv    = 8;  /* vert inner gap between windows */
-static const unsigned int gappoh    = 8;  /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 8;  /* vert outer gap between windows and screen edge */
+static const unsigned int gappih    = 6;  /* horiz inner gap between windows */
+static const unsigned int gappiv    = 6;  /* vert inner gap between windows */
+static const unsigned int gappoh    = 6;  /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 6;  /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;  /* 1 means no outer gap when there is only one window */
 static       int pertaggap          = 1;  /* 0 means all tag have same gap */
 static       int edgegap            = 1;  /* 1 means floating client respect the outer gap */
 /* bar */
 static const unsigned int barheight = 24; /* 0 means default height*/
-static const unsigned int vertpad   = 8;  /* vertical padding of bar */
-static const unsigned int sidepad   = 8;  /* horizontal padding of bar */
+static const unsigned int vertpad   = 6;  /* vertical padding of bar */
+static const unsigned int sidepad   = 6;  /* horizontal padding of bar */
 static const int showbar            = 1;  /* 0 means no bar */
 static const int topbar             = 1;  /* 0 means bottom bar */
 static const int bargap             = 1;  /* 0 means vertpad & sidepad ignored */
@@ -306,10 +306,10 @@ static Key keys[] = {
 	{ M|S,    XK_comma,        tagmon,           {.i = -1 } },
 	{ M|S,    XK_period,       tagmon,           {.i = +1 } },
 	/* Client position is limited to monitor window area */
-	{ M|C,    XK_k,            floatpos,         {.v = " 0x -8y" } }, // ↑
-	{ M|C,    XK_h,            floatpos,         {.v = "-8x  0y" } }, // ←
-	{ M|C,    XK_l,            floatpos,         {.v = " 8x  0y" } }, // →
-	{ M|C,    XK_j,            floatpos,         {.v = " 0x  8y" } }, // ↓
+	{ M|C,    XK_k,            floatpos,         {.v = " 0x -6y" } }, // ↑
+	{ M|C,    XK_h,            floatpos,         {.v = "-6x  0y" } }, // ←
+	{ M|C,    XK_l,            floatpos,         {.v = " 6x  0y" } }, // →
+	{ M|C,    XK_j,            floatpos,         {.v = " 0x  6y" } }, // ↓
 	/* Client is positioned in the edge or in the middle of the screen. */
         { M|A,    XK_k,            floatpos,         {.v = "  0x   0%" } }, // ↑
         { M|A,    XK_h,            floatpos,         {.v = "  0%   0y" } }, // ←
@@ -317,22 +317,22 @@ static Key keys[] = {
         { M|A,    XK_l,            floatpos,         {.v = "100%   0y" } }, // →
         { M|A,    XK_j,            floatpos,         {.v = "  0x 100%" } }, // ↓
 	/* Resize, increase client size from every side*/
-	{ C|A,    XK_k,            floatpos,         {.v = "-1Z -1Z  0w  8h" } }, // ↑
-	{ C|A,    XK_h,            floatpos,         {.v = "-1Z -1Z  8w  0h" } }, // ←
-        { C|A,    XK_l,            floatpos,         {.v = "-1S -1S  8w  0h" } }, // →
-	{ C|A,    XK_j,            floatpos,         {.v = "-1S -1S  0w  8h" } }, // ↓
+	{ C|A,    XK_k,            floatpos,         {.v = "-1Z -1Z  0w  6h" } }, // ↑
+	{ C|A,    XK_h,            floatpos,         {.v = "-1Z -1Z  6w  0h" } }, // ←
+	{ C|A,    XK_l,            floatpos,         {.v = "-1S -1S  6w  0h" } }, // →
+	{ C|A,    XK_j,            floatpos,         {.v = "-1S -1S  0w  6h" } }, // ↓
 	/* Resize, decrease client size from every side*/
-	{ M|C|A,  XK_j,            floatpos,         {.v = "-1Z -1Z  0w -8h" } }, // ↑
-	{ M|C|A,  XK_l,            floatpos,         {.v = "-1Z -1Z -8w  0h" } }, // ←
-        { M|C|A,  XK_h,            floatpos,         {.v = "-1S -1S -8w  0h" } }, // →
-	{ M|C|A,  XK_k,            floatpos,         {.v = "-1S -1S  0w -8h" } }, // ↓
+	{ M|C|A,  XK_j,            floatpos,         {.v = "-1Z -1Z  0w -6h" } }, // ↑
+	{ M|C|A,  XK_l,            floatpos,         {.v = "-1Z -1Z -6w  0h" } }, // ←
+	{ M|C|A,  XK_h,            floatpos,         {.v = "-1S -1S -6w  0h" } }, // →
+	{ M|C|A,  XK_k,            floatpos,         {.v = "-1S -1S  0w -6h" } }, // ↓
         /* Unify Resize */
-        { M|A|S,  XK_k,            floatpos,         {.v = " 8w  8h" } }, // 
-        { C|A|S,  XK_l,            floatpos,         {.v = " 8w  0h" } }, // ←→
-        { C|A|S,  XK_k,            floatpos,         {.v = " 0w  8h" } }, // ↑↓
-        { M|A|S,  XK_j,            floatpos,         {.v = "-8w -8h" } }, // 
-        { C|A|S,  XK_h,            floatpos,         {.v = "-8w  0h" } }, // →←
-        { C|A|S,  XK_j,            floatpos,         {.v = " 0w -8h" } }, // ↓↑
+	{ M|A|S,  XK_k,            floatpos,         {.v = " 6w  6h" } }, // 
+	{ C|A|S,  XK_l,            floatpos,         {.v = " 6w  0h" } }, // ←→
+	{ C|A|S,  XK_k,            floatpos,         {.v = " 0w  6h" } }, // ↑↓
+	{ M|A|S,  XK_j,            floatpos,         {.v = "-6w -6h" } }, // 
+	{ C|A|S,  XK_h,            floatpos,         {.v = "-6w  0h" } }, // →←
+	{ C|A|S,  XK_j,            floatpos,         {.v = " 0w -6h" } }, // ↓↑
         /* Maximize the client in any given direction */
         { C|S,    XK_k,            floatpos,         {.v = " 0x  0Z   0%   0%" } }, // ↑
         { C|S,    XK_h,            floatpos,         {.v = " 0Z  0y   0%   0%" } }, // ←

@@ -31,8 +31,8 @@ static const int showtitle          = 0;  /* 0 means no title */
 static const int showvacanttags     = 0;  /* 0 means hide vacant tags */
 /* font and color */
 static const char *fonts[]               = {
-        "SF Mono:style=Medium:size=8",
-        "Material Design Icons Desktop:style=Regular:size=8"
+	"SF Mono:style=Medium:size=8",
+	"Material Design Icons Desktop:style=Regular:size=8"
 };
 static const char dmenufont[]            = "SF Mono:style=Medium:size=10";
 static const char col_bg[]               = "#1a1b26";
@@ -61,32 +61,32 @@ static const char *colors[][3]           = {
 	/*                     fg              bg              border   */
 	[SchemeNorm]       = { col_fg,         col_bg,         col_bg },         /* \x0b */
 	[SchemeSel]        = { col_blue,       col_dark,       col_dark_1 },     /* \x0c */
-        [SchemeDarker]     = { col_dark,       col_bg,         col_black },      /* \x0d */
-        [SchemeRed]        = { col_red,        col_bg,         col_black },      /* \x0e */
-        [SchemeGreen]      = { col_green,      col_bg,         col_black },      /* \x0f */
-        [SchemeBlue]       = { col_blue,       col_bg,         col_black },      /* \x10 */
-        [SchemeCyan]       = { col_cyan,       col_bg,         col_black },      /* \x11 */
-        [SchemeMagenta]    = { col_magenta,    col_bg,         col_black },      /* \x12 */
-        [SchemeYellow]     = { col_yellow,     col_bg,         col_black },      /* \x13 */
-        [SchemeBlack]      = { col_black,      col_bg,         col_black },      /* \x14 */
-        [SchemeWhite]      = { col_white,      col_bg,         col_black },      /* \x15 */
-        [SchemeBrRed]      = { col_br_red,     col_bg,         col_black },      /* \x16 */
-        [SchemeBrGreen]    = { col_br_green,   col_bg,         col_black },      /* \x17 */
-        [SchemeBrBlue]     = { col_br_blue,    col_bg,         col_black },      /* \x18 */
-        [SchemeBrCyan]     = { col_br_cyan,    col_bg,         col_black },      /* \x19 */
-        [SchemeBrMagenta]  = { col_br_magenta, col_bg,         col_black },      /* \x1a */
-        [SchemeBrYellow]   = { col_br_yellow,  col_bg,         col_black },      /* \x1b */
-        [SchemeBrBlack]    = { col_br_black,   col_bg,         col_black },      /* \x1c */
-        [SchemeBrWhite]    = { col_br_white,   col_bg,         col_black },      /* \x1d */
-        [SchemeFloat]      = { col_fg,         col_bg,         col_dark_2 },     /* \x1e */
-        [SchemeInactive]   = { col_br_black,   col_bg,         col_black },      /* \x1f */
-        [SchemeBar]        = { col_fg,         col_bg,         col_bg },
-        [SchemeTag]        = { col_br_black,   col_bg,         col_black },
-        [SchemeTag1]       = { col_fg,         col_dark,       col_black },
+	[SchemeDarker]     = { col_dark,       col_bg,         col_black },      /* \x0d */
+	[SchemeRed]        = { col_red,        col_bg,         col_black },      /* \x0e */
+	[SchemeGreen]      = { col_green,      col_bg,         col_black },      /* \x0f */
+	[SchemeBlue]       = { col_blue,       col_bg,         col_black },      /* \x10 */
+	[SchemeCyan]       = { col_cyan,       col_bg,         col_black },      /* \x11 */
+	[SchemeMagenta]    = { col_magenta,    col_bg,         col_black },      /* \x12 */
+	[SchemeYellow]     = { col_yellow,     col_bg,         col_black },      /* \x13 */
+	[SchemeBlack]      = { col_black,      col_bg,         col_black },      /* \x14 */
+	[SchemeWhite]      = { col_white,      col_bg,         col_black },      /* \x15 */
+	[SchemeBrRed]      = { col_br_red,     col_bg,         col_black },      /* \x16 */
+	[SchemeBrGreen]    = { col_br_green,   col_bg,         col_black },      /* \x17 */
+	[SchemeBrBlue]     = { col_br_blue,    col_bg,         col_black },      /* \x18 */
+	[SchemeBrCyan]     = { col_br_cyan,    col_bg,         col_black },      /* \x19 */
+	[SchemeBrMagenta]  = { col_br_magenta, col_bg,         col_black },      /* \x1a */
+	[SchemeBrYellow]   = { col_br_yellow,  col_bg,         col_black },      /* \x1b */
+	[SchemeBrBlack]    = { col_br_black,   col_bg,         col_black },      /* \x1c */
+	[SchemeBrWhite]    = { col_br_white,   col_bg,         col_black },      /* \x1d */
+	[SchemeFloat]      = { col_fg,         col_bg,         col_dark_2 },     /* \x1e */
+	[SchemeInactive]   = { col_br_black,   col_bg,         col_black },      /* \x1f */
+	[SchemeBar]        = { col_fg,         col_bg,         col_bg },
+	[SchemeTag]        = { col_br_black,   col_bg,         col_black },
+	[SchemeTag1]       = { col_fg,         col_dark,       col_black },
 	[SchemeTag2]       = { col_red,        col_dark,       col_black },
-        [SchemeTag3]       = { col_br_yellow,  col_dark,       col_black },
-        [SchemeTag4]       = { col_br_blue,    col_dark,       col_black },
-        [SchemeTag5]       = { col_br_magenta, col_dark,       col_black },
+	[SchemeTag3]       = { col_br_yellow,  col_dark,       col_black },
+	[SchemeTag4]       = { col_br_blue,    col_dark,       col_black },
+	[SchemeTag5]       = { col_br_magenta, col_dark,       col_black },
 	[SchemeTag6]       = { col_br_cyan,    col_dark,       col_black },
 	[SchemeTag7]       = { col_br_green,   col_dark,       col_black },
 	[SchemeTag8]       = { col_yellow,     col_dark,       col_black },
@@ -96,9 +96,9 @@ static const char *colors[][3]           = {
 	[SchemeTitleFloat] = { col_br_blue,    col_bg,         col_black },
 	[SchemeTitle1]     = { col_fg,         col_bg,         col_black },
 	[SchemeTitle2]     = { col_red,        col_bg,         col_black },
-        [SchemeTitle3]     = { col_br_yellow,  col_bg,         col_black },
-        [SchemeTitle4]     = { col_br_blue,    col_bg,         col_black },
-        [SchemeTitle5]     = { col_br_magenta, col_bg,         col_black },
+	[SchemeTitle3]     = { col_br_yellow,  col_bg,         col_black },
+	[SchemeTitle4]     = { col_br_blue,    col_bg,         col_black },
+	[SchemeTitle5]     = { col_br_magenta, col_bg,         col_black },
 	[SchemeTitle6]     = { col_br_cyan,    col_bg,         col_black },
 	[SchemeTitle7]     = { col_br_green,   col_bg,         col_black },
 	[SchemeTitle8]     = { col_yellow,     col_bg,         col_black },
@@ -107,25 +107,25 @@ static const char *colors[][3]           = {
 
 /* tagging */
 static const char *tags[] = {
-        "  ", "  ", "  ", "  " , "  ",
-        "  ", "  ", "  ", "  "
+	"  ", "  ", "  ", "  " , "  ",
+	"  ", "  ", "  ", "  "
 };
 
 static const char *tagsalt[] = {
-        " 1 ", " 2 ", " 3 ", " 4 ", " 5 ",
-        " 6 ", " 7 ", " 8 ", " 9 "
+	" 1 ", " 2 ", " 3 ", " 4 ", " 5 ",
+	" 6 ", " 7 ", " 8 ", " 9 "
 };
 
 static const int tagschemes[] = {
-        SchemeTag1, SchemeTag2, SchemeTag3,
-        SchemeTag4, SchemeTag5, SchemeTag6,
-        SchemeTag7, SchemeTag8, SchemeTag9
+	SchemeTag1, SchemeTag2, SchemeTag3,
+	SchemeTag4, SchemeTag5, SchemeTag6,
+	SchemeTag7, SchemeTag8, SchemeTag9
 };
 
 static const int titleschemes[] = {
-        SchemeTitle1, SchemeTitle2, SchemeTitle3,
-        SchemeTitle4, SchemeTitle5, SchemeTitle6,
-        SchemeTitle7, SchemeTitle8, SchemeTitle9
+	SchemeTitle1, SchemeTitle2, SchemeTitle3,
+	SchemeTitle4, SchemeTitle5, SchemeTitle6,
+	SchemeTitle7, SchemeTitle8, SchemeTitle9
 };
 
 static const int swallowfloating    = 0; /* 1 means swallow floating windows by default */
@@ -187,15 +187,15 @@ static const int decorhints  = 1;    /* 1 means respect decoration hints */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	{ "[]=",      tile }, /* first entry is default */
+	{ "><>",      NULL }, /* no layout function means floating behavior */
 	{ "[M]",      monocle },
-        { "[@]",      dwindle },
-        { ":::",      gaplessgrid },
-        { "TTT",      bstack },
-        { "|M|",      centeredmaster },
-        { ">M>",      centeredfloatingmaster },
-        { NULL,       NULL }
+	{ "[@]",      dwindle },
+	{ ":::",      gaplessgrid },
+	{ "TTT",      bstack },
+	{ "|M|",      centeredmaster },
+	{ ">M>",      centeredfloatingmaster },
+	{ NULL,       NULL }
 };
 
 /* default layout per tags */
@@ -221,23 +221,23 @@ static int taglayouts[1 + LENGTH(tags)]  = { 4, 0, 0, 2, 1, 2, 2, 0, 6, 4 };
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {
-        "dmenu_run",
-        "-m", dmenumon,
-        "-fn", dmenufont,
-        "-h", "32",
-        "-i", "-c", NULL };
+	"dmenu_run",
+	"-m", dmenumon,
+	"-fn", dmenufont,
+	"-h", "32",
+	"-i", "-c", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 
 static Key keys[] = {
 	/* {
-         *      modifier, key
-         *      function, argument
-         * }
-         */
+	      modifier, key
+	      function, argument
+	} */
+
 	{ M,      XK_p,            spawn,            {.v = dmenucmd } },
 	{ M,      XK_space,        spawn,            {.v = termcmd } },
 	{ M,      XK_b,            togglebar,        {0} },
-        { M|C,    XK_b,            togglebargap,     {0} },
+	{ M|C,    XK_b,            togglebargap,     {0} },
 	{ M,      XK_Return,       focusmaster,      {0} },
 	{ M,      XK_j,            focusstack,       {.i = +1 } },
 	{ M,      XK_k,            focusstack,       {.i = -1 } },
@@ -255,9 +255,9 @@ static Key keys[] = {
 	{ M|S,    XK_o,            setcfact,         {.f =  0.00 } },
 	{ M|C,    XK_o,            setcfact,         {.f =  1.00 } },
 	{ M|A,    XK_space,        resetfact,        {0} },
-        { M|A,    XK_0,            togglegaps,       {0} },
-        { M|C,    XK_0,            toggletaggaps,    {0} },
-        { M|S,    XK_equal,        defaultgaps,      {0} },
+	{ M|A,    XK_0,            togglegaps,       {0} },
+	{ M|C,    XK_0,            toggletaggaps,    {0} },
+	{ M|S,    XK_equal,        defaultgaps,      {0} },
 	{ M,      XK_equal,        incrgaps,         {.i = +1 } },
 	{ M,      XK_minus,        incrgaps,         {.i = -1 } },
 	{ M|A,    XK_i,            incrigaps,        {.i = +1 } },
@@ -277,12 +277,12 @@ static Key keys[] = {
 	{ M|S,    XK_c,            killclient,       {0} },
 	{ M|C,    XK_comma,        cyclelayout,      {.i = -1 } },
 	{ M|C,    XK_period,       cyclelayout,      {.i = +1 } },
-        { M,      XK_t,            setlayout,        {.v = &layouts[0] } /* tile */ },
-        { M,      XK_f,            setlayout,        {.v = &layouts[1] } /* float */ },
-        { M,      XK_m,            setlayout,        {.v = &layouts[2] } /* monocle */ },
-        { M|A,    XK_t,            setlayout,        {.v = &layouts[3] } /* dwindle */ },
-        { M,      XK_g,            setlayout,        {.v = &layouts[4] } /* gaplessgrid */ },
-        { M|A,    XK_b,            setlayout,        {.v = &layouts[5] } /* bstack */ },
+	{ M,      XK_t,            setlayout,        {.v = &layouts[0] } /* tile */ },
+	{ M,      XK_f,            setlayout,        {.v = &layouts[1] } /* float */ },
+	{ M,      XK_m,            setlayout,        {.v = &layouts[2] } /* monocle */ },
+	{ M|A,    XK_t,            setlayout,        {.v = &layouts[3] } /* dwindle */ },
+	{ M,      XK_g,            setlayout,        {.v = &layouts[4] } /* gaplessgrid */ },
+	{ M|A,    XK_b,            setlayout,        {.v = &layouts[5] } /* bstack */ },
 	{ M|C,    XK_c,            setlayout,        {.v = &layouts[6] } /* centeredmaster */ },
 	{ M|A,    XK_c,            setlayout,        {.v = &layouts[7] } /* centeredfloatingmaster */ },
 	{ M|C,    XK_space,        setlayout,        {0} },
@@ -311,11 +311,11 @@ static Key keys[] = {
 	{ M|C,    XK_l,            floatpos,         {.v = " 6x  0y" } }, // →
 	{ M|C,    XK_j,            floatpos,         {.v = " 0x  6y" } }, // ↓
 	/* Client is positioned in the edge or in the middle of the screen. */
-        { M|A,    XK_k,            floatpos,         {.v = "  0x   0%" } }, // ↑
-        { M|A,    XK_h,            floatpos,         {.v = "  0%   0y" } }, // ←
-        { M,      XK_c,            floatpos,         {.v = " 50%  50%" } }, // ·
-        { M|A,    XK_l,            floatpos,         {.v = "100%   0y" } }, // →
-        { M|A,    XK_j,            floatpos,         {.v = "  0x 100%" } }, // ↓
+	{ M|A,    XK_k,            floatpos,         {.v = "  0x   0%" } }, // ↑
+	{ M|A,    XK_h,            floatpos,         {.v = "  0%   0y" } }, // ←
+	{ M,      XK_c,            floatpos,         {.v = " 50%  50%" } }, // ·
+	{ M|A,    XK_l,            floatpos,         {.v = "100%   0y" } }, // →
+	{ M|A,    XK_j,            floatpos,         {.v = "  0x 100%" } }, // ↓
 	/* Resize, increase client size from every side*/
 	{ C|A,    XK_k,            floatpos,         {.v = "-1Z -1Z  0w  6h" } }, // ↑
 	{ C|A,    XK_h,            floatpos,         {.v = "-1Z -1Z  6w  0h" } }, // ←
@@ -326,19 +326,19 @@ static Key keys[] = {
 	{ M|C|A,  XK_l,            floatpos,         {.v = "-1Z -1Z -6w  0h" } }, // ←
 	{ M|C|A,  XK_h,            floatpos,         {.v = "-1S -1S -6w  0h" } }, // →
 	{ M|C|A,  XK_k,            floatpos,         {.v = "-1S -1S  0w -6h" } }, // ↓
-        /* Unify Resize */
+	/* Unify Resize */
 	{ M|A|S,  XK_k,            floatpos,         {.v = " 6w  6h" } }, // 
 	{ C|A|S,  XK_l,            floatpos,         {.v = " 6w  0h" } }, // ←→
 	{ C|A|S,  XK_k,            floatpos,         {.v = " 0w  6h" } }, // ↑↓
 	{ M|A|S,  XK_j,            floatpos,         {.v = "-6w -6h" } }, // 
 	{ C|A|S,  XK_h,            floatpos,         {.v = "-6w  0h" } }, // →←
 	{ C|A|S,  XK_j,            floatpos,         {.v = " 0w -6h" } }, // ↓↑
-        /* Maximize the client in any given direction */
-        { C|S,    XK_k,            floatpos,         {.v = " 0x  0Z   0%   0%" } }, // ↑
-        { C|S,    XK_h,            floatpos,         {.v = " 0Z  0y   0%   0%" } }, // ←
-        { M|C|S,  XK_c,            floatpos,         {.v = "50% 50%  80%  80%" } }, // ·
-        { C|S,    XK_l,            floatpos,         {.v = "-1S  0y 100%   0%" } }, // →
-        { C|S,    XK_j,            floatpos,         {.v = " 0x -1S   0% 100%" } }, // ↓
+	/* Maximize the client in any given direction */
+	{ C|S,    XK_k,            floatpos,         {.v = " 0x  0Z   0%   0%" } }, // ↑
+	{ C|S,    XK_h,            floatpos,         {.v = " 0Z  0y   0%   0%" } }, // ←
+	{ M|C|S,  XK_c,            floatpos,         {.v = "50% 50%  80%  80%" } }, // ·
+	{ C|S,    XK_l,            floatpos,         {.v = "-1S  0y 100%   0%" } }, // →
+	{ C|S,    XK_j,            floatpos,         {.v = " 0x -1S   0% 100%" } }, // ↓
 	{ M|S,    XK_q,            quit,             {0} },
 	TAGKEYS(  XK_1,                              0)
 	TAGKEYS(  XK_2,                              1)
@@ -368,6 +368,6 @@ static Button buttons[] = {
 	{ ClkTagBar,     0,           Button3, toggleview,     {0} },
 	{ ClkTagBar,     M,           Button1, tag,            {0} },
 	{ ClkTagBar,     M,           Button3, toggletag,      {0} },
-        { ClkTagBar,	 0,           Button4, shiftview,      {.i = -1} },
+	{ ClkTagBar,	 0,           Button4, shiftview,      {.i = -1} },
 	{ ClkTagBar,	 0,	      Button5, shiftview,      {.i = 1} },
 };

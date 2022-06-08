@@ -1,6 +1,8 @@
 # dwm - dynamic window manager
 
-## TODO: A nice README
+## TODO
+
+- [ ] A nice README
 
 If you have any questions or problems about this build, feel free to open [discussion][1].
 
